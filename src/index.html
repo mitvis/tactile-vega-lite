@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vega-Lite Tactile Renderer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #input, #view {
+            width: 48%;
+            height: 90vh;
+        }
+        #input {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #view {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="input" placeholder="Enter Vega-Lite Spec Here...">
+        {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "timeUnit": "month",
+                "field": "date",
+                "type": "ordinal",
+                "title": "Month of the year"
+              },
+              "y": {
+                "aggregate": "count",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "weather",
+                "type": "nominal",
+                "scale": {
+                  "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+                  "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+                },
+                "title": "Weather type"
+              }
+            },
+            "tactile": true
+          }
+        
+    </textarea>
+    <div id="view"></div>
+    <script>
+      // const worker = new Worker("worker.js");
+
+      // worker.onmessage = (event) => {
+      //   console.log(`Got: ${event.data}`);
+      // };
+
+      // worker.postMessage("Hello");
+    </script>
+
+</body>
+</html>

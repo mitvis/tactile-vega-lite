@@ -1,0 +1,2 @@
+(()=>{"use strict";console.log("Hello, TypeScript and Webpack!")})();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYnVuZGxlLmpzIiwibWFwcGluZ3MiOiJtQkFBQUEsUUFBUUMsSUFBSSxpQyIsInNvdXJjZXMiOlsid2VicGFjazovL3ZlZ2FfbGl0ZV90YWN0aWxlLy4vc3JjL2luZGV4LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImNvbnNvbGUubG9nKCdIZWxsbywgVHlwZVNjcmlwdCBhbmQgV2VicGFjayEnKTtcbiJdLCJuYW1lcyI6WyJjb25zb2xlIiwibG9nIl0sInNvdXJjZVJvb3QiOiIifQ==
