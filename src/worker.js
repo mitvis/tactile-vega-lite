@@ -6,7 +6,5 @@ self.onmessage = (event) => {
   liblouis.enableOnDemandTableLoading("lib/tables/");
   const { id, text, tableName } = event.data;
   const translatedText = liblouis.translateString(tableName, text);
-  
-  console.log("id: ", id, "originaln text: ", text, "translatedText: ", translatedText);
-  self.postMessage({ id, translatedText });
+    self.postMessage({ id, translatedText });
 };

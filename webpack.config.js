@@ -14,30 +14,6 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      // {
-      //   test: /\.(worker\.js)$/, // Adjust regex to match your worker files
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         name: '[name].[contenthash].js',
-      //         outputPath: 'workers/', // Directory where worker scripts will be placed
-      //         publicPath: '/workers/', // Public path to access workers
-      //       },
-      //     },
-      //   ],
-      // },
-      // {
-      //   test: /(\.cti|\.ctb|\.utb|\.dis|\.uti|\.tbl|\.dic)$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         name: 'tables/[name].[ext]' // Specify the output pattern here
-      //       }
-      //     }
-      //   ]
-      // }
     ],
   },
   resolve: {
@@ -48,7 +24,7 @@ module.exports = {
       "stream": require.resolve("stream-browserify"),
       "buffer": require.resolve("buffer/"),
       "fs": false, // 'fs' is typically not needed in the browser and can often be safely ignored
-    }, 
+    },
   },
   output: {
     filename: 'bundle.js', // the output bundle name

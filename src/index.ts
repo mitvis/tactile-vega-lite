@@ -11,26 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
         "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
         "mark": "bar",
         "encoding": {
-        "x": {
-            "timeUnit": "month",
-            "field": "date",
-            "type": "ordinal",
-            "title": "Month of the year"
-        },
-        "y": {
-            "aggregate": "count",
-            "type": "quantitative"
-        },
-        "color": {
-            "field": "weather",
-            "type": "nominal",
-            "scale": {
-            "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-            "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+            "x": {
+                "timeUnit": "month",
+                "field": "date",
+                "type": "ordinal",
+                "title": "Month of the year"
             },
-            "title": "Weather type"
-        }
-        },
+            "y": {
+                "aggregate": "count",
+                "type": "quantitative"
+            },
+            "color": {
+                "field": "weather",
+                "type": "nominal",
+                "scale": {
+                "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+                "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+                },
+                "title": "Weather type"
+            }, 
+        }, 
         "tactile": true
     }
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Modify svg to be tactile compatible");
                 modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
             } else {
-                console.log("Just render");
+                console.log("Tactile Mode Off");
             }
         }).catch(error => console.error(error));
     }

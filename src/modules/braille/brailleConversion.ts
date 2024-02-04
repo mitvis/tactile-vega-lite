@@ -7,7 +7,6 @@ const callbacks = new Map<number, (brailleText: string) => void>();
 function getBraille(text: string, callback:(brailleText: string) => void) {
   const id = messageId++;
   callbacks.set(id, callback);
-
   worker.postMessage({
     id, 
     text: text, 
@@ -15,7 +14,6 @@ function getBraille(text: string, callback:(brailleText: string) => void) {
   });
 
   worker.onmessage = (event) => {
-    // callback(event.data);
     const { id, translatedText } = event.data;
     const callback = callbacks.get(id);
     if (callback) {
