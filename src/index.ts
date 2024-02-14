@@ -1,12 +1,15 @@
-import vegaEmbed from "vega-embed"
-import { TopLevelSpec } from 'vega-lite'; 
+import vegaEmbed from "vega-embed";
+import {Config, TopLevelSpec, compile} from 'vega-lite';
 import { modifySvg } from './modules/chartModifier';
+import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
+const d3 = require("d3");
+import { updateSpecForTactile} from "./modules/updateSpec";
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('input') as HTMLInputElement;
-    const view = document.getElementById('view');
+    const submitButton = document.getElementById('render') as HTMLButtonElement;
 
-    const defaultSpec = {
+    const defaultSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
         "mark": "bar",
@@ -30,35 +33,81 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 "title": "Weather type"
             }, 
-        }, 
-        "tactile": true
+        },
+        "tactile": true,
     }
 
-    // Function to render the chart
-    // bit of a hack: spec shouldn't have type any
-    function renderChart(spec: any) {
-        vegaEmbed('#view', spec, { renderer: "svg" }).then(result => {
-            if (spec.tactile === true) {
-                console.log("Modify svg to be tactile compatible");
-                modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
-            } else {
-                console.log("Tactile Mode Off");
-            }
+    const bubblePlotSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": {
+          "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/disasters.csv"
+        },
+        "width": 600,
+        "height": 400,
+        "transform": [
+          {"filter": "datum.Entity !== 'All natural disasters'"}
+        ],
+        "mark": {
+          "type": "circle",
+          "opacity": 0.8,
+          "stroke": "black",
+          "strokeWidth": 1
+        },
+        "encoding": {
+          "x": {
+            "field": "Year",
+            "type": "temporal",
+            "axis": {"grid": false}
+          },
+          "y": {"field": "Entity", "type": "nominal", "axis": {"title": ""}},
+          "size": {
+            "field": "Deaths",
+            "type": "quantitative",
+            "title": "Annual Global Deaths",
+            "legend": {"clipHeight": 30},
+            "scale": {"rangeMax": 5000}
+          },
+          "color": {"field": "Entity", "type": "nominal", "legend": null}
+        },
+        "tactile": {
+          "brailleFont": "swell-braille",
+          "brailleFontSize": 30,
+        }
+    }
+    
+    // function to render vega-lite spec
+    function renderVegaLiteChart(spec: TopLevelSpec) {
+      vegaEmbed("#visual", spec, { renderer: "svg" }).then(result => {
+      }).catch(error => console.error(error));
+    }
+    
+
+    function renderTactileChart(spec: any) {
+      updateSpecForTactile(spec).then((updatedSpec) => {
+        console.log(updatedSpec);
+        vegaEmbed("#tactile", updatedSpec, { renderer: "svg" }).then(result => {
+          if (spec.tactile !== undefined && spec.tactile !== null) {
+            console.log("Chart updated for tactile representation");
+            modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
+          } else {
+              console.log("Tactile Mode Off");
+          }
         }).catch(error => console.error(error));
-    }
+      });
+    };
 
-    // Render default chart on page load
-    renderChart(defaultSpec);
+    renderVegaLiteChart(defaultSpec);
+    renderTactileChart(defaultSpec);
 
-    // Update chart on input change
-    input?.addEventListener('input', () => {
+    submitButton.addEventListener('click', () => {
         try {
             const spec = JSON.parse(input!.value);
-            renderChart(spec); // Use the same function to render updated chart
+            renderTactileChart(spec);
+            renderVegaLiteChart(spec);
         } catch (error) {
             console.error('Invalid JSON', error);
-            // Optionally, revert to default spec or handle invalid JSON input here
         }
     });
+
 
 });

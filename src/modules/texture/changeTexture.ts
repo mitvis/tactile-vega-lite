@@ -7,6 +7,7 @@ const textures = texturesModule.default; // Access the actual default export
 
 
 function findUniqueColors(result: any, svgSelector: string): string[] {
+  // console.log("findUniqueColors");
   const colors = new Set<string>();
   d3.select(result.view.container())
     .selectAll(svgSelector)
@@ -35,12 +36,12 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
   // [TODO] similar texture cannot be next to each other 
   let texturesArray = [
     //lines
-    textures.lines(),
+    textures.lines().size(4),
     // textures.lines().heavier(),
     // textures.lines().lighter(),
     // textures.lines().thinner(),
     // textures.lines().thicker(),
-    textures.lines().orientation("vertical"),
+    textures.lines().size(4).orientation("vertical"),
     textures.lines().orientation("3/8", "7/8"),
 
     //circles
@@ -48,11 +49,11 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
     // textures.circles().heavier(),
     // textures.circles().lighter(),
     // textures.circles().thinner(),
-    textures.circles().radius(4),
+    textures.circles().size(1),
 
     // paths
-    // textures.paths().d("crosses").size(2).strokeWidth(2),
-    // textures.paths().d("hexagons").size(2).strokeWidth(2),
+    textures.paths().d("crosses").size(2).strokeWidth(2),
+    textures.paths().d("hexagons").size(2).strokeWidth(2),
     // textures.paths().d("crosses").lighter().thicker(),
     // textures.paths().d("woven").size(2).lighter().thicker(),
     // textures.paths().d("waves").size(2).thicker(),
@@ -64,7 +65,6 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
     const textureIndex = Math.floor(Math.random() * texturesArray.length);
     const texture = texturesArray[textureIndex]; // Apply the unique color to the selected texture
     // Add the texture to the defs
-    console.log(texture)
     svg.call(texture);
 
     // Store the mapping from color to texture URL (pattern ID reference)
@@ -78,7 +78,6 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
 
 // Function to apply textures to SVG elements based on their fill color
 function applyTextures(result:any, svgSelector:string, colorTextureMap: Record<string, string>):void {
-
   d3.select(result.view.container()).selectAll(svgSelector).each(function(this:any) {
     // Directly apply the texture URL as the fill for each element
     const pathElement = d3.select(this);
@@ -100,8 +99,7 @@ function applyTextures(result:any, svgSelector:string, colorTextureMap: Record<s
     // ideally we parse the spec to get all colors used in the chart
 
     // find unique colors used in the chart
-    const uniqueColors = findUniqueColors(result, legendSymbolSelector);
-    console.log("uniqueColors: ", uniqueColors);
+    const uniqueColors = findUniqueColors(result, markSelector);
     const colorTextureMap = generateTexturesForColors(uniqueColors);
     applyTextures(result, markSelector, colorTextureMap);
     applyTextures(result, legendSymbolSelector, colorTextureMap);

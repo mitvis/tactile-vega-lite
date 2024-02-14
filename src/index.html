@@ -5,29 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vega-Lite Tactile Renderer</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        #input, #view {
-            width: 48%;
-            height: 90vh;
-        }
-        #input {
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        #view {
-            border: 1px solid #000;
-        }
+      .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .item1 {
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
     </style>
 </head>
 <body>
-    <textarea id="input" placeholder="Enter Vega-Lite Spec Here...">
+
+  <div class="grid-container">
+    <div class="item1">
+      <textarea id="input" placeholder="Enter Vega-Lite Spec Here..." cols="80" rows="70">
+
         {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
@@ -55,11 +51,15 @@
             }, 
             "tactile": true
           }
-        
     </textarea>
-    <div id="view"></div>
-    <!-- [TODO] adding another visual rendering to compare -->
-    <div id="visual"></div>
-
+    <button id="render">Render</button>
+    </div>
+    <div class="item2">
+      <div id="tactile"></div>
+    </div>
+    <div class="item3">
+      <div id="visual"></div>
+    </div>
+  </div>
 </body>
 </html>

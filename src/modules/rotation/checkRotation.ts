@@ -15,7 +15,6 @@ function detectRotation(result:any, svgSelectionCriteria:string) {
         var transforms = transform.split(' ');
         var translate = transforms[0]; // The translate part
         var rotate = transforms[1]; // The rotate part
-        console.log(rotate);
 
         // if rotate exists and rotate is not 0, then set it to 0
         if (rotate && rotate !== "rotate(0)") {
