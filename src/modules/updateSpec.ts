@@ -3,6 +3,8 @@ import { TopLevelSpec } from "vega-lite";
 import vegaEmbed, { VisualizationSpec }  from "vega-embed";
 
 async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
+    // 
+    
     try {
         const result = await vegaEmbed("#tactile", spec, { renderer: "svg" });
         const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);

@@ -5,7 +5,9 @@ import { applyTexturesToVegaLiteChart } from "./texture/changeTexture";
 import { resize } from "./resize/resize";
 
 function modifySvg(result:any, spec:any) {
-    // resize(result, 600, 400, spec)
+
+  
+    
 
     // convert text to braille
     convertToBraille(result, spec)
