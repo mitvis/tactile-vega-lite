@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 brailleTranslationTable: "en-ueb-g2.ctb",
             },
             colorToTexture: {
-                enabled: true,
-                // textureArray: ["Texture 1", "Texture 2"], // Example textures
+                enabled: true
             },
             useGridlines: true,
         };
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ...defaultTactileSpec.braille, // Spread the default braille settings
                     ...(spec.tactile.braille || {}), // Then spread user's braille settings, if any
                 },
-                colorToTexture: {
+                "colorToTexture": {
                     ...defaultTactileSpec.colorToTexture, // Spread the default colorToTexture settings
                     ...(spec.tactile.colorToTexture || {}), // Then spread user's colorToTexture settings, if any
                 }
@@ -94,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSpecForTactile(spec).then((updatedSpec) => {
             console.log(updatedSpec);
             vegaEmbed("#tactile", updatedSpec, { renderer: "svg" }).then(result => {
+                console.log(result.view.data('source_0'));
                 if (spec.tactile !== undefined && spec.tactile !== null) {
                     console.log("Chart updated for tactile representation");
                     modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const spec = JSON.parse(input!.value);
             renderTactileChart(spec);
-            renderVegaLiteChart(spec);
+            // renderVegaLiteChart(spec);
         } catch (error) {
             console.error('Invalid JSON', error);
         }

@@ -38,6 +38,10 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
                     "symbolSize": 500,  // size of the legend symbols
                     "columnPadding": 20, // distance between legend columns
                     "rowPadding": 20, // distance between legend rows
+                },
+                "mark": {
+                    "stroke": "black",
+                    "strokeWidth": 2
                 }
             }
         };
