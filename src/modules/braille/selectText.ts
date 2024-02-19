@@ -17,8 +17,7 @@ function selectText(result: any, svgSelectionCriteria:string, spec:any) {
     .each(function(this: SVGTextElement, d:any, i: number, nodes: ArrayLike<SVGTextElement>) {
       getBraille(d.text, (brailleText: string) => {
         const textElement = d3.select(this);
-        // textElement.text(brailleText).style("font-family", brailleFont).style("font-size", brailleFontSize);
-        textElement.text(brailleText).style("font-family", brailleFont);
+        textElement.text(brailleText)
       });
     });
   }

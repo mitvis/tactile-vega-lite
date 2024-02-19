@@ -3,7 +3,7 @@ import { Config, TopLevelSpec, compile } from 'vega-lite';
 import { modifySvg } from './modules/chartModifier';
 import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
 const d3 = require("d3");
-import { updateSpecForTactile } from "./modules/updateSpec";
+import { updateSpecForTactile } from "./modules/update/updateSpec";
 
 document.addEventListener('DOMContentLoaded', () => {
 
