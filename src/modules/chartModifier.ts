@@ -24,7 +24,7 @@ function modifySvg(result:any, spec:any) {
       textureMarkSelector = '.mark-rect.role-mark.marks path';
     }
 
-    applyTexturesToVegaLiteChart(result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
+    applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
 
   }
 
