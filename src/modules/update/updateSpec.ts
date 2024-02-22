@@ -14,13 +14,15 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
             "width": {
                 "step": Math.ceil(maxBrailleWidth)
             }, // set bar width to the max axis label braille text width
-            "height": {
-                "step": 100 // set bar height to 30 pixels
-            },
+            // "autosize": {
+            //     "type": "pad",
+            //     "resize": true,
+            // },
             "config": {
                 "axis": {
                     "labelFont": spec.tactile.brailleFont || "swell-braille",
                     "labelFontSize": spec.tactile.brailleFontSize || 30,
+                    "labelAngle": 0,
                     "titleFont": spec.tactile.brailleFont || "swell-braille",
                     "titleFontSize": spec.tactile.brailleFontSize || 30,
                     "titleAngle": 0,

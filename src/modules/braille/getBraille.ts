@@ -9,7 +9,6 @@ function getBraille(text: string, callback:(brailleText: string) => void) {
   worker.postMessage({
     id, 
     text: text, 
-    // tableName: "unicode.dis,de-de-g0.utb"
     tableName: "en-ueb-g2.ctb"
   });
 

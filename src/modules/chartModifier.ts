@@ -1,8 +1,6 @@
 
 import { convertToBraille } from "./braille/brailleConversion";
-import { correctRotation }from "./rotation/checkRotation";
 import { applyTexturesToVegaLiteChart } from "./texture/changeTexture";
-import { resize } from "./resize/resize";
 
 function modifySvg(result:any, spec:any) {
 
@@ -11,11 +9,7 @@ function modifySvg(result:any, spec:any) {
 
     // convert text to braille
     convertToBraille(result, spec)
-
-    // Adjust axis labels orientation 
-    correctRotation(result, '.mark-text.role-axis-title text');
     
-
     // Changing color to textures
     let textureMarkSelector = '';
     if (spec.mark.type === "circle") {

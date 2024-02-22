@@ -87,19 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTactileChart(spec: any) {
         // First, populate default tactile spec
         spec = populateDefaultTactileSpec(spec);
-        console.log(spec);
 
         // updates the spec for tactile representation
         updateSpecForTactile(spec).then((updatedSpec) => {
-            console.log(updatedSpec);
+            console.log("updated Spec: ", updatedSpec)
             vegaEmbed("#tactile", updatedSpec, { renderer: "svg" }).then(result => {
-                console.log(result.view.data('source_0'));
                 if (spec.tactile !== undefined && spec.tactile !== null) {
-                    console.log("Chart updated for tactile representation");
                     modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
-                } else {
-                    console.log("Tactile Mode Off");
-                }
+                } 
             }).catch(error => console.error(error));
         });
     };

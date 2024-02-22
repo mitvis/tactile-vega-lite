@@ -27,6 +27,9 @@ function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[]
                     const width = textElement.node().getComputedTextLength();
                     resolve(width); // Resolve the promise with the width of the Braille text
                     textElement.text(originalText); // Optionally reset the text back to original if needed
+                    // remove the braille font and size
+                    textElement.style("font-family", null)
+                               .style("font-size", null);
                 });
             });
 
