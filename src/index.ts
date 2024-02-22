@@ -128,18 +128,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     }
 
-    renderVegaLiteChart(defaultSpec);
-    renderTactileChart(defaultSpec);
-
     submitButton.addEventListener('click', () => {
         try {
             const spec = JSON.parse(input!.value);
             renderTactileChart(spec);
-            // renderVegaLiteChart(spec);
+            // remove all the tactile part from the spec and set to a new spec called visualSpec
+            let visualSpec = JSON.parse(JSON.stringify(spec));
+            delete visualSpec.tactile;
+            renderVegaLiteChart(visualSpec);
         } catch (error) {
             console.error('Invalid JSON', error);
         }
     });
+
+    renderVegaLiteChart(defaultSpec);
+    renderTactileChart(defaultSpec);
 
     // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
