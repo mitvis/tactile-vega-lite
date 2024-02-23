@@ -37,46 +37,55 @@ document.addEventListener('DOMContentLoaded', () => {
             },
         },
         "tactile": {
-            "useGridlines": false,
+            "grid": false,
         }
     }
 
-    // Function to populate default tactile spec, preserving user-specified attributes
-    function populateDefaultTactileSpec(spec: any): any {
-        // Define default tactile settings
-        const defaultTactileSpec = {
-            braille: {
-                brailleFont: "Swell Form",
-                brailleFontSize: 30,
-                brailleTranslationTable: "en-ueb-g2.ctb",
-            },
-            colorToTexture: {
-                enabled: true
-            },
-            useGridlines: true,
-        };
 
-        if (typeof spec.tactile === 'object') {
-            // Merge user-specified tactile settings with defaults
-            spec.tactile = {
-                ...defaultTactileSpec, // Spread the default settings first
-                ...spec.tactile, // Then spread the user settings, allowing user settings to override defaults
-                braille: {
-                    ...defaultTactileSpec.braille, // Spread the default braille settings
-                    ...(spec.tactile.braille || {}), // Then spread user's braille settings, if any
-                },
-                "colorToTexture": {
-                    ...defaultTactileSpec.colorToTexture, // Spread the default colorToTexture settings
-                    ...(spec.tactile.colorToTexture || {}), // Then spread user's colorToTexture settings, if any
-                }
-            };
-        } else if (spec.tactile === true) {
-            // If tactile is simply set to true, use all default settings
-            spec.tactile = defaultTactileSpec;
-        }
+// Function to merge default and user-specified tactile settings
+function mergeTactileSettings(defaultSettings: any, userSettings: any) {
+    return {
+        ...defaultSettings,
+        ...userSettings,
+        braille: {
+            ...defaultSettings.braille,
+            ...(userSettings.braille || {}),
+        },
+        colorToTexture: {
+            ...defaultSettings.colorToTexture,
+            ...(userSettings.colorToTexture || {}),
+        },
+        grid: userSettings.grid !== undefined ? userSettings.grid : defaultSettings.grid,
+    };
+}
 
-        return spec;
+// Function to populate default tactile spec, preserving user-specified attributes
+function populateDefaultTactileSpec(spec: any) {
+    // Define default tactile settings
+    const defaultTactileSpec = {
+        braille: {
+            brailleFont: "Swell Braille",
+            brailleFontSize: 30,
+            brailleTranslationTable: "en-ueb-g2.ctb",
+        },
+        colorToTexture: {
+            enabled: true,
+        },
+        grid: false, // Default no grids
+    };
+
+    if (typeof spec.tactile === 'object') {
+        // Merge user-specified tactile settings with defaults
+        spec.tactile = mergeTactileSettings(defaultTactileSpec, spec.tactile);
+    } else if (spec.tactile === true) {
+        // If tactile is simply set to true, use all default settings
+        spec.tactile = defaultTactileSpec;
     }
+
+    return spec;
+}
+
+
 
     // function to render vega-lite spec
     function renderVegaLiteChart(spec: TopLevelSpec) {
@@ -87,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTactileChart(spec: any) {
         // First, populate default tactile spec
         spec = populateDefaultTactileSpec(spec);
-
         // updates the spec for tactile representation
         updateSpecForTactile(spec).then((updatedSpec) => {
             console.log("updated Spec: ", updatedSpec)

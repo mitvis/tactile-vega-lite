@@ -3,52 +3,70 @@ import { TopLevelSpec } from "vega-lite";
 import vegaEmbed, { VisualizationSpec } from "vega-embed";
 
 async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
-    // 
-
     try {
         const result = await vegaEmbed("#tactile", spec, { renderer: "svg" });
         const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);
+        const brailleFont = spec.tactile.braille.brailleFont;
+        const brailleFontSize = spec.tactile.braille.brailleFontSize;
+        const strokeWidth = 2;
         const updatedSpec: any = {
             ...spec,
-
+            "background": "white", // assert background color to be white, overwriting user input if any
             "width": {
                 "step": Math.ceil(maxBrailleWidth)
             }, // set bar width to the max axis label braille text width
-            // "autosize": {
-            //     "type": "pad",
-            //     "resize": true,
-            // },
+            "autosize": {
+                "type": "pad",
+                "resize": true,
+            },
             "config": {
+                "view": {
+                    "stroke": "black", // chart border color
+                    "strokeWidth": strokeWidth // chart border width 
+                },
                 "axis": {
-                    "labelFont": spec.tactile.brailleFont || "swell-braille",
-                    "labelFontSize": spec.tactile.brailleFontSize || 30,
+                    "labelFont": brailleFont,
+                    "labelFontSize": brailleFontSize,
                     "labelAngle": 0,
-                    "titleFont": spec.tactile.brailleFont || "swell-braille",
-                    "titleFontSize": spec.tactile.brailleFontSize || 30,
+                    "titleFont": brailleFont,
+                    "titleFontSize": brailleFontSize,
                     "titleAngle": 0,
-                    "titlePadding": 20 // distance between axis title and axis labels
+                    "titlePadding": 20, // distance between axis title and axis labels
+                    // "format": "~s", // handling big numbers: format numbers as strings, e.g. 1,200,000 = 1.2M
+                    // "formatType": "number",
+                    "tickSize": 10, // length of the ticks
+                    "tickWidth": strokeWidth, // width of the ticks
                 },
                 "legend": {
-                    "labelFont": spec.tactile.brailleFont || "swell-braille",
-                    "labelFontSize": spec.tactile.brailleFontSize || 30,
-                    "titleFont": spec.tactile.brailleFont || "swell-braille",
-                    "titleFontSize": spec.tactile.brailleFontSize || 30,
+                    "labelFont": brailleFont,
+                    "labelFontSize": brailleFontSize,
+                    "titleFont": brailleFont,
+                    "titleFontSize": brailleFontSize,
                     "titlePadding": 20, // distance between legend title and legend labels
                     "direction": "vertical",
                     "orient": "top", // position of the legend
-                    "padding": 60, // distance between bottom of legend and top of chart
+                    "padding": 60, // distance between bottom of legend and top of chart // probably don't want to hardcode this [TODO] get y position of y axis title, y position of lengend + lengend height, maybe set padding to the difference?? 
                     "symbolSize": 500,  // size of the legend symbols
                     "columnPadding": 20, // distance between legend columns
                     "rowPadding": 20, // distance between legend rows
                 },
                 "mark": {
                     "stroke": "black",
-                    "strokeWidth": 2
+                    "strokeWidth": strokeWidth
                 }
             }
         };
 
-
+        // check to see if spec.tactile.grid is not false
+        // then set updatedSpec.config.axis.grid to true
+        if (updatedSpec.tactile.grid !== false) {
+            updatedSpec.config.axis.grid = true;
+            // if grid is enabled, set grid color to black and grid width to 2
+            updatedSpec.config.axis.gridColor = "black";
+            updatedSpec.config.axis.gridWidth = spec.tactile.gridWidth || strokeWidth;
+        } else if (updatedSpec.tactile.grid === false || updatedSpec.tactile.grid === undefined) {
+            updatedSpec.config.axis.grid = false;
+        }
         // Ensure spec.encoding and spec.encoding.y exist
         if (!updatedSpec.encoding) updatedSpec.encoding = {};
         if (!updatedSpec.encoding.y) updatedSpec.encoding.y = {};
