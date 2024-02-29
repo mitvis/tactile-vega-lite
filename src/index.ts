@@ -11,35 +11,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
 
+    // const defaultSpec: any = {
+    //     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    //     "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv" },
+    //     "mark": "bar",
+    //     "encoding": {
+    //         "x": {
+    //             "timeUnit": "month",
+    //             "field": "date",
+    //             "type": "ordinal",
+    //             "title": "Month of the year"
+    //         },
+    //         "y": {
+    //             "aggregate": "count",
+    //             "type": "quantitative"
+    //         },
+    //         "color": {
+    //             "field": "weather",
+    //             "type": "nominal",
+    //             "scale": {
+    //                 "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+    //                 "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+    //             },
+    //             "title": "Weather type"
+    //         },
+    //     },
+    //     "tactile": {
+    //         "grid": false,
+    //     }
+    // }
+
     const defaultSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv" },
-        "mark": "bar",
-        "encoding": {
-            "x": {
-                "timeUnit": "month",
-                "field": "date",
-                "type": "ordinal",
-                "title": "Month of the year"
-            },
-            "y": {
-                "aggregate": "count",
-                "type": "quantitative"
-            },
-            "color": {
-                "field": "weather",
-                "type": "nominal",
-                "scale": {
-                    "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-                    "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
-                },
-                "title": "Weather type"
-            },
+        "description": "A simple donut chart with embedded data.",
+        "data": {
+          "values": [
+            {"category": 1, "value": 4},
+            {"category": 2, "value": 6},
+            {"category": 3, "value": 10},
+            {"category": 4, "value": 3},
+            {"category": 5, "value": 7},
+            {"category": 6, "value": 8}
+          ]
         },
-        "tactile": {
-            "grid": false,
-        }
-    }
+        "mark": {"type": "arc", "innerRadius": 50},
+        "encoding": {
+          "theta": {"field": "value", "type": "quantitative"},
+          "color": {"field": "category", "type": "nominal"}
+        },
+        "tactile": true
+       }
+       
 
 
 // Function to merge default and user-specified tactile settings

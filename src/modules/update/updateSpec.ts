@@ -9,12 +9,13 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
         const brailleFont = spec.tactile.braille.brailleFont;
         const brailleFontSize = spec.tactile.braille.brailleFontSize;
         const strokeWidth = 2;
-        const updatedSpec: any = {
+
+        let updatedSpec: any = {
             ...spec,
             "background": "white", // assert background color to be white, overwriting user input if any
-            "width": {
-                "step": Math.ceil(maxBrailleWidth)
-            }, // set bar width to the max axis label braille text width
+            // "width": {
+            //     "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
+            // }, 
             "autosize": {
                 "type": "pad",
                 "resize": true,
@@ -46,7 +47,7 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
                     "direction": "vertical",
                     "orient": "top", // position of the legend
                     "padding": 60, // distance between bottom of legend and top of chart // probably don't want to hardcode this [TODO] get y position of y axis title, y position of lengend + lengend height, maybe set padding to the difference?? 
-                    "symbolSize": 500,  // size of the legend symbols
+                    "symbolSize": 3000,  // size of the legend symbols
                     "columnPadding": 20, // distance between legend columns
                     "rowPadding": 20, // distance between legend rows
                 },
@@ -77,6 +78,21 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
             "titleY": -20, // Adjust the title position for the y axis
             "titleX": -10, // Adjust the title position for the y axis
         };
+
+
+        // ================== Specific Spec Updates Based on Mark Type ==================
+        // check if mark type is a bar, if yes then extend the spec to include width
+        if (updatedSpec.mark === "bar" || updatedSpec.mark.type === "bar") {
+            updatedSpec = {
+                ...updatedSpec,
+                "width": {
+                    "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
+                }
+            };
+        }
+        // ================== End of Specific Spec Updates Based on Mark Type ==================
+
+
         return updatedSpec;
     } catch (error) {
         console.error(error);
