@@ -43,69 +43,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const defaultSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "A simple donut chart with embedded data.",
-        "data": {
-          "values": [
-            {"category": 1, "value": 4},
-            {"category": 2, "value": 6},
-            {"category": 3, "value": 10},
-            {"category": 4, "value": 3},
-            {"category": 5, "value": 7},
-            {"category": 6, "value": 8}
-          ]
+        "description": "Stock prices of 5 Tech Companies over Time.",
+        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv" },
+        "mark": {
+            "type": "line",
+            "point": true
         },
-        "mark": {"type": "arc", "innerRadius": 50},
         "encoding": {
-          "theta": {"field": "value", "type": "quantitative"},
-          "color": {"field": "category", "type": "nominal"}
+            "x": { "timeUnit": "year", "field": "date" },
+            "y": { "aggregate": "mean", "field": "price", "type": "quantitative" },
+            "color": { "field": "symbol", "type": "nominal" }
         },
         "tactile": true
-       }
-       
-
-
-// Function to merge default and user-specified tactile settings
-function mergeTactileSettings(defaultSettings: any, userSettings: any) {
-    return {
-        ...defaultSettings,
-        ...userSettings,
-        braille: {
-            ...defaultSettings.braille,
-            ...(userSettings.braille || {}),
-        },
-        colorToTexture: {
-            ...defaultSettings.colorToTexture,
-            ...(userSettings.colorToTexture || {}),
-        },
-        grid: userSettings.grid !== undefined ? userSettings.grid : defaultSettings.grid,
-    };
-}
-
-// Function to populate default tactile spec, preserving user-specified attributes
-function populateDefaultTactileSpec(spec: any) {
-    // Define default tactile settings
-    const defaultTactileSpec = {
-        braille: {
-            brailleFont: "Swell Braille",
-            brailleFontSize: 30,
-            brailleTranslationTable: "en-ueb-g2.ctb",
-        },
-        colorToTexture: {
-            enabled: true,
-        },
-        grid: false, // Default no grids
-    };
-
-    if (typeof spec.tactile === 'object') {
-        // Merge user-specified tactile settings with defaults
-        spec.tactile = mergeTactileSettings(defaultTactileSpec, spec.tactile);
-    } else if (spec.tactile === true) {
-        // If tactile is simply set to true, use all default settings
-        spec.tactile = defaultTactileSpec;
     }
 
-    return spec;
-}
+
+    // Function to merge default and user-specified tactile settings
+    function mergeTactileSettings(defaultSettings: any, userSettings: any) {
+        return {
+            ...defaultSettings,
+            ...userSettings,
+            braille: {
+                ...defaultSettings.braille,
+                ...(userSettings.braille || {}),
+            },
+            colorToTexture: {
+                ...defaultSettings.colorToTexture,
+                ...(userSettings.colorToTexture || {}),
+            },
+            grid: userSettings.grid !== undefined ? userSettings.grid : defaultSettings.grid,
+        };
+    }
+
+    // Function to populate default tactile spec, preserving user-specified attributes
+    function populateDefaultTactileSpec(spec: any) {
+        // Define default tactile settings
+        const defaultTactileSpec = {
+            braille: {
+                brailleFont: "Swell Braille",
+                brailleFontSize: 30,
+                brailleTranslationTable: "en-ueb-g2.ctb",
+            },
+            colorToTexture: {
+                enabled: true,
+            },
+            grid: false, // Default no grids
+        };
+
+        if (typeof spec.tactile === 'object') {
+            // Merge user-specified tactile settings with defaults
+            spec.tactile = mergeTactileSettings(defaultTactileSpec, spec.tactile);
+        } else if (spec.tactile === true) {
+            // If tactile is simply set to true, use all default settings
+            spec.tactile = defaultTactileSpec;
+        }
+
+        return spec;
+    }
 
 
 
@@ -122,9 +116,10 @@ function populateDefaultTactileSpec(spec: any) {
         updateSpecForTactile(spec).then((updatedSpec) => {
             console.log("updated Spec: ", updatedSpec)
             vegaEmbed("#tactile", updatedSpec, { renderer: "svg" }).then(result => {
-                if (spec.tactile !== undefined && spec.tactile !== null) {
-                    modifySvg(result, spec); // Call the function to modify the SVG if tactile is true
-                } 
+                // if (spec.tactile !== undefined && spec.tactile !== null) {
+                console.log("Tactile is true");
+                modifySvg(result, updatedSpec); // Call the function to modify the SVG if tactile is true
+                // }
             }).catch(error => console.error(error));
         });
     };

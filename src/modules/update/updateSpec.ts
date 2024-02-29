@@ -13,13 +13,6 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
         let updatedSpec: any = {
             ...spec,
             "background": "white", // assert background color to be white, overwriting user input if any
-            // "width": {
-            //     "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
-            // }, 
-            "autosize": {
-                "type": "pad",
-                "resize": true,
-            },
             "config": {
                 "view": {
                     "stroke": "black", // chart border color
@@ -68,26 +61,42 @@ async function updateSpecForTactile(spec: any): Promise<VisualizationSpec> {
         } else if (updatedSpec.tactile.grid === false || updatedSpec.tactile.grid === undefined) {
             updatedSpec.config.axis.grid = false;
         }
-        // Ensure spec.encoding and spec.encoding.y exist
-        if (!updatedSpec.encoding) updatedSpec.encoding = {};
-        if (!updatedSpec.encoding.y) updatedSpec.encoding.y = {};
 
-        // Update or add the axis property to spec.encoding.y
-        updatedSpec.encoding.y.axis = {
-            ...updatedSpec.encoding.y.axis, // Preserve existing properties
-            "titleY": -20, // Adjust the title position for the y axis
-            "titleX": -10, // Adjust the title position for the y axis
-        };
+
+
+        // console.log("updatedSpec: ", updatedSpec)
+
 
 
         // ================== Specific Spec Updates Based on Mark Type ==================
-        // check if mark type is a bar, if yes then extend the spec to include width
-        if (updatedSpec.mark === "bar" || updatedSpec.mark.type === "bar") {
-            updatedSpec = {
-                ...updatedSpec,
-                "width": {
-                    "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
+        // check if mark type is a bar or line, if yes then extend the spec to include width
+        // and that x is not continuous (i.e. binned)
+        if (updatedSpec.mark === "bar" ||
+            updatedSpec.mark.type === "bar" ||
+            updatedSpec.mark === "line" ||
+            updatedSpec.mark.type === "line") {
+            if (updatedSpec.encoding.x.bin !== true) {
+                updatedSpec = {
+                    ...updatedSpec,
+                    "width": {
+                        "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
+                    }
                 }
+            }
+
+
+            // Ensure spec.encoding and spec.encoding.y exist
+            if (!updatedSpec.encoding) updatedSpec.encoding = {};
+            if (!updatedSpec.encoding.y) updatedSpec.encoding.y = {};
+
+        }
+
+        if (updatedSpec.mark !== "arc" && updatedSpec.mark.type !== "arc") {
+            // Update or add the axis property to spec.encoding.y
+            updatedSpec.encoding.y.axis = {
+                ...updatedSpec.encoding.y.axis, // Preserve existing properties
+                "titleY": -20, // Adjust the title position for the y axis
+                "titleX": -10, // Adjust the title position for the y axis
             };
         }
         // ================== End of Specific Spec Updates Based on Mark Type ==================
