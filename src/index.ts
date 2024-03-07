@@ -3,7 +3,7 @@ import { Config, TopLevelSpec, compile } from 'vega-lite';
 import { modifySvg } from './modules/chartModifier';
 import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
 const d3 = require("d3");
-import { updateSpecForTactile } from "./modules/update/updateSpec";
+import { updateVLSpec } from "./modules/update/updateSpec";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -11,37 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
 
-    // const defaultSpec: any = {
-    //     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    //     "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv" },
-    //     "mark": "bar",
-    //     "encoding": {
-    //         "x": {
-    //             "timeUnit": "month",
-    //             "field": "date",
-    //             "type": "ordinal",
-    //             "title": "Month of the year"
-    //         },
-    //         "y": {
-    //             "aggregate": "count",
-    //             "type": "quantitative"
-    //         },
-    //         "color": {
-    //             "field": "weather",
-    //             "type": "nominal",
-    //             "scale": {
-    //                 "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-    //                 "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
-    //             },
-    //             "title": "Weather type"
-    //         },
-    //     },
-    //     "tactile": {
-    //         "grid": false,
-    //     }
-    // }
-
-    const defaultSpec: any = {
+    const userTVLSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "description": "Stock prices of 5 Tech Companies over Time.",
         "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv" },
@@ -57,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         "tactile": true
     }
 
+
+
+    console.log("userTVLSpec: ", userTVLSpec);
 
     // Function to merge default and user-specified tactile settings
     function mergeTactileSettings(defaultSettings: any, userSettings: any) {
@@ -111,15 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTactileChart(spec: any) {
         // First, populate default tactile spec
-        spec = populateDefaultTactileSpec(spec);
-        // updates the spec for tactile representation
-        updateSpecForTactile(spec).then((updatedSpec) => {
-            console.log("updated Spec: ", updatedSpec)
-            vegaEmbed("#tactile", updatedSpec, { renderer: "svg" }).then(result => {
-                // if (spec.tactile !== undefined && spec.tactile !== null) {
-                console.log("Tactile is true");
-                modifySvg(result, updatedSpec); // Call the function to modify the SVG if tactile is true
-                // }
+        let elaboratedTVLSpec = populateDefaultTactileSpec(spec);
+        console.log("elaboratedTVLSpec: ", elaboratedTVLSpec);
+        // updates vega lite spec to optimize for tactile representation
+        updateVLSpec(elaboratedTVLSpec).then((updatedVLSpec) => {
+            console.log("final updated Spec: ", updatedVLSpec)
+            vegaEmbed("#tactile", updatedVLSpec, { renderer: "svg" }).then(result => {
+                modifySvg(result, updatedVLSpec);
             }).catch(error => console.error(error));
         });
     };
@@ -161,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    renderVegaLiteChart(defaultSpec);
-    renderTactileChart(defaultSpec);
+    renderVegaLiteChart(userTVLSpec);
+    renderTactileChart(userTVLSpec);
 
     // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
