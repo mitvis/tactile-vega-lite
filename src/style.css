@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('./Swell-Braille.ttf') format('tff');
+    /* font-weight: 600; */
+    font-style: normal;
+}

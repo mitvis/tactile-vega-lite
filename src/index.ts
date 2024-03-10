@@ -4,6 +4,8 @@ import { modifySvg } from './modules/chartModifier';
 import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
 const d3 = require("d3");
 import { updateVLSpec } from "./modules/update/updateSpec";
+// import style.css
+import './style.css';
 
 document.addEventListener('DOMContentLoaded', () => {
 
