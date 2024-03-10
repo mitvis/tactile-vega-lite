@@ -41,13 +41,8 @@ function modifyCircle(result: any, spec: any) {
 
 // modify the line mark
 function modifyLine(result: any, spec: any) {
-  console.log("Line mark detected");
-
   // convert text to braille
-  // convertToBraille(result, spec);
-
-  // const textureMarkSelector = '.mark-line.role-mark.marks path';
-  // applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
+  convertToBraille(result, spec);
 }
 
 

@@ -10,28 +10,28 @@ function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[]
     const brailleFontSize = spec.tactile.braille.brailleFontSize;
     const promises: Promise<number>[] = [];
 
-    svgSelectionCriteria.forEach(selector => {
-        d3.select(result.view.container())
-            .selectAll(selector)
-            .each(function (this: SVGTextElement) {
-                const textElement = d3.select(this);
-                const originalText = textElement.text();
-
-                const promise = new Promise<number>((resolve) => {
-                    getBraille(originalText, (brailleText: string) => {
-                        textElement.text(brailleText)
-                            .style("font-family", brailleFont)
-                            .style("font-size", `${brailleFontSize}px`);
-                        const width = textElement.node().getComputedTextLength();
-                        resolve(width); // Resolve the promise with the width of the Braille text
-                        textElement.text(originalText); // Optionally reset the text back to original if needed
-                        // remove the braille font and size
-                        textElement.style("font-family", null)
-                            .style("font-size", null);
-                    });
-                });
-                promises.push(promise);
+    const axisSelection = ".mark-text.role-axis-label";
+    // select all axis element matching axisSelection
+    const axisLabels = d3.select(result.view.container()).selectAll(axisSelection);
+    // get the xAxis, which is the first element in the axisLabels selection
+    const xAxis = axisLabels.node()
+    // loop through all the text elements in the xAxis
+    xAxis.querySelectorAll(svgSelectionCriteria).forEach((textElement: any) => {
+        const originalText = textElement.textContent;
+        const promise = new Promise<number>((resolve) => {
+            getBraille(originalText, (brailleText: string) => {
+                textElement.textContent = brailleText;
+                textElement.style.fontFamily = brailleFont;
+                textElement.style.fontSize = `${brailleFontSize}px`;
+                const width = textElement.getComputedTextLength();
+                resolve(width); // Resolve the promise with the width of the Braille text
+                textElement.textContent = originalText; // Optionally reset the text back to original if needed
+                // remove the braille font and size
+                textElement.style.fontFamily = null;
+                textElement.style.fontSize = null;
             });
+        });
+        promises.push(promise);
     });
 
     return Promise.all(promises).then(widths => {
