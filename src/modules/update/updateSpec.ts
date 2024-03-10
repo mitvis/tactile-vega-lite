@@ -1,17 +1,25 @@
 import { getBrailleWidthForSelectors } from "../braille/getBrailleWidthForSelectors";
-import { TopLevelSpec } from "vega-lite";
 import vegaEmbed, { VisualizationSpec } from "vega-embed";
-import { getNumberOfDates } from "./getNumberOfDates";
+import { getNumberOfTicks } from "./getNumberOfTicks";
+import { getBrailleHeightForSelectors } from "../braille/getBrailleHeightForSelectors";
+import { setVLWidth } from "./setVLWidth";
+import { setVLHeight } from "./setVLHeight";
 
 async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
     try {
         const result = await vegaEmbed("#tactile", spec, { renderer: "svg" });
         const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);
+        const maxBrailleHeight = await getBrailleHeightForSelectors(result, ['.mark-text.role-axis-label text'], spec);
+        const braillePaddingX = maxBrailleWidth * 0.1;
+        const braillePaddingY = maxBrailleHeight * 0.5;
+
         const brailleFont = spec.tactile.braille.brailleFont;
         const brailleFontSize = spec.tactile.braille.brailleFontSize;
-        const strokeWidth = 2;
-        const braillePadding = 50;
 
+        const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
+        const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
+
+        const strokeWidth = 2;
         // ================== General VL Spec Updates ==================
         // make these updates to VL spec regardless of elaboratedTVLSpec
         let updatedVLSpec: any = {
@@ -55,57 +63,21 @@ async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
             }
         };
 
+        // ================== Ensure Single Mark Type ==================
         // if mark is an object, then set mark to be the type of the mark
         if (typeof updatedVLSpec.mark === "object") {
             updatedVLSpec.mark = updatedVLSpec.mark.type;
         }
 
-        console.log("updatedVLSpec: ", updatedVLSpec);
+        // ================== Update Width==================
+        updatedVLSpec = setVLWidth(result, updatedVLSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
+        // ================== Update Height ==================
+        updatedVLSpec = setVLHeight(result, updatedVLSpec, maxBrailleHeight, braillePaddingY, numberOfTicksY);
 
-
-
-        // ================== Encoding type specific VL updates ==================
-        // if :
-        // encoding.x.type is temporal | encoding.x.timeUnit is defined 
-        // first get the number of dates
-        // then set the width of the chart to the number of dates * maxBrailleWidth
-        if (updatedVLSpec.encoding.x.type === "temporal" || updatedVLSpec.encoding.x.timeUnit !== undefined) {
-            const numberOfDates = await getNumberOfDates(result, ['.mark-text.role-axis-label text']);
-            // const numberOfDates = 3
-            const width = numberOfDates * (maxBrailleWidth + braillePadding);
-            console.log("numberOfDates: ", numberOfDates);
-
-            // set x axis tick count to be the number of dates
-            updatedVLSpec.encoding.x.axis = {
-                ...updatedVLSpec.encoding.x.axis, // Preserve existing properties
-                "tickCount": numberOfDates
-            };
-            updatedVLSpec = {
-                ...updatedVLSpec,
-                "width": width
-            }
-        }
 
 
 
         // ================== Mark Type Specific VL Updates ==================
-        // ====== Bar ======
-        // check if mark type is a bar or line, if yes then extend the spec to include width
-        // and that x is not continuous (i.e. binned)
-        if (updatedVLSpec.mark === "bar" ||
-            updatedVLSpec.mark.type === "bar") {
-            if (updatedVLSpec.encoding.x.bin !== true) {
-                updatedVLSpec = {
-                    ...updatedVLSpec,
-                    "width": {
-                        "step": Math.ceil(maxBrailleWidth) // set bar width to the max axis label braille text width
-                    }
-                }
-            }
-            // Ensure spec.encoding and spec.encoding.y exist
-            if (!updatedVLSpec.encoding) updatedVLSpec.encoding = {};
-            if (!updatedVLSpec.encoding.y) updatedVLSpec.encoding.y = {};
-        }
         // ====== Line ======
         // if mark is line and encoding.color is defined, remove encoding.color and change it to encoding.strokeDash
         if (updatedVLSpec.mark === "line" ||
@@ -147,11 +119,6 @@ async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
         } else if (updatedVLSpec.tactile.grid === false || updatedVLSpec.tactile.grid === undefined) {
             updatedVLSpec.config.axis.grid = false;
         }
-
-
-
-
-
 
         return updatedVLSpec;
     } catch (error) {

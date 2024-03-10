@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vega-Lite Tactile Renderer</title><style>.grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .item1 {
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }</style><script defer="defer" src="/bundle.js"></script></head><body><div class="grid-container"><div class="item1"><textarea id="input" placeholder="Enter Vega-Lite Spec Here..." cols="80" rows="70">
+
+        {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "timeUnit": "month",
+                "field": "date",
+                "type": "ordinal",
+                "title": "Month of the year"
+              },
+              "y": {
+                "aggregate": "count",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "weather",
+                "type": "nominal",
+                "scale": {
+                  "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+                  "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+                },
+                "title": "Weather type"
+              }
+            }, 
+            "tactile": true
+          }
+    </textarea> <button id="render">Render</button></div><div class="item2"><div id="tactile"></div><button id="download">Download Tactile SVG</button></div><div class="item3"><div id="visual"></div></div></div></body></html>

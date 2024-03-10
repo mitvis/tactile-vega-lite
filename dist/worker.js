@@ -1,0 +1,1 @@
+importScripts("lib/build-no-tables-utf32.js"),importScripts("lib/build-no-tables-utf16.js"),importScripts("lib/easy-api.js"),self.onmessage=t=>{liblouis.enableOnDemandTableLoading("lib/tables/");const{id:s,text:i,tableName:e}=t.data,l=liblouis.translateString(e,i);self.postMessage({id:s,translatedText:l})};

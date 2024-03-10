@@ -13,23 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const userTVLSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Stock prices of 5 Tech Companies over Time.",
-        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv" },
-        "mark": {
-            "type": "line",
-            "point": true
-        },
+        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/movies.json" },
+        "mark": "bar",
         "encoding": {
-            "x": { "timeUnit": "year", "field": "date" },
-            "y": { "aggregate": "mean", "field": "price", "type": "quantitative" },
-            "color": { "field": "symbol", "type": "nominal" }
+            "x": {
+                "bin": true,
+                "field": "IMDB Rating"
+            },
+            "y": { "aggregate": "count" }
         },
         "tactile": true
     }
 
 
 
-    console.log("userTVLSpec: ", userTVLSpec);
+    // console.log("userTVLSpec: ", userTVLSpec);
 
     // Function to merge default and user-specified tactile settings
     function mergeTactileSettings(defaultSettings: any, userSettings: any) {
