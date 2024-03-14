@@ -7,8 +7,8 @@ import { updateVLSpec } from "./modules/update/updateSpec";
 // import style.css
 import './style.css';
 
-document.addEventListener('DOMContentLoaded', () => {
 
+document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('input') as HTMLInputElement;
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
@@ -26,10 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         "tactile": true
     }
-
-
-
-    // console.log("userTVLSpec: ", userTVLSpec);
 
     // Function to merge default and user-specified tactile settings
     function mergeTactileSettings(defaultSettings: any, userSettings: any) {
@@ -118,6 +114,22 @@ document.addEventListener('DOMContentLoaded', () => {
         link.click();
         document.body.removeChild(link);
     }
+
+
+    input.addEventListener('input', () => {
+        const value = input.value.trim();
+
+        try {
+            // Attempt to parse the JSON input
+            const parsed = JSON.parse(value);
+            // Reformat and set back into the textarea with indentation
+            input.value = JSON.stringify(parsed, null, 2);
+        } catch (error) {
+            // If there's a parsing error, do not attempt to format
+            // You might want to show an error message or handle the error differently
+            console.error("Invalid JSON input");
+        }
+    });
 
     submitButton.addEventListener('click', () => {
         try {
