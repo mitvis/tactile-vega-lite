@@ -10,7 +10,9 @@ const textures = texturesModule.default; // Access the actual default export
 
 // Function to generate textures for each unique color
 function generateTexturesForColors(uniqueColors: string[]): Record<string, string> {
-    const svg = d3.select('svg');
+    // select svg element under the div with id "tactile"
+    const svg = d3.select("#tactile svg");
+    
     const colorToTextureUrl: Record<string, string> = {};
 
     if (uniqueColors.length === 1) {

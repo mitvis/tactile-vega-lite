@@ -1,10 +1,8 @@
 import vegaEmbed from "vega-embed";
 import { Config, TopLevelSpec, compile } from 'vega-lite';
 import { modifySvg } from './modules/chartModifier';
-import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
 const d3 = require("d3");
 import { updateVLSpec } from "./modules/update/updateSpec";
-// import style.css
 import './style.css';
 
 
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Define default tactile settings
         const defaultTactileSpec = {
             braille: {
-                brailleFont: "Braille29",
+                brailleFont: "Swell Braille",
                 brailleFontSize: 30,
                 brailleTranslationTable: "en-ueb-g2.ctb",
             },
