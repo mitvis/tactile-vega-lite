@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('input') as HTMLInputElement;
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
+    const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
 
     const userTVLSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Define default tactile settings
         const defaultTactileSpec = {
             braille: {
-                brailleFont: "Swell Braille",
+                brailleFont: "Braille29",
                 brailleFontSize: 30,
                 brailleTranslationTable: "en-ueb-g2.ctb",
             },
@@ -115,6 +116,30 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     }
 
+    function downloadPNG() {
+        console.log("fixing png download issue");
+        // const svgElement = document.querySelector('#tactile svg');
+        // if (!svgElement) {
+        //     console.error('SVG not found');
+        //     return;
+        // }
+
+        // // Serialize the SVG to a string
+        // const serializer = new XMLSerializer();
+        // const svgString = serializer.serializeToString(svgElement);
+
+        // // Create a Blob object
+        // const blob = new Blob([svgString], { type: 'image/svg+xml' });
+
+        // // Create a download link and trigger the download
+        // const link = document.createElement('a');
+        // link.href = URL.createObjectURL(blob);
+        // link.download = 'tactile-visualization.png'; // Name of the file to download
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+    }
+
 
     input.addEventListener('input', () => {
         const value = input.value.trim();
@@ -149,5 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
+    downloadButtonPNG.addEventListener('click', downloadPNG);
 
 });

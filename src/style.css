@@ -1,6 +1,20 @@
 @font-face {
     font-family: 'Swell Braille';
-    src: url('./Swell-Braille.ttf') format('tff');
-    /* font-weight: 600; */
+    src: url('./assets/fonts/Swell_Braille.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Braille29';
+    src: url('./assets/fonts/Braille29.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'California Braille';
+    src: url('./assets/fonts/California_Braille_BJ_24pt.ttf') format('ttf');
+    font-weight: normal;
     font-style: normal;
 }

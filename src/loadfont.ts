@@ -1,11 +1,10 @@
 export async function loadCustomFont() {
     const font = new FontFace(
         "Swell Braille",
-        "url(src/Swell-Braille.ttf)",
+        "url(src/assets/fonts/Swell_Braille.ttf)",
         {
             style: "normal",
-            weight: "400",
-            stretch: "condensed",
+            weight: "400"
         }
     );
 
