@@ -6,7 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development', // or 'production'
   entry: './src/index.ts', // the main entry point of your application
-  
+
   module: {
     rules: [
       {
@@ -14,11 +14,20 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      // [FONT]
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'], // resolve these extensions
-    fallback: { 
+    fallback: {
       "path": require.resolve("path-browserify"),
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
@@ -46,14 +55,14 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-          { from: 'src/worker.js', to: 'worker.js' }, // Copy worker.js to dist directory
-          { from: 'node_modules/liblouis-build/build-no-tables-utf32.js', to: 'lib/' },
-          { from: 'node_modules/liblouis-build/build-no-tables-utf16.js', to: 'lib/' },
-          { from: 'node_modules/liblouis/easy-api.js', to: 'lib/' },
-          // Optionally, copy the tables directory if needed
-          { from: 'node_modules/liblouis-build/tables/', to: 'lib/tables/' },
+        { from: 'src/worker.js', to: 'worker.js' }, // Copy worker.js to dist directory
+        { from: 'node_modules/liblouis-build/build-no-tables-utf32.js', to: 'lib/' },
+        { from: 'node_modules/liblouis-build/build-no-tables-utf16.js', to: 'lib/' },
+        { from: 'node_modules/liblouis/easy-api.js', to: 'lib/' },
+        // Optionally, copy the tables directory if needed
+        { from: 'node_modules/liblouis-build/tables/', to: 'lib/tables/' },
       ],
-  }),
+    }),
   ],
   externals: {
     // Exclude liblouis from bundling
@@ -61,5 +70,5 @@ module.exports = {
     // 'liblouis/easy-api': 'commonjs liblouis/easy-api',
     // 'liblouis/capi.js': 'commonjs liblouis/capi.js',
   },
-  
+
 };

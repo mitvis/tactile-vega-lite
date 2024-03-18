@@ -4,12 +4,15 @@ import { modifySvg } from './modules/chartModifier';
 import { getBrailleWidthForSelectors } from "./modules/braille/getBrailleWidthForSelectors";
 const d3 = require("d3");
 import { updateVLSpec } from "./modules/update/updateSpec";
+// import style.css
+import './style.css';
+
 
 document.addEventListener('DOMContentLoaded', () => {
-
     const input = document.getElementById('input') as HTMLInputElement;
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
+    const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
 
     const userTVLSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -24,10 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         "tactile": true
     }
-
-
-
-    // console.log("userTVLSpec: ", userTVLSpec);
 
     // Function to merge default and user-specified tactile settings
     function mergeTactileSettings(defaultSettings: any, userSettings: any) {
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Define default tactile settings
         const defaultTactileSpec = {
             braille: {
-                brailleFont: "Swell Braille",
+                brailleFont: "Braille29",
                 brailleFontSize: 30,
                 brailleTranslationTable: "en-ueb-g2.ctb",
             },
@@ -117,6 +116,46 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     }
 
+    function downloadPNG() {
+        console.log("fixing png download issue");
+        // const svgElement = document.querySelector('#tactile svg');
+        // if (!svgElement) {
+        //     console.error('SVG not found');
+        //     return;
+        // }
+
+        // // Serialize the SVG to a string
+        // const serializer = new XMLSerializer();
+        // const svgString = serializer.serializeToString(svgElement);
+
+        // // Create a Blob object
+        // const blob = new Blob([svgString], { type: 'image/svg+xml' });
+
+        // // Create a download link and trigger the download
+        // const link = document.createElement('a');
+        // link.href = URL.createObjectURL(blob);
+        // link.download = 'tactile-visualization.png'; // Name of the file to download
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+    }
+
+
+    input.addEventListener('input', () => {
+        const value = input.value.trim();
+
+        try {
+            // Attempt to parse the JSON input
+            const parsed = JSON.parse(value);
+            // Reformat and set back into the textarea with indentation
+            input.value = JSON.stringify(parsed, null, 2);
+        } catch (error) {
+            // If there's a parsing error, do not attempt to format
+            // You might want to show an error message or handle the error differently
+            console.error("Invalid JSON input");
+        }
+    });
+
     submitButton.addEventListener('click', () => {
         try {
             const spec = JSON.parse(input!.value);
@@ -135,5 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
+    downloadButtonPNG.addEventListener('click', downloadPNG);
 
 });
