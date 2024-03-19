@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = JSON.stringify(parsed, null, 2);
         } catch (error) {
             // If there's a parsing error, do not attempt to format
-            // You might want to show an error message or handle the error differently
             console.error("Invalid JSON input");
         }
     });

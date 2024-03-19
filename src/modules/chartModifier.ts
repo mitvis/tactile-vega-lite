@@ -1,6 +1,7 @@
 
 import { convertToBraille } from "./braille/brailleConversion";
 import { applyTexturesToVegaLiteChart } from "./texture/changeTexture";
+import { staggerXAxisLabels } from "./stagger";
 
 // modify the arc mark
 function modifyArc(result: any, spec: any) {
@@ -23,7 +24,7 @@ function modifyBar(result: any, spec: any) {
 
   const textureMarkSelector = '.mark-rect.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
-
+  staggerXAxisLabels(result, spec);
 }
 
 
