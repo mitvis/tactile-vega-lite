@@ -13,8 +13,8 @@ async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
         const braillePaddingX = maxBrailleWidth * 0.1;
         const braillePaddingY = maxBrailleHeight * 0.5;
 
-        const brailleFont = spec.tactile.braille.brailleFont;
-        const brailleFontSize = spec.tactile.braille.brailleFontSize;
+        const brailleFont = spec.config.text.brailleFont;
+        const brailleFontSize = spec.config.text.brailleFontSize;
 
         const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
         const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
@@ -72,7 +72,7 @@ async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
         // ================== Update Width==================
         updatedVLSpec = setVLWidth(result, updatedVLSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
         // ================== Update Height ==================
-        updatedVLSpec = setVLHeight(result, updatedVLSpec, maxBrailleHeight, braillePaddingY, numberOfTicksY);
+        updatedVLSpec = setVLHeight(result, updatedVLSpec, maxBrailleHeight, braillePaddingY);
 
 
 

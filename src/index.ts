@@ -2,8 +2,11 @@ import vegaEmbed from "vega-embed";
 import { Config, TopLevelSpec, compile } from 'vega-lite';
 import { modifySvg } from './modules/chartModifier';
 const d3 = require("d3");
-import { updateVLSpec } from "./modules/update/updateSpec";
+// import { updateVLSpec } from "./modules/update/updateSpec";
 import './style.css';
+import { defaultTVLSpecBar } from "./modules/specs/defaultTVLSpecBar";
+import { elaborateTVLSpec } from "./modules/update/elaborateSpec";
+import { mergeSpec } from "./modules/update/mergeSpec";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,83 +15,70 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
     const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
 
-    const userTVLSpec: any = {
+    const userTVLSpec: any =
+    {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/movies.json" },
+        "data": {
+            "values": [
+                { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
+                { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
+                { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
+            ]
+        },
+        "mode": "tactile",
+        "title": "Simple Bar Chart",
+        "description": "description of simple bar",
         "mark": "bar",
         "encoding": {
             "x": {
-                "bin": true,
-                "field": "IMDB Rating"
+                "field": "a",
+                "type": "nominal",
+                "axis": {
+                    "labelAngle": 0,
+                    "grid": true,
+                    "ticks": false
+                }
             },
-            "y": { "aggregate": "count" }
+            "y": {
+                "field": "b",
+                "type": "quantitative",
+                "axis": {
+                    "grid": true,
+                    "gridWidth": 1
+                }
+            }
         },
-        "tactile": true
-    }
-
-    // Function to merge default and user-specified tactile settings
-    function mergeTactileSettings(defaultSettings: any, userSettings: any) {
-        return {
-            ...defaultSettings,
-            ...userSettings,
-            braille: {
-                ...defaultSettings.braille,
-                ...(userSettings.braille || {}),
-            },
-            colorToTexture: {
-                ...defaultSettings.colorToTexture,
-                ...(userSettings.colorToTexture || {}),
-            },
-            grid: userSettings.grid !== undefined ? userSettings.grid : defaultSettings.grid,
-        };
-    }
-
-    // Function to populate default tactile spec, preserving user-specified attributes
-    function populateDefaultTactileSpec(spec: any) {
-        // Define default tactile settings
-        const defaultTactileSpec = {
-            braille: {
-                brailleFont: "Swell Braille",
-                brailleFontSize: 30,
-                brailleTranslationTable: "en-ueb-g2.ctb",
-            },
-            colorToTexture: {
-                enabled: true,
-            },
-            grid: false, // Default no grids
-        };
-
-        if (typeof spec.tactile === 'object') {
-            // Merge user-specified tactile settings with defaults
-            spec.tactile = mergeTactileSettings(defaultTactileSpec, spec.tactile);
-        } else if (spec.tactile === true) {
-            // If tactile is simply set to true, use all default settings
-            spec.tactile = defaultTactileSpec;
+        "config": {
+            "text": {
+                "brailleFont": "California Braille",
+                "brailleTranslationTable": "en-ueb-g2.ctb"
+            }
         }
-
-        return spec;
     }
-
-
 
     // function to render vega-lite spec
     function renderVegaLiteChart(spec: TopLevelSpec) {
+        // [TODO] will have to remove some tactile part from the spec before rendering
         vegaEmbed("#visual", spec, { renderer: "svg" }).then(result => {
         }).catch(error => console.error(error));
     }
 
     function renderTactileChart(spec: any) {
-        // First, populate default tactile spec
-        let elaboratedTVLSpec = populateDefaultTactileSpec(spec);
-        console.log("elaboratedTVLSpec: ", elaboratedTVLSpec);
-        // updates vega lite spec to optimize for tactile representation
-        updateVLSpec(elaboratedTVLSpec).then((updatedVLSpec) => {
-            console.log("final updated Spec: ", updatedVLSpec)
-            vegaEmbed("#tactile", updatedVLSpec, { renderer: "svg" }).then(result => {
-                modifySvg(result, updatedVLSpec);
+        let mergedSpec = spec;
+        // if spec.mode is tactile, then populate default tactile spec
+        if (spec.mode === "tactile") {
+            mergedSpec = mergeSpec(spec, defaultTVLSpecBar);
+        };
+        elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
+            console.log("final updated Spec: ", elaboratedTVLSpec)
+            vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
+                modifySvg(result, elaboratedTVLSpec);
             }).catch(error => console.error(error));
         });
     };
+
+    renderVegaLiteChart(userTVLSpec);
+    renderTactileChart(userTVLSpec);
 
     function downloadSVG() {
 
@@ -140,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     input.addEventListener('input', () => {
+        // format user input to be more readable json format
         const value = input.value.trim();
-
         try {
             // Attempt to parse the JSON input
             const parsed = JSON.parse(value);
@@ -154,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     submitButton.addEventListener('click', () => {
+        // render button click event
         try {
             const spec = JSON.parse(input!.value);
             renderTactileChart(spec);
@@ -165,9 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Invalid JSON', error);
         }
     });
-
-    renderVegaLiteChart(userTVLSpec);
-    renderTactileChart(userTVLSpec);
 
     // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);

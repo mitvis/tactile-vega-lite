@@ -6,8 +6,8 @@ let maxTextHeight;
 
 function getBrailleHeightForSelectors(result: any, svgSelectionCriteria: string[], spec: any): Promise<number> {
 
-    const brailleFont = spec.tactile.braille.brailleFont;
-    const brailleFontSize = spec.tactile.braille.brailleFontSize;
+    const brailleFont = spec.config.title.font.brailleFont;
+    const brailleFontSize = spec.config.title.font.brailleFontSize;
     const promises: Promise<number>[] = [];
 
     const axisSelection = ".mark-text.role-axis-label";

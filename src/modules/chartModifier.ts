@@ -24,7 +24,7 @@ function modifyBar(result: any, spec: any) {
 
   const textureMarkSelector = '.mark-rect.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
-  staggerXAxisLabels(result, spec);
+  // staggerXAxisLabels(result, spec);
 }
 
 

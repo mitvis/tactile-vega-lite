@@ -3,7 +3,6 @@ const d3 = require("d3");
 
 function setVLHeight(result: any,
     updatedVLSpec: any,
-    maxBrailleHeight: number,
     braillePaddingY: number,
     numberOfTicksY: number,
 ) {

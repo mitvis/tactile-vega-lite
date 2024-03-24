@@ -101,32 +101,43 @@
       <div>
         <textarea id="input" placeholder="Enter Vega-Lite Spec Here..." rows=40>
           {
-              "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-              "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
-              "mark": "bar",
-              "encoding": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+                "values": [
+                    { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
+                    { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
+                    { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
+                ]
+            },
+            "mode": "tactile",
+            "title": "Simple Bar Chart",
+            "description": "description of simple bar",
+            "mark": "bar",
+            "encoding": {
                 "x": {
-                  "timeUnit": "month",
-                  "field": "date",
-                  "type": "ordinal",
-                  "title": "Month of the year"
+                    "field": "a",
+                    "type": "nominal",
+                    "axis": {
+                        "labelAngle": 0,
+                        "grid": false,
+                        "ticks": false
+                    }
                 },
                 "y": {
-                  "aggregate": "count",
-                  "type": "quantitative"
-                },
-                "color": {
-                  "field": "weather",
-                  "type": "nominal",
-                  "scale": {
-                    "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-                    "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
-                  },
-                  "title": "Weather type"
+                    "field": "b",
+                    "type": "quantitative",
+                    "axis": {
+                        "grid": true
+                    }
                 }
-              }, 
-              "tactile": true
+            },
+            "config": {
+                "text": {
+                    "brailleFont": "Swell Braille",
+                    "brailleTranslationTable": "en-ueb-g2.ctb"
+                }
             }
+        }
         </textarea>
         <button id="render">Render</button>
       </div>

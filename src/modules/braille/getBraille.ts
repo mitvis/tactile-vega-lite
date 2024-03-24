@@ -3,13 +3,12 @@ const d3 = require('d3');
 let messageId = 0;
 const callbacks = new Map<number, (brailleText: string) => void>();
 
-function getBraille(text: string, callback:(brailleText: string) => void) {
-  // console.log("getBraille: ", text);
+function getBraille(text: string, callback: (brailleText: string) => void) {
   const id = messageId++;
   callbacks.set(id, callback);
   worker.postMessage({
-    id, 
-    text: text, 
+    id,
+    text: text,
     tableName: "en-ueb-g2.ctb"
   });
 
