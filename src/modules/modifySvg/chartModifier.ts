@@ -1,11 +1,27 @@
 
-import { convertToBraille } from "./braille/brailleConversion";
-import { applyTexturesToVegaLiteChart } from "./texture/changeTexture";
+import { convertToBraille } from "../braille/brailleConversion";
+import { applyTexturesToVegaLiteChart } from "../texture/changeTexture";
 import { staggerXAxisLabels } from "./stagger";
+
+// modify the bar mark
+function modifyBar(result: any, spec: any) {
+  // convert text to braille
+  convertToBraille(result, spec);
+  const textureMarkSelector = '.mark-rect.role-mark.marks path';
+  applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
+  staggerXAxisLabels(result, spec);
+}
+
+// modify the line mark
+function modifyLine(result: any, spec: any) {
+  // convert text to braille
+  convertToBraille(result, spec);
+  staggerXAxisLabels(result, spec);
+}
+
 
 // modify the arc mark
 function modifyArc(result: any, spec: any) {
-  console.log("Arc mark detected");
 
   // convert text to braille
   convertToBraille(result, spec);
@@ -15,22 +31,11 @@ function modifyArc(result: any, spec: any) {
 }
 
 
-// modify the bar mark
-function modifyBar(result: any, spec: any) {
-  console.log("Bar mark detected");
 
-  // convert text to braille
-  convertToBraille(result, spec);
-
-  const textureMarkSelector = '.mark-rect.role-mark.marks path';
-  applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
-  // staggerXAxisLabels(result, spec);
-}
 
 
 // modify the circle mark 
 function modifyCircle(result: any, spec: any) {
-  console.log("Circle mark detected");
 
   // convert text to braille
   convertToBraille(result, spec);
@@ -40,11 +45,6 @@ function modifyCircle(result: any, spec: any) {
 
 }
 
-// modify the line mark
-function modifyLine(result: any, spec: any) {
-  // convert text to braille
-  convertToBraille(result, spec);
-}
 
 
 function modifySvg(result: any, spec: any) {

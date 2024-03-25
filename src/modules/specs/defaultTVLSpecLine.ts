@@ -21,8 +21,8 @@ const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
-export const defaultTVLSpecBar = {
-    "mark": "bar",
+export const defaultTVLSpecLine = {
+    "mark": "line",
     "encoding": {
         "x": {
             "axis": {

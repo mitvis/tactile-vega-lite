@@ -1,5 +1,6 @@
-function setVLWidth(result: any,
-    updatedVLSpec: any,
+
+function setVLWidth(
+    mergedSpec: any,
     maxBrailleWidth: number,
     braillePadding: number,
     numberOfTicksX: number,
@@ -9,11 +10,11 @@ function setVLWidth(result: any,
     // ================== Update Width==================
     // if user specified number of ticks for x axis
     // then use user specified number of ticks to calculate width
-    if (updatedVLSpec.encoding.x.axis && updatedVLSpec.encoding.x.axis.tickCount) {
-        const numberOfTicksX = updatedVLSpec.encoding.x.axis.tickCount;
+    if (mergedSpec.encoding.x.axis && mergedSpec.encoding.x.axis.tickCount) {
+        const numberOfTicksX = mergedSpec.encoding.x.axis.tickCount;
         const width = numberOfTicksX * (maxBrailleWidth + braillePadding) + chartInnerPadding;
-        updatedVLSpec = {
-            ...updatedVLSpec,
+        mergedSpec = {
+            ...mergedSpec,
             "width": width
         }
     }
@@ -22,18 +23,18 @@ function setVLWidth(result: any,
     // first get the number of x axis ticks
     // then set the width of the chart to the number of ticks * maxBrailleWidth
 
-    else if (updatedVLSpec.encoding.x.type === "temporal"
-        || updatedVLSpec.encoding.x.timeUnit !== undefined
-        || updatedVLSpec.encoding.x.bin === true) {
+    else if (mergedSpec.encoding.x.type === "temporal"
+        || mergedSpec.encoding.x.timeUnit !== undefined
+        || mergedSpec.encoding.x.bin === true) {
 
         const width = numberOfTicksX * (maxBrailleWidth + braillePadding) + chartInnerPadding;
         // set x axis tick count to be the number of ticks
-        updatedVLSpec.encoding.x.axis = {
-            ...updatedVLSpec.encoding.x.axis, // Preserve existing properties
+        mergedSpec.encoding.x.axis = {
+            ...mergedSpec.encoding.x.axis, // Preserve existing properties
             "tickCount": numberOfTicksX
         };
-        updatedVLSpec = {
-            ...updatedVLSpec,
+        mergedSpec = {
+            ...mergedSpec,
             "width": width
         }
     }
@@ -41,14 +42,12 @@ function setVLWidth(result: any,
     // ====== Bar ======
     // check if mark type is a bar or line, if yes then extend the spec to include width
     // and that x is not continuous (i.e. binned)
-    const padding = maxBrailleWidth * updatedVLSpec.config.scale.barBandPaddingInner
-    console.log("padding: ", padding)
-
-    if (updatedVLSpec.mark === "bar" ||
-        updatedVLSpec.mark.type === "bar") {
-        if (updatedVLSpec.encoding.x.bin !== true) {
-            updatedVLSpec = {
-                ...updatedVLSpec,
+    const padding = maxBrailleWidth * mergedSpec.config.scale.barBandPaddingInner
+    if (mergedSpec.mark === "bar" ||
+        mergedSpec.mark.type === "bar") {
+        if (mergedSpec.encoding.x.bin !== true) {
+            mergedSpec = {
+                ...mergedSpec,
                 "width": {
                     "step": Math.ceil(maxBrailleWidth + padding) // set bar width to the max axis label braille text width
                 }
@@ -57,7 +56,7 @@ function setVLWidth(result: any,
     }
 
 
-    return updatedVLSpec;
+    return mergedSpec;
 }
 
 export { setVLWidth };

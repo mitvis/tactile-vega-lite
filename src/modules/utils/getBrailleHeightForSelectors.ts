@@ -1,5 +1,5 @@
 const d3 = require("d3");
-import { getBraille } from "./getBraille";
+import { getBraille } from "../braille/getBraille";
 
 let maxTextHeight;
 

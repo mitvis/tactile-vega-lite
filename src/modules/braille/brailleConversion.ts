@@ -11,8 +11,6 @@ function convertToBraille(result: any, spec: any) {
   selectText(result, '.mark-text.role-legend-label text', spec)
   selectText(result, '.mark-text.role-legend-title text', spec);
   selectText(result, '.mark-text.role-title-text text', spec);
-  renderDescription(result, spec);
-
 }
 
 export { convertToBraille };

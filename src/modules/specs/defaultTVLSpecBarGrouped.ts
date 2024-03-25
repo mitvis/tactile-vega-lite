@@ -15,13 +15,13 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-
+const defaultGridWidth = 1; // default grid width
 
 const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
-export const defaultTVLSpecBar = {
+export const defaultTVLSpecBarGrouped = {
     "mark": "bar",
     "encoding": {
         "x": {

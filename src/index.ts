@@ -1,12 +1,14 @@
 import vegaEmbed from "vega-embed";
 import { Config, TopLevelSpec, compile } from 'vega-lite';
-import { modifySvg } from './modules/chartModifier';
+import { modifySvg } from './modules/modifySvg/chartModifier';
 const d3 = require("d3");
 // import { updateVLSpec } from "./modules/update/updateSpec";
 import './style.css';
 import { defaultTVLSpecBar } from "./modules/specs/defaultTVLSpecBar";
 import { elaborateTVLSpec } from "./modules/update/elaborateSpec";
-import { mergeSpec } from "./modules/update/mergeSpec";
+import { mergeSpec } from "./modules/modifySpec/mergeSpec";
+import { selectDefaultSpec } from "./modules/modifySpec/selectDefault";
+import { updateDefault } from "./modules/modifySpec/updateDefault";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,57 +20,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "data": {
-            "values": [
-                { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
-                { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
-                { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
-            ]
-        },
+        "title": "Google Stock Price Over Time",
+        "description": "Google's stock price over time.",
+        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv" },
+        "transform": [{ "filter": "datum.symbol==='GOOG'" }],
         "mode": "tactile",
-        "title": "Simple Bar Chart",
-        "description": "description of simple bar",
-        "mark": "bar",
+        "mark": {
+            "type": "line",
+            "point": true
+        },
         "encoding": {
             "x": {
-                "field": "a",
-                "type": "nominal",
+                "field": "date",
+                "type": "temporal",
                 "axis": {
-                    "labelAngle": 0,
-                    "grid": true,
-                    "ticks": false
+                    "ticks": true
                 }
             },
             "y": {
-                "field": "b",
-                "type": "quantitative",
-                "axis": {
-                    "grid": true,
-                    "gridWidth": 1
-                }
-            }
-        },
-        "config": {
-            "text": {
-                "brailleFont": "California Braille",
-                "brailleTranslationTable": "en-ueb-g2.ctb"
+                "field": "price",
+                "type": "quantitative"
             }
         }
     }
 
+
     // function to render vega-lite spec
     function renderVegaLiteChart(spec: TopLevelSpec) {
-        // [TODO] will have to remove some tactile part from the spec before rendering
         vegaEmbed("#visual", spec, { renderer: "svg" }).then(result => {
         }).catch(error => console.error(error));
     }
 
     function renderTactileChart(spec: any) {
         let mergedSpec = spec;
-        // if spec.mode is tactile, then populate default tactile spec
         if (spec.mode === "tactile") {
-            mergedSpec = mergeSpec(spec, defaultTVLSpecBar);
+            let defaultSpec = selectDefaultSpec(spec);
+            let updatedDefaultSpec = updateDefault(spec, defaultSpec);
+            mergedSpec = mergeSpec(spec, updatedDefaultSpec);
         };
+
         elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
             console.log("final updated Spec: ", elaboratedTVLSpec)
             vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
@@ -106,26 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function downloadPNG() {
         console.log("fixing png download issue");
-        // const svgElement = document.querySelector('#tactile svg');
-        // if (!svgElement) {
-        //     console.error('SVG not found');
-        //     return;
-        // }
-
-        // // Serialize the SVG to a string
-        // const serializer = new XMLSerializer();
-        // const svgString = serializer.serializeToString(svgElement);
-
-        // // Create a Blob object
-        // const blob = new Blob([svgString], { type: 'image/svg+xml' });
-
-        // // Create a download link and trigger the download
-        // const link = document.createElement('a');
-        // link.href = URL.createObjectURL(blob);
-        // link.download = 'tactile-visualization.png'; // Name of the file to download
-        // document.body.appendChild(link);
-        // link.click();
-        // document.body.removeChild(link);
     }
 
 

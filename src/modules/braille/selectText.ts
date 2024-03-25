@@ -11,7 +11,6 @@ function selectText(result: any, svgSelectionCriteria: string, spec: any) {
       getBraille(d.text, (brailleText: string) => {
         const textElement = d3.select(this);
         textElement.text(brailleText);
-        console.log("brailleText: ", brailleText);
       });
     });
 
