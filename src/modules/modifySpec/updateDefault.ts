@@ -55,7 +55,8 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
                 "titlePadding": 10,
                 "labelAngle": 0,
                 "labelPadding": 10,
-                "staggerXLabels": false,
+                "staggerLabels": "auto",
+                "ticks": true,
             };
             defaultSpec.encoding.y.axis = {
                 "grid": false,
@@ -70,11 +71,11 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
         if (quantAxis === "y") {
             defaultSpec.encoding.x.axis = {
                 "grid": false,
-                "ticks": false,
+                "ticks": true,
                 "titlePadding": 10,
                 "labelAngle": 0,
                 "labelPadding": 10,
-                "staggerXLabels": false,
+                "staggerLabels": "auto",
             };
             // append the following axis properties to the defaultSpec
             defaultSpec.encoding.y.axis = {
@@ -122,7 +123,6 @@ function updateDefault(userSpec: any, defaultSpec: any) {
     if (defaultSpec.mark === "bar") {
         defaultSpec = updateGroupedBarAxis(quantAxis, defaultSpec);
     }
-    console.log("updated defaultSpec: ", defaultSpec)
     return defaultSpec;
 
 }

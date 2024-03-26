@@ -13,6 +13,19 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
         // ================== Update Width==================
         mergedSpec = setVLWidth(mergedSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
 
+        if (mergedSpec.encoding.color) {
+            
+            // add encoding.strokeDash and set field to symbol, type to nominal [TODO] this type: nominal could be a problem
+            mergedSpec.encoding.strokeDash = {
+                "field": mergedSpec.encoding.color.field,
+                "type": mergedSpec.encoding.color.type
+            }
+            // remove encoding.color 
+            delete mergedSpec.encoding.color;
+        }
+
+        console.log("merged spec ", mergedSpec)
+
         return mergedSpec;
     } catch (error) {
         console.error(error);

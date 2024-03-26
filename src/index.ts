@@ -20,29 +20,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Google Stock Price Over Time",
-        "description": "Google's stock price over time.",
-        "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv" },
-        "transform": [{ "filter": "datum.symbol==='GOOG'" }],
+        "title": "Total Distance Traveled by Cane Toads in One Week",
+        "data": {
+          "values": [
+            {"Night": 1, "Distance": 200, "Surface": "paved road"},
+            {"Night": 2, "Distance": 400, "Surface": "paved road"},
+            {"Night": 3, "Distance": 650, "Surface": "paved road"},
+            {"Night": 4, "Distance": 850, "Surface": "paved road"},
+            {"Night": 5, "Distance": 1100, "Surface": "paved road"},
+            {"Night": 6, "Distance": 1300, "Surface": "paved road"},
+            {"Night": 7, "Distance": 1500, "Surface": "paved road"},
+            {"Night": 1, "Distance": 100, "Surface": "grass and shrubbery"},
+            {"Night": 2, "Distance": 250, "Surface": "grass and shrubbery"},
+            {"Night": 3, "Distance": 450, "Surface": "grass and shrubbery"},
+            {"Night": 4, "Distance": 600, "Surface": "grass and shrubbery"},
+            {"Night": 5, "Distance": 800, "Surface": "grass and shrubbery"},
+            {"Night": 6, "Distance": 950, "Surface": "grass and shrubbery"},
+            {"Night": 7, "Distance": 1100, "Surface": "grass and shrubbery"}
+          ]
+        },
         "mode": "tactile",
         "mark": {
-            "type": "line",
-            "point": true
+          "type": "line",
+          "point":true
         },
         "encoding": {
-            "x": {
-                "field": "date",
-                "type": "temporal",
-                "axis": {
-                    "ticks": true
-                }
+          "x": {"field": "Night", "type": "ordinal", "title": "Night"},
+          "y": {"field": "Distance", "type": "quantitative", "title": "Total Distance Traveled (meters)"},
+          "color": {
+            "field": "Surface",
+            "type": "nominal",
+            "scale": {
+              "domain": ["paved road", "grass and shrubbery"],
+              "range": ["#CC001D", "#0068B7"]
             },
-            "y": {
-                "field": "price",
-                "type": "quantitative"
-            }
+            "legend": {"title": "Surface"}
+          }
+        },
+        "config": {
+          "axis":{
+            "grid": true
+          }
         }
-    }
+      }
+      
+
+
 
 
     // function to render vega-lite spec

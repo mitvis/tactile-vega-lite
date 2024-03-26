@@ -1,7 +1,7 @@
 
 import { convertToBraille } from "../braille/brailleConversion";
 import { applyTexturesToVegaLiteChart } from "../texture/changeTexture";
-import { staggerXAxisLabels } from "./stagger";
+import { staggerXAxisLabels } from "./staggerXAxisLabels";
 
 // modify the bar mark
 function modifyBar(result: any, spec: any) {

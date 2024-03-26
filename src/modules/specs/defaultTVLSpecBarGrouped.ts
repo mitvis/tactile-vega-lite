@@ -29,6 +29,7 @@ export const defaultTVLSpecBarGrouped = {
                 "titlePadding": defaultXAxisTitlePadding,
                 "labelAngle": 0,
                 "labelPadding": defaultLabelPadding,
+                "staggerLabels": "auto"
             }
         },
         "y": {
