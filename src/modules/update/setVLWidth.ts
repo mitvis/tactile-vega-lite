@@ -43,8 +43,26 @@ function setVLWidth(
     // check if mark type is a bar or line, if yes then extend the spec to include width
     // and that x is not continuous (i.e. binned)
     const padding = maxBrailleWidth * mergedSpec.config.scale.barBandPaddingInner
+    const maxBarWidth = 150;
+
+    let stepWidth = Math.ceil(maxBrailleWidth + padding);
+    if (stepWidth > maxBarWidth) {
+        stepWidth = maxBarWidth;
+    }
     if (mergedSpec.mark === "bar" ||
         mergedSpec.mark.type === "bar") {
+        if (mergedSpec.encoding.x.bin !== true) {
+            mergedSpec = {
+                ...mergedSpec,
+                "width": {
+                    "step": stepWidth // set bar width to the max axis label braille text width
+                }
+            }
+        }
+    }
+
+    if (mergedSpec.mark === "line" ||
+        mergedSpec.mark.type === "line") {
         if (mergedSpec.encoding.x.bin !== true) {
             mergedSpec = {
                 ...mergedSpec,

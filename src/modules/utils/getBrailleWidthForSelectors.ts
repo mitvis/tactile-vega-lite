@@ -1,6 +1,6 @@
 const d3 = require("d3");
 
-import { getBraille } from "../braille/getBraille";
+import { translateBraille } from "../braille/translateBraille";
 
 let maxTextWidth;
 
@@ -18,7 +18,7 @@ function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[]
     xAxis.querySelectorAll(svgSelectionCriteria).forEach((textElement: any) => {
         const originalText = textElement.textContent;
         const promise = new Promise<number>((resolve) => {
-            getBraille(originalText, (brailleText: string) => {
+            translateBraille(originalText, (brailleText: string) => {
                 textElement.textContent = brailleText;
                 // textElement.style.fontFamily = brailleFont;
                 textElement.style.fontFamily = brailleFont;

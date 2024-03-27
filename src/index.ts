@@ -20,50 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Total Distance Traveled by Cane Toads in One Week",
         "data": {
-          "values": [
-            {"Night": 1, "Distance": 200, "Surface": "paved road"},
-            {"Night": 2, "Distance": 400, "Surface": "paved road"},
-            {"Night": 3, "Distance": 650, "Surface": "paved road"},
-            {"Night": 4, "Distance": 850, "Surface": "paved road"},
-            {"Night": 5, "Distance": 1100, "Surface": "paved road"},
-            {"Night": 6, "Distance": 1300, "Surface": "paved road"},
-            {"Night": 7, "Distance": 1500, "Surface": "paved road"},
-            {"Night": 1, "Distance": 100, "Surface": "grass and shrubbery"},
-            {"Night": 2, "Distance": 250, "Surface": "grass and shrubbery"},
-            {"Night": 3, "Distance": 450, "Surface": "grass and shrubbery"},
-            {"Night": 4, "Distance": 600, "Surface": "grass and shrubbery"},
-            {"Night": 5, "Distance": 800, "Surface": "grass and shrubbery"},
-            {"Night": 6, "Distance": 950, "Surface": "grass and shrubbery"},
-            {"Night": 7, "Distance": 1100, "Surface": "grass and shrubbery"}
-          ]
+            "values": [
+                { "marsupial": "Possum", "weight": 15 },
+                { "marsupial": "Koala", "weight": 27 },
+                { "marsupial": "Tasmanian Devil", "weight": 27 },
+                { "marsupial": "Kangaroo", "weight": 200 }
+            ]
         },
+        "title": {
+            "text": "Weights of Four Marsupials in Pounds",
+        },
+        "description": "description of simple bar",
         "mode": "tactile",
-        "mark": {
-          "type": "line",
-          "point":true
-        },
+        "mark": "bar",
         "encoding": {
-          "x": {"field": "Night", "type": "ordinal", "title": "Night"},
-          "y": {"field": "Distance", "type": "quantitative", "title": "Total Distance Traveled (meters)"},
-          "color": {
-            "field": "Surface",
-            "type": "nominal",
-            "scale": {
-              "domain": ["paved road", "grass and shrubbery"],
-              "range": ["#CC001D", "#0068B7"]
+            "x": {
+                "field": "marsupial",
+                "type": "nominal",
+                "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
+                "title": "Marsupial Species",
             },
-            "legend": {"title": "Surface"}
-          }
-        },
-        "config": {
-          "axis":{
-            "grid": true
-          }
+            "y": {
+                "field": "weight",
+                "type": "quantitative",
+                "title": "Weight of Adult Male in Pounds"
+            }
         }
-      }
-      
+    }
+
+
 
 
 
@@ -142,9 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const spec = JSON.parse(input!.value);
             renderTactileChart(spec);
             // remove all the tactile part from the spec and set to a new spec called visualSpec
-            let visualSpec = JSON.parse(JSON.stringify(spec));
-            delete visualSpec.tactile;
-            renderVegaLiteChart(visualSpec);
+            renderVegaLiteChart(spec);
         } catch (error) {
             console.error('Invalid JSON', error);
         }

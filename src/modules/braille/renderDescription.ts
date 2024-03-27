@@ -1,11 +1,11 @@
 const d3 = require("d3");
 
-import { getBraille } from "./getBraille";
+import { translateBraille } from "./translateBraille";
 
 function renderDescription(result: any, spec: any) {
     // spec.description exists, then select the text and convert to braille
     if (spec.description) {
-        getBraille(spec.description, (brailleText: string) => {
+        translateBraille(spec.description, (brailleText: string) => {
             // add a new text element to the svg
             d3.select(result.view.container()).select("svg")
                 .append("text")

@@ -10,18 +10,16 @@ const fontProperties = {
 const defaultGridWidth = 1; // default grid width
 const defaultPaddingBetweenBars = 0.2; // default padding between bars
 
-
-
 // Function to update all font-related properties in an object
 function updateFontAcross(obj: any, userFont: string, userFontSize: number) {
     Object.keys(obj).forEach((key) => {
         if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
             updateFontAcross(obj[key], userFont, userFontSize); // Recursively update nested objects
         } else {
-            if (key === "labelFont" || key === "titleFont" || key === "font") { // Check if the key is related to font settings
+            if (key === "labelFont" || key === "titleFont" || key === "font" || key ==="subtitleFont") { // Check if the key is related to font settings
                 obj[key] = userFont;
             }
-            if (key === "labelFontSize" || key === "titleFontSize" || key === "fontSize") {
+            if (key === "labelFontSize" || key === "titleFontSize" || key === "fontSize" || key === "subtitleFontSize") {
                 obj[key] = userFontSize;
             }
 
@@ -114,6 +112,13 @@ function updateGroupedBarAxis(quantAxis: string, defaultSpec: any) {
         }
     }
     return defaultSpec;
+}
+
+function updatePointMarkFill(userSpec: any, defaultSpec: any) {
+    if (userSpec.mark.point){
+        defaultSpec.mark.point.fill = "black";
+    }
+
 }
 
 function updateDefault(userSpec: any, defaultSpec: any) {

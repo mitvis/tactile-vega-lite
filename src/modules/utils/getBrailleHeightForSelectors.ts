@@ -1,5 +1,5 @@
 const d3 = require("d3");
-import { getBraille } from "../braille/getBraille";
+import { translateBraille } from "../braille/translateBraille";
 
 let maxTextHeight;
 
@@ -20,7 +20,7 @@ function getBrailleHeightForSelectors(result: any, svgSelectionCriteria: string[
         const originalText = textElement.textContent;
         // console.log("originalText: ", originalText);
         const promise = new Promise<number>((resolve) => {
-            getBraille(originalText, (brailleText: string) => {
+            translateBraille(originalText, (brailleText: string) => {
                 textElement.textContent = brailleText;
                 textElement.style.fontFamily = brailleFont;
                 textElement.style.fontSize = `${brailleFontSize}px`;

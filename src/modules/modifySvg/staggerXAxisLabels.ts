@@ -46,7 +46,7 @@ async function stagger(result: any, spec: any) {
         const translateMatch = transform.match(/translate\(([^)]+)\)/);
         if (translateMatch) {
             const [x, y] = translateMatch[1].split(',').map(parseFloat);
-            const newY = y + staggerAmount;
+            const newY = y + staggerAmount + 10;
             const newTransform = `translate(${x},${newY})`;
             xAxisTitle.attr('transform', newTransform);
         }
@@ -61,7 +61,6 @@ async function stagger(result: any, spec: any) {
         const newTickLength = tickLength + staggerAmount;
         if (i % 2 !== 0) {
             // extend the tick length
-            console.log("newTickLength: ", newTickLength)
             tick.setAttribute('y2', newTickLength.toString());
         }
     });

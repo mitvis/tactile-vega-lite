@@ -3,7 +3,7 @@ const d3 = require('d3');
 let messageId = 0;
 const callbacks = new Map<number, (brailleText: string) => void>();
 
-function getBraille(text: string, callback: (brailleText: string) => void) {
+function translateBraille(text: string, callback: (brailleText: string) => void) {
   const id = messageId++;
   callbacks.set(id, callback);
   worker.postMessage({
@@ -22,6 +22,6 @@ function getBraille(text: string, callback: (brailleText: string) => void) {
   };
 }
 
-export { getBraille };
+export { translateBraille };
 
 
