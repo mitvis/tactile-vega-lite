@@ -2,13 +2,12 @@ import vegaEmbed from "vega-embed";
 import { Config, TopLevelSpec, compile } from 'vega-lite';
 import { modifySvg } from './modules/modifySvg/chartModifier';
 const d3 = require("d3");
-// import { updateVLSpec } from "./modules/update/updateSpec";
 import './style.css';
-import { defaultTVLSpecBar } from "./modules/specs/defaultTVLSpecBar";
 import { elaborateTVLSpec } from "./modules/update/elaborateSpec";
 import { mergeSpec } from "./modules/modifySpec/mergeSpec";
 import { selectDefaultSpec } from "./modules/modifySpec/selectDefault";
 import { updateDefault } from "./modules/modifySpec/updateDefault";
+import { terminateWorker } from "./modules/braille/translateBraille";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,36 +21,41 @@ document.addEventListener('DOMContentLoaded', () => {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "data": {
             "values": [
-                { "marsupial": "Possum", "weight": 15 },
-                { "marsupial": "Koala", "weight": 27 },
-                { "marsupial": "Tasmanian Devil", "weight": 27 },
-                { "marsupial": "Kangaroo", "weight": 200 }
+                { "Year": 1970, "Location": "North America", "Percent": 100 },
+                { "Year": 1970, "Location": "Africa", "Percent": 100 },
+                { "Year": 1978, "Location": "North America", "Percent": 90 },
+                { "Year": 1978, "Location": "Africa", "Percent": 97 },
+                { "Year": 1986, "Location": "North America", "Percent": 85 },
+                { "Year": 1986, "Location": "Africa", "Percent": 90 },
+                { "Year": 1992, "Location": "North America", "Percent": 85 },
+                { "Year": 1992, "Location": "Africa", "Percent": 85 },
+                { "Year": 2000, "Location": "North America", "Percent": 80 },
+                { "Year": 2000, "Location": "Africa", "Percent": 75 },
+                { "Year": 2008, "Location": "North America", "Percent": 88 },
+                { "Year": 2008, "Location": "Africa", "Percent": 70 }
             ]
         },
-        "title": {
-            "text": "Weights of Four Marsupials in Pounds",
-        },
-        "description": "description of simple bar",
         "mode": "tactile",
         "mark": "bar",
+        "title": "Percentage of Remaining Wetlands in North America and Africa",
         "encoding": {
-            "x": {
-                "field": "marsupial",
-                "type": "nominal",
-                "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
-                "title": "Marsupial Species",
-            },
-            "y": {
-                "field": "weight",
-                "type": "quantitative",
-                "title": "Weight of Adult Male in Pounds"
+            "x": { "field": "Year", "type": "ordinal" },
+            "y": { "field": "Percent", "type": "quantitative" },
+            "xOffset": { "field": "Location", "sort": ["North America", "Africa"] },
+            "color": {
+                "field": "Location",
+                "scale": {
+                    "range": ["#FF1100", "#00A1E5"]
+                }
+            }
+        },
+        "config": {
+            "mark": {
+                "stroke": "#333",
+                "strokeWidth": 2
             }
         }
     }
-
-
-
-
 
 
     // function to render vega-lite spec
@@ -72,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("final updated Spec: ", elaboratedTVLSpec)
             vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
                 modifySvg(result, elaboratedTVLSpec);
+                terminateWorker();
             }).catch(error => console.error(error));
         });
     };

@@ -15,11 +15,10 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-const defaultGridWidth = 1; // default grid width
-
-const defaultTitleYOffset = -10; // default title y offset (distance from axis)
-
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
+
+const defaultSubtitlePadding = 40; // distance between subtitle and title
+const defaultTitlePadding = 40;
 
 export const defaultTVLSpecBarGrouped = {
     "mark": "bar",
@@ -29,7 +28,6 @@ export const defaultTVLSpecBarGrouped = {
                 "titlePadding": defaultXAxisTitlePadding,
                 "labelAngle": 0,
                 "labelPadding": defaultLabelPadding,
-                "staggerLabels": "auto"
             }
         },
         "y": {
@@ -37,7 +35,6 @@ export const defaultTVLSpecBarGrouped = {
                 "titleAlign": "right",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "titleY": defaultTitleYOffset
             }
         }
     },
@@ -51,6 +48,10 @@ export const defaultTVLSpecBarGrouped = {
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
+            "subtitlePadding": defaultSubtitlePadding,
+            "offset": defaultTitlePadding,
+            "subtitleFont": defaultBrailleFont,
+            "subtitleFontSize": defaultBrailleFontSize,
         },
         "mark": {
             "stroke": "black",
@@ -81,10 +82,10 @@ export const defaultTVLSpecBarGrouped = {
             "rowPadding": defaultLegendRowPadding
         },
         "scale": {
-            "barBandPaddingInner": 0.2,
+            "barBandPaddingInner": 0.3,
         },
         "padding": {
-            "top": 100, "bottom": 100, "left": 100, "right": 100
+            "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
         }
     }
 }

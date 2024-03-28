@@ -6,16 +6,12 @@ import { adjustYTitle } from "./adjustYTitle";
 
 // modify the bar mark
 function modifyBar(result: any, spec: any) {
-
   const textureMarkSelector = '.mark-rect.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
   staggerXAxisLabels(result, spec);
   adjustYTitle(result, spec);
   // convert text to braille
   convertToBraille(result, spec);
-
-
-
 }
 
 // modify the line mark

@@ -15,7 +15,6 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
 const defaultSubtitlePadding = 40; // distance between subtitle and title
@@ -36,7 +35,6 @@ export const defaultTVLSpecBar = {
                 "titleAlign": "right",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "titleY": defaultTitleYOffset
             }
         }
     },
@@ -87,7 +85,7 @@ export const defaultTVLSpecBar = {
             "barBandPaddingInner": 0.3,
         },
         "padding": {
-            "top": 100, "bottom": 100, "left": 100, "right": 100 // padding around the chart, so that nothing gets cut off
+            "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
         }
     }
 }

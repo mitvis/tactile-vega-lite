@@ -2,8 +2,8 @@ import { getBrailleWidthForSelectors } from "../utils/getBrailleWidthForSelector
 import vegaEmbed, { VisualizationSpec } from "vega-embed";
 import { getNumberOfTicks } from "../utils/getNumberOfTicks";
 import { getBrailleHeightForSelectors } from "../utils/getBrailleHeightForSelectors";
-import { setVLWidth } from "./setVLWidth";
-import { setVLHeight } from "./setVLHeight";
+import { setVLWidth } from "../utils/setVLWidth";
+import { setVLHeight } from "../utils/setVLHeight";
 
 async function updateVLSpec(spec: any): Promise<VisualizationSpec> {
     try {

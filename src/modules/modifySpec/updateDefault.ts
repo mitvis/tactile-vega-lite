@@ -9,6 +9,7 @@ const fontProperties = {
 
 const defaultGridWidth = 1; // default grid width
 const defaultPaddingBetweenBars = 0.2; // default padding between bars
+const defaultTitleYOffset = -30;
 
 // Function to update all font-related properties in an object
 function updateFontAcross(obj: any, userFont: string, userFontSize: number) {
@@ -62,7 +63,7 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "titleY": -10
+                "titleY": defaultTitleYOffset
             };
         }
 
@@ -83,7 +84,7 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
                 "titleAlign": "right",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "titleY": -10
+                "titleY": defaultTitleYOffset
             };
         }
 
