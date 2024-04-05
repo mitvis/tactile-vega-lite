@@ -1,5 +1,5 @@
 import vegaEmbed from "vega-embed";
-import { Config, TopLevelSpec, compile } from 'vega-lite';
+import { TopLevelSpec } from 'vega-lite';
 import { modifySvg } from './modules/modifySvg/chartModifier';
 const d3 = require("d3");
 import './style.css';
@@ -8,6 +8,14 @@ import { mergeSpec } from "./modules/modifySpec/mergeSpec";
 import { selectDefaultSpec } from "./modules/modifySpec/selectDefault";
 import { updateDefault } from "./modules/modifySpec/updateDefault";
 import { terminateWorker } from "./modules/braille/translateBraille";
+import * as monaco from 'monaco-editor';
+// or import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+// if shipping only a subset of the features & languages is desired
+
+// monaco.editor.create(document.getElementById('container'), {
+//   value: 'console.log("Hello, world")',
+//   language: 'javascript'
+// });
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitButton = document.getElementById('render') as HTMLButtonElement;
   const downloadButton = document.getElementById('download') as HTMLButtonElement;
   const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
+  const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
   const userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -47,6 +56,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
+  // Initialize Monaco Editor
+  const editor = monaco.editor.create(editorContainer, {
+    value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
+    language: 'json',
+    theme: 'vs-light',
+    lineNumbers: 'on',
+    automaticLayout: true,
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+  });
+
+  // Listen for editor changes and update the input value
+  editor.onDidChangeModelContent(() => {
+    const editorValue = editor.getValue();
+    // parse and validate the JSON as needed
+    try {
+      const parsedSpec = JSON.parse(editorValue);
+      // Do something with the parsed spec, e.g., store it, validate it, etc.
+    } catch (error) {
+      // Handle JSON parsing errors, perhaps show a message in the UI
+      console.error('Invalid JSON:', error);
+    }
+  });
 
 
 
@@ -106,27 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("fixing png download issue");
   }
 
-
-  input.addEventListener('input', () => {
-    // format user input to be more readable json format
-    const value = input.value.trim();
-    try {
-      // Attempt to parse the JSON input
-      const parsed = JSON.parse(value);
-      // Reformat and set back into the textarea with indentation
-      input.value = JSON.stringify(parsed, null, 2);
-    } catch (error) {
-      // If there's a parsing error, do not attempt to format
-      console.error("Invalid JSON input");
-    }
-  });
-
   submitButton.addEventListener('click', () => {
-    // render button click event
     try {
-      const spec = JSON.parse(input!.value);
+      const spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
       renderTactileChart(spec);
-      // remove all the tactile part from the spec and set to a new spec called visualSpec
       renderVegaLiteChart(spec);
     } catch (error) {
       console.error('Invalid JSON', error);

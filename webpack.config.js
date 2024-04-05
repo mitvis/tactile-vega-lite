@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 
 module.exports = {
@@ -49,6 +50,9 @@ module.exports = {
     port: 9000, // Default to port 9000
   },
   plugins: [
+    new MonacoWebpackPlugin({
+      languages: ['json'],
+    }),
     new HtmlWebpackPlugin({
       title: 'My Vega-Lite Wrapper', // Optional, you can specify a title
       template: 'src/index.html', // Path to your template file

@@ -29,6 +29,7 @@
     "crypto-browserify": "^3.12.0",
     "d3": "^7.8.5",
     "liblouis": "^0.4.0",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "path-browserify": "^1.0.1",
     "stream-browserify": "^3.0.0",
     "textures": "^1.2.3",
