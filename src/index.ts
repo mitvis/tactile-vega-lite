@@ -18,25 +18,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A scatterplot showing body mass and flipper lengths of penguins.",
     "data": {
-      "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/penguins.json"
+      "values": [
+        { "marsupial": "Possum", "weight": 15 },
+        { "marsupial": "Koala", "weight": 27 },
+        { "marsupial": "Tasmanian Devil", "weight": 27 },
+        { "marsupial": "Kangaroo", "weight": 200 }
+      ]
     },
+    "title": {
+      "text": "Weights of Four Marsupials in Pounds"
+    },
+    "description": "description of simple bar",
     "mode": "tactile",
-    "mark": "point",
+    "mark": "bar",
     "encoding": {
       "x": {
-        "field": "Flipper Length (mm)",
-        "type": "quantitative",
-        "scale": { "zero": false }
+        "field": "marsupial",
+        "type": "nominal",
+        "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
+        "title": "Marsupial Species"
       },
       "y": {
-        "field": "Body Mass (g)",
+        "field": "weight",
         "type": "quantitative",
-        "scale": { "zero": false }
-      },
-      "color": { "field": "Species", "type": "nominal" },
-      "shape": { "field": "Species", "type": "nominal" }
+        "title": "Weight of Adult Male in Pounds"
+      }
     }
   }
 
