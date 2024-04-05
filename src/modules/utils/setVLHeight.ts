@@ -1,9 +1,8 @@
 const d3 = require("d3");
 
-
-function setVLHeight(result: any,
+function setVLHeight(
+    result: any,
     updatedVLSpec: any,
-    maxBrailleHeight: number,
     braillePaddingY: number,
     numberOfTicksY: number,
 ) {
@@ -16,10 +15,8 @@ function setVLHeight(result: any,
         };
     }
 
-
     const currentHeight = d3.select(result.view.container()).select("svg").attr("height");
     updatedVLSpec.height = Number(currentHeight) + numberOfTicksY * braillePaddingY;
-    console.log("updatedVLSpec.height", updatedVLSpec.height);
     return updatedVLSpec;
 }
 

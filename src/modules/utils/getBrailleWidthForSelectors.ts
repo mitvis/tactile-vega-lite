@@ -1,13 +1,11 @@
 const d3 = require("d3");
-import { getBraille } from "./getBraille";
+import { translateBraille } from "../braille/translateBraille";
 
 let maxTextWidth;
 
-
 function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[], spec: any): Promise<number> {
-
-    const brailleFont = spec.tactile.braille.brailleFont;
-    const brailleFontSize = spec.tactile.braille.brailleFontSize;
+    const brailleFont = spec.config.title.font;
+    const brailleFontSize = spec.config.title.fontSize;
     const promises: Promise<number>[] = [];
 
     const axisSelection = ".mark-text.role-axis-label";
@@ -19,11 +17,15 @@ function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[]
     xAxis.querySelectorAll(svgSelectionCriteria).forEach((textElement: any) => {
         const originalText = textElement.textContent;
         const promise = new Promise<number>((resolve) => {
-            getBraille(originalText, (brailleText: string) => {
+            translateBraille(originalText, (brailleText: string) => {
                 textElement.textContent = brailleText;
+                // textElement.style.fontFamily = brailleFont;
                 textElement.style.fontFamily = brailleFont;
                 textElement.style.fontSize = `${brailleFontSize}px`;
-                const width = textElement.getComputedTextLength();
+                let bbox = textElement.getBBox();
+                // The width is part of the bounding box
+                let width = bbox.width;
+                // const width = textElement.getComputedTextLength();
                 resolve(width); // Resolve the promise with the width of the Braille text
                 textElement.textContent = originalText; // Optionally reset the text back to original if needed
                 // remove the braille font and size

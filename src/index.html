@@ -101,32 +101,35 @@
       <div>
         <textarea id="input" placeholder="Enter Vega-Lite Spec Here..." rows=40>
           {
-              "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-              "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"},
-              "mark": "bar",
-              "encoding": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+                "values": [
+                    { "marsupial": "Possum", "weight": 15 },
+                    { "marsupial": "Koala", "weight": 27 },
+                    { "marsupial": "Tasmanian Devil", "weight": 27 },
+                    { "marsupial": "Kangaroo", "weight": 200 }
+                ]
+            },
+            "title": {
+                "text": "Weights of Four Marsupials in Pounds"
+            },
+            "description": "description of simple bar",
+            "mode": "tactile",
+            "mark": "bar",
+            "encoding": {
                 "x": {
-                  "timeUnit": "month",
-                  "field": "date",
-                  "type": "ordinal",
-                  "title": "Month of the year"
+                    "field": "marsupial",
+                    "type": "nominal",
+                    "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
+                    "title": "Marsupial Species"
                 },
                 "y": {
-                  "aggregate": "count",
-                  "type": "quantitative"
-                },
-                "color": {
-                  "field": "weather",
-                  "type": "nominal",
-                  "scale": {
-                    "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-                    "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
-                  },
-                  "title": "Weather type"
+                    "field": "weight",
+                    "type": "quantitative",
+                    "title": "Weight of Adult Male in Pounds"
                 }
-              }, 
-              "tactile": true
             }
+        }
         </textarea>
         <button id="render">Render</button>
       </div>
