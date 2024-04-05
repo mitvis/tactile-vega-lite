@@ -17,7 +17,6 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
         mergedSpec = setVLWidth(mergedSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
         if (mergedSpec.mark.type == "line" || mergedSpec.mark == "line") {
             if (mergedSpec.encoding.color) {
-
                 // add encoding.strokeDash and set field to encoding.color.field
                 mergedSpec.encoding.strokeDash = {
                     "field": mergedSpec.encoding.color.field,

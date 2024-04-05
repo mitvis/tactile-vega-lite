@@ -17,7 +17,7 @@ function updateFontAcross(obj: any, userFont: string, userFontSize: number) {
         if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
             updateFontAcross(obj[key], userFont, userFontSize); // Recursively update nested objects
         } else {
-            if (key === "labelFont" || key === "titleFont" || key === "font" || key ==="subtitleFont") { // Check if the key is related to font settings
+            if (key === "labelFont" || key === "titleFont" || key === "font" || key === "subtitleFont") { // Check if the key is related to font settings
                 obj[key] = userFont;
             }
             if (key === "labelFontSize" || key === "titleFontSize" || key === "fontSize" || key === "subtitleFontSize") {
@@ -81,7 +81,7 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
                 "grid": true,
                 "gridWidth": defaultGridWidth,
                 "gridColor": "black",
-                "titleAlign": "right",
+                "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
                 "titleY": defaultTitleYOffset
@@ -116,18 +116,33 @@ function updateGroupedBarAxis(quantAxis: string, defaultSpec: any) {
 }
 
 function updatePointMarkFill(userSpec: any, defaultSpec: any) {
-    if (userSpec.mark.point){
-        defaultSpec.mark.point.fill = "black";
+    if (userSpec.mark.point) {
+        defaultSpec.mark = {
+            type: "line",
+            point: {
+                "fill": "black",
+                "size": 50
+            }
+        }
     }
 
 }
 
 function updateDefault(userSpec: any, defaultSpec: any) {
-    let quantAxis = checkQuantEncoding(userSpec);
+    let quantAxis = "";
+    if (userSpec.mark === "point" || userSpec.mark.type === "point" || userSpec.mark === "line" || userSpec.mark.type === "line" || userSpec.mark === "bar" || userSpec.mark.type === "bar") {
+        quantAxis = checkQuantEncoding(userSpec);
+        defaultSpec = updateAxis(userSpec, quantAxis, defaultSpec);
+    }
+
     defaultSpec = updateFont(userSpec, defaultSpec);
-    defaultSpec = updateAxis(userSpec, quantAxis, defaultSpec);
+
     if (defaultSpec.mark === "bar") {
-        defaultSpec = updateGroupedBarAxis(quantAxis, defaultSpec);
+        if (userSpec.encoding.xOffset || userSpec.encoding.yOffset)
+            defaultSpec = updateGroupedBarAxis(quantAxis, defaultSpec);
+    }
+    if (defaultSpec.mark === "line") {
+        updatePointMarkFill(userSpec, defaultSpec);
     }
     return defaultSpec;
 

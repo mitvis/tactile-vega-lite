@@ -33,7 +33,7 @@ export const defaultTVLSpecLine = {
         },
         "y": {
             "axis": {
-                "titleAlign": "right",
+                "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
                 "titleY": defaultTitleYOffset
@@ -53,7 +53,8 @@ export const defaultTVLSpecLine = {
         },
         "mark": {
             "stroke": "black",
-            "strokeWidth": defaultStrokeWidth
+            "strokeWidth": defaultStrokeWidth,
+            "size": 10
         },
         "axis": {
             "labelFont": defaultBrailleFont,

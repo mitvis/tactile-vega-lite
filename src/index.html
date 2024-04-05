@@ -104,37 +104,29 @@
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "data": {
                 "values": [
-                    { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
-                    { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
-                    { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
+                    { "marsupial": "Possum", "weight": 15 },
+                    { "marsupial": "Koala", "weight": 27 },
+                    { "marsupial": "Tasmanian Devil", "weight": 27 },
+                    { "marsupial": "Kangaroo", "weight": 200 }
                 ]
             },
-            "mode": "tactile",
-            "title": "Simple Bar Chart",
+            "title": {
+                "text": "Weights of Four Marsupials in Pounds"
+            },
             "description": "description of simple bar",
+            "mode": "tactile",
             "mark": "bar",
             "encoding": {
                 "x": {
-                    "field": "a",
+                    "field": "marsupial",
                     "type": "nominal",
-                    "axis": {
-                        "labelAngle": 0,
-                        "grid": false,
-                        "ticks": false
-                    }
+                    "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
+                    "title": "Marsupial Species"
                 },
                 "y": {
-                    "field": "b",
+                    "field": "weight",
                     "type": "quantitative",
-                    "axis": {
-                        "grid": true
-                    }
-                }
-            },
-            "config": {
-                "text": {
-                    "brailleFont": "Swell Braille",
-                    "brailleTranslationTable": "en-ueb-g2.ctb"
+                    "title": "Weight of Adult Male in Pounds"
                 }
             }
         }

@@ -44,7 +44,7 @@ function setVLWidth(
     // check if mark type is a bar or line, if yes then extend the spec to include width
     // and that x is not continuous (i.e. binned)
     const padding = maxBrailleWidth * mergedSpec.config.scale.barBandPaddingInner
-    const maxBarWidth = 150;
+    const maxBarWidth = 200;
 
     let stepWidth = Math.ceil(maxBrailleWidth + padding);
     if (stepWidth > maxBarWidth) {

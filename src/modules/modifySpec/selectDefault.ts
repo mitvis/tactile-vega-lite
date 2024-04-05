@@ -3,6 +3,8 @@
 import { defaultTVLSpecBar } from "../specs/defaultTVLSpecBar"
 import { defaultTVLSpecBarGrouped } from "../specs/defaultTVLSpecBarGrouped"
 import { defaultTVLSpecLine } from "../specs/defaultTVLSpecLine";
+import { defaultTVLSpecScatter } from "../specs/defaultTVLSpecScatter";
+import { defaultTVLSpecArc } from "../specs/defaultTVLSpecArc";
 // select defaultTVLspec based on mark type 
 function selectDefaultSpec(userSpec: any) {
 
@@ -27,6 +29,22 @@ function selectDefaultSpec(userSpec: any) {
             return defaultTVLSpecBarGrouped;
         }
         return defaultTVLSpecBar;
+    }
+
+    if (typeof userSpec.mark === 'string' && userSpec.mark === "point") {
+        return defaultTVLSpecScatter;
+    }
+    else if (typeof userSpec.mark === 'object' && userSpec.mark.type === "point") {
+        return defaultTVLSpecScatter;;
+    }
+
+    if (typeof userSpec.mark === 'string' && userSpec.mark === "arc") {
+
+        return defaultTVLSpecArc;
+    }
+    else if (typeof userSpec.mark === 'object' && userSpec.mark.type === "arc") {
+
+        return defaultTVLSpecArc;
     }
 }
 

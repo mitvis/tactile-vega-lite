@@ -20,24 +20,8 @@ const defaultLabelPadding = 10; // default label padding (distance from axis lin
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 
-export const defaultTVLSpecBar = {
-    "mark": "bar",
-    "encoding": {
-        "x": {
-            "axis": {
-                "titlePadding": defaultXAxisTitlePadding,
-                "labelAngle": 0,
-                "labelPadding": defaultLabelPadding,
-            }
-        },
-        "y": {
-            "axis": {
-                "titleAlign": "left",
-                "titleAngle": 0,
-                "titleAnchor": "end",
-            }
-        }
-    },
+export const defaultTVLSpecArc = {
+    "mark": "arc",
     // config
     "config": {
         "background": "white",

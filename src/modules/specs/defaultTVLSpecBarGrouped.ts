@@ -32,7 +32,7 @@ export const defaultTVLSpecBarGrouped = {
         },
         "y": {
             "axis": {
-                "titleAlign": "right",
+                "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
             }

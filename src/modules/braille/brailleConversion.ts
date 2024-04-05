@@ -7,7 +7,7 @@ import { selectLabelText } from "./selectLabelText";
 function convertToBraille(result: any, spec: any) {
   selectLabelText(result, '.mark-text.role-axis-label', spec);
   // selectLabelText(result, '.mark-text.role-legend-label text', spec);
-  if (spec.title.subtitle) {
+  if (spec.title.subtitle !== undefined) {
     selectText(result, '.mark-text.role-title-subtitle text', spec);
   }
 

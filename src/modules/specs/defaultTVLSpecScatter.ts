@@ -20,7 +20,7 @@ const defaultLabelPadding = 10; // default label padding (distance from axis lin
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 
-export const defaultTVLSpecBar = {
+export const defaultTVLSpecScatter = {
     "mark": "bar",
     "encoding": {
         "x": {

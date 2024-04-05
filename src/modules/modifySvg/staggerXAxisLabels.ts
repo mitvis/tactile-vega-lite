@@ -4,18 +4,30 @@ import { getBrailleWidthForSelectors } from "../utils/getBrailleWidthForSelector
 
 
 async function calculateStaggerAmount(result: any, spec: any) {
-    let maxTextHeight = await getBrailleHeightForSelectors(result, ['.mark-text.role-axis-label text'], spec);
+    let maxTextHeight;
+    try{
+        maxTextHeight = await getBrailleHeightForSelectors(result, ['.mark-text.role-axis-label text'], spec);
+        console.log("maxTextHeight", maxTextHeight)
+        
+    } catch (error) {
+        console.error("Error in calculateStaggerAmount: ", error);
+    }
     return Number(maxTextHeight) * 1.5;
+    
 }
 
 let staggerThreshold = 50;
 
 async function stagger(result: any, spec: any) {
+
     // wait for the maxTextHeight to be calculated
-    const staggerAmount = await calculateStaggerAmount(result, spec);
+    // const staggerAmount = await calculateStaggerAmount(result, spec);
+    // [TODO] fix this staggerAmount and getBrailleHeightForSelectors issues
+    const staggerAmount = 32 * 1.5;
+    console.log("staggerAmount", staggerAmount)
+
     // Select all x-axis label text elements
     const labels = d3.select(result.view.container()).select("svg").selectAll('.mark-text.role-axis-label').node();
-
     // get all text element in labels
     const textElements = labels.querySelectorAll('text');
 
@@ -72,6 +84,7 @@ async function staggerXAxisLabels(result: any, spec: any) {
     if (spec.encoding.x.axis.staggerLabels === true) {
         stagger(result, spec);
     } else if (spec.encoding.x.axis.staggerLabels === "auto") {
+
         // stagger the x-axis labels if the width of the label is greater than x
         let maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);
         if (maxBrailleWidth >= staggerThreshold) {

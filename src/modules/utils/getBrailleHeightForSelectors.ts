@@ -1,45 +1,44 @@
 const d3 = require("d3");
 import { translateBraille } from "../braille/translateBraille";
 
-let maxTextHeight;
-
-
 function getBrailleHeightForSelectors(result: any, svgSelectionCriteria: string[], spec: any): Promise<number> {
+    return new Promise((resolve, reject) => {
+        const brailleFont = spec.config.title.font;
+        const brailleFontSize = spec.config.title.fontSize;
 
-    const brailleFont = spec.config.title.font.brailleFont;
-    const brailleFontSize = spec.config.title.font.brailleFontSize;
-    const promises: Promise<number>[] = [];
-
-    const axisSelection = ".mark-text.role-axis-label";
-    // select all axis element matching axisSelection
-    const axisLabels = d3.select(result.view.container()).selectAll(axisSelection);
-    // get the yAxis, which is the 2nd element in the axisLabels selection
-    const yAxis = axisLabels.nodes()[1];
-    // loop through all the text elements in the xAxis
-    yAxis.querySelectorAll(svgSelectionCriteria).forEach((textElement: any) => {
+        const text = d3.select(result.view.container()).select("svg").select('.mark-text.role-axis-label');
+        // select the first text element in text
+        const textElement = text.select("text").node();
+        if (!textElement) {
+            reject(new Error("Text element not found"));
+            return;
+        }
         const originalText = textElement.textContent;
-        // console.log("originalText: ", originalText);
-        const promise = new Promise<number>((resolve) => {
-            translateBraille(originalText, (brailleText: string) => {
+
+        translateBraille(originalText, (brailleText: string) => {
+            try {
+                console.log("brailleText", brailleText);
                 textElement.textContent = brailleText;
                 textElement.style.fontFamily = brailleFont;
                 textElement.style.fontSize = `${brailleFontSize}px`;
                 // get height of the text element
                 const height = textElement.getBBox().height;
-                resolve(height); // Resolve the promise with the width of the Braille text
-                textElement.textContent = originalText; // Optionally reset the text back to original if needed
-                // remove the braille font and size
-                textElement.style.fontFamily = null;
-                textElement.style.fontSize = null;
-            });
+                console.log("height", height);
+                resolve(height);
+            } catch (innerError) {
+                console.error("Error applying Braille translation:", innerError);
+                reject(innerError);
+            } finally {
+                // Reset text and styles regardless of success or error
+                textElement.textContent = originalText;
+                textElement.style.fontFamily = "";
+                textElement.style.fontSize = "";
+            }
         });
-        promises.push(promise);
-    });
-
-    return Promise.all(promises).then(heights => {
-        maxTextHeight = Math.max(...heights); // Find and return the maximum width
-        return maxTextHeight;
     });
 }
 
-export { getBrailleHeightForSelectors, maxTextHeight };
+
+
+
+export { getBrailleHeightForSelectors };

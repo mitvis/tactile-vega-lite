@@ -1,5 +1,4 @@
 const d3 = require("d3");
-
 import { translateBraille } from "../braille/translateBraille";
 
 let maxTextWidth;
