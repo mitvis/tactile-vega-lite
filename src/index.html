@@ -37,8 +37,14 @@
 
     }
 
-    textarea {
+    #editorContainer {
       min-width: 40vw;
+      min-height: 87vh;
+    }
+
+    #editorContainer .monaco-editor {
+      font-family: 'Fira Code', monospace;
+      font-size: 18px;
     }
 
     /* remove default button style, and make pretty */
@@ -69,13 +75,6 @@
       justify-content: center;
     }
 
-
-    #input {
-      font-family: "Poppins", sans-serif;
-      font-weight: 300;
-      font-style: normal;
-    }
-
     .render-container {
       display: grid;
       /* one col */
@@ -99,38 +98,10 @@
     <div class="item">
       <h1>Tactile Vega Lite Input</h1>
       <div>
+        <div id="editorContainer"></div>
+        <!-- 
         <textarea id="input" placeholder="Enter Vega-Lite Spec Here..." rows=40>
-          {
-            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "data": {
-                "values": [
-                    { "marsupial": "Possum", "weight": 15 },
-                    { "marsupial": "Koala", "weight": 27 },
-                    { "marsupial": "Tasmanian Devil", "weight": 27 },
-                    { "marsupial": "Kangaroo", "weight": 200 }
-                ]
-            },
-            "title": {
-                "text": "Weights of Four Marsupials in Pounds"
-            },
-            "description": "description of simple bar",
-            "mode": "tactile",
-            "mark": "bar",
-            "encoding": {
-                "x": {
-                    "field": "marsupial",
-                    "type": "nominal",
-                    "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
-                    "title": "Marsupial Species"
-                },
-                "y": {
-                    "field": "weight",
-                    "type": "quantitative",
-                    "title": "Weight of Adult Male in Pounds"
-                }
-            }
-        }
-        </textarea>
+        </textarea> -->
         <button id="render">Render</button>
       </div>
     </div>
