@@ -84,7 +84,6 @@ async function staggerXAxisLabels(result: any, spec: any) {
     if (spec.encoding.x.axis.staggerLabels === true) {
         stagger(result, spec);
     } else if (spec.encoding.x.axis.staggerLabels === "auto") {
-
         // stagger the x-axis labels if the width of the label is greater than x
         let maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);
         if (maxBrailleWidth >= staggerThreshold) {

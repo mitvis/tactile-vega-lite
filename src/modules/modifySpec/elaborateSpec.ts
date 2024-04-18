@@ -26,6 +26,14 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
             }
         }
         mergedSpec = setVLHeight(result, mergedSpec, braillePaddingX, numberOfTicksY);
+
+        // ================== texture ==================
+        if (mergedSpec.encoding.color && mergedSpec.encoding.color.scale && mergedSpec.encoding.color.scale.range) {
+            // iterate through range, and replace each texture name to "url(#textureName)"
+            mergedSpec.encoding.color.scale.range = mergedSpec.encoding.color.scale.range.map((textureName: string) => {
+                return `url(#${textureName})`;
+            });
+        }
         return mergedSpec;
     } catch (error) {
         console.error(error);

@@ -1,7 +1,5 @@
 import vegaEmbed from "vega-embed";
-import { TopLevelSpec } from 'vega-lite';
 import { modifySvg } from './modules/modifySvg/chartModifier';
-const d3 = require("d3");
 import './style.css';
 import { elaborateTVLSpec } from "./modules/modifySpec/elaborateSpec";
 import { mergeSpec } from "./modules/modifySpec/mergeSpec";
@@ -9,52 +7,36 @@ import { selectDefaultSpec } from "./modules/modifySpec/selectDefault";
 import { updateDefault } from "./modules/modifySpec/updateDefault";
 import { terminateWorker } from "./modules/braille/translateBraille";
 import * as monaco from 'monaco-editor';
-// or import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-// if shipping only a subset of the features & languages is desired
-
-// monaco.editor.create(document.getElementById('container'), {
-//   value: 'console.log("Hello, world")',
-//   language: 'javascript'
-// });
+import { initSvgPatterns } from "./modules/texture/initializeTexture";
+const d3 = require("d3");
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('input') as HTMLInputElement;
+
   const submitButton = document.getElementById('render') as HTMLButtonElement;
   const downloadButton = document.getElementById('download') as HTMLButtonElement;
   const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
-  const userTVLSpec: any = {
+
+  let userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple bar chart with embedded data.",
     "data": {
       "values": [
-        { "marsupial": "Possum", "weight": 15 },
-        { "marsupial": "Koala", "weight": 27 },
-        { "marsupial": "Tasmanian Devil", "weight": 27 },
-        { "marsupial": "Kangaroo", "weight": 200 }
+        { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
+        { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
+        { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
       ]
     },
-    "title": {
-      "text": "Weights of Four Marsupials in Pounds"
-    },
-    "description": "description of simple bar",
-    "mode": "tactile",
     "mark": "bar",
     "encoding": {
-      "x": {
-        "field": "marsupial",
-        "type": "nominal",
-        "sort": ["Possum", "Koala", "Tasmanian Devil", "Kangaroo"],
-        "title": "Marsupial Species"
-      },
-      "y": {
-        "field": "weight",
-        "type": "quantitative",
-        "title": "Weight of Adult Male in Pounds"
-      }
+      "x": { "field": "a", "type": "nominal", "axis": { "labelAngle": 0 } },
+      "y": { "field": "b", "type": "quantitative" }
     }
   }
+
+
 
 
   // Initialize Monaco Editor
@@ -63,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     language: 'json',
     theme: 'vs-light',
     lineNumbers: 'on',
-    automaticLayout: true,
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
   });
@@ -73,31 +54,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const editorValue = editor.getValue();
     // parse and validate the JSON as needed
     try {
-      const parsedSpec = JSON.parse(editorValue);
-      // Do something with the parsed spec, e.g., store it, validate it, etc.
+      JSON.parse(editorValue);
     } catch (error) {
       // Handle JSON parsing errors, perhaps show a message in the UI
       console.error('Invalid JSON:', error);
     }
   });
 
-
-
-
   // function to render vega-lite spec
-  function renderVegaLiteChart(spec: TopLevelSpec) {
-    vegaEmbed("#visual", spec, { renderer: "svg" }).then(result => {
-    }).catch(error => console.error(error));
+  function renderVegaLiteChart(spec: any) {
+    // make a copy of the spec and call it vega-lite spec
+    let VLSpec = JSON.parse(JSON.stringify(spec));
+    if (VLSpec.encoding.texture) {
+      VLSpec.encoding.color = VLSpec.encoding.texture;
+      delete VLSpec.encoding.texture;
+    }
+    // VLSpec.encoding.color.scale.range exists 
+    if (VLSpec.encoding.color && VLSpec.encoding.color.scale && VLSpec.encoding.color.scale.range) {
+      delete VLSpec.encoding.color.scale.range;
+    }
+    console.log("VLSpec: ", VLSpec)
+    vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
   }
 
   function renderTactileChart(spec: any) {
-    let mergedSpec = spec;
-    if (spec.mode === "tactile") {
-      let defaultSpec = selectDefaultSpec(spec);
-      let updatedDefaultSpec = updateDefault(spec, defaultSpec);
-      mergedSpec = mergeSpec(spec, updatedDefaultSpec);
+    let TVLSpec = JSON.parse(JSON.stringify(spec));
+    initSvgPatterns();
+    if (TVLSpec.encoding.texture) {
+      TVLSpec.encoding.color = TVLSpec.encoding.texture;
+      delete TVLSpec.encoding.texture;
+    }
+    console.log("TVL spec: ", TVLSpec)
 
-    };
+    let mergedSpec = TVLSpec;
+    let defaultSpec = selectDefaultSpec(TVLSpec);
+    let updatedDefaultSpec = updateDefault(TVLSpec, defaultSpec);
+    mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 
     elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
       console.log("final updated Spec: ", elaboratedTVLSpec)
@@ -112,20 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTactileChart(userTVLSpec);
 
   function downloadSVG() {
-
     const svgElement = document.querySelector('#tactile svg');
     if (!svgElement) {
       console.error('SVG not found');
       return;
     }
-
     // Serialize the SVG to a string
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svgElement);
-
     // Create a Blob object
     const blob = new Blob([svgString], { type: 'image/svg+xml' });
-
     // Create a download link and trigger the download
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -135,13 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(link);
   }
 
-  function downloadPNG() {
-    console.log("fixing png download issue");
-  }
-
   submitButton.addEventListener('click', () => {
     try {
-      const spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
+      let spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
+      console.log("monaco editor value:", spec)
       renderTactileChart(spec);
       renderVegaLiteChart(spec);
     } catch (error) {
@@ -151,6 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Bind the downloadSVG function to the download button's click event
   downloadButton.addEventListener('click', downloadSVG);
-  downloadButtonPNG.addEventListener('click', downloadPNG);
+  // downloadButtonPNG.addEventListener('click', downloadPNG);
 
 });

@@ -4,6 +4,7 @@ import { applyTexturesToVegaLiteChart } from "../texture/changeTexture";
 import { staggerXAxisLabels } from "./staggerXAxisLabels";
 import { adjustYTitle } from "./adjustYTitle";
 import { modifyStrokeDash } from "./modifyStrokeDash";
+import { initSvgPatterns } from "../texture/initializeTexture";
 
 // modify the bar mark
 function modifyBar(result: any, spec: any) {
@@ -12,13 +13,13 @@ function modifyBar(result: any, spec: any) {
   staggerXAxisLabels(result, spec);
   adjustYTitle(result, spec);
   // convert text to braille
-  convertToBraille(result, spec);
+  // convertToBraille(result, spec);
 }
 
 // modify the line mark
 function modifyLine(result: any, spec: any) {
   // convert text to braille
-  convertToBraille(result, spec);
+  // convertToBraille(result, spec);
   staggerXAxisLabels(result, spec);
   modifyStrokeDash(result, spec);
 }
@@ -27,7 +28,7 @@ function modifyLine(result: any, spec: any) {
 // modify the arc mark
 function modifyArc(result: any, spec: any) {
   // convert text to braille
-  convertToBraille(result, spec);
+  // convertToBraille(result, spec);
   const textureMarkSelector = '.mark-arc.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
 }
@@ -35,7 +36,7 @@ function modifyArc(result: any, spec: any) {
 // modify the Point mark 
 function modifyPoint(result: any, spec: any) {
   // convert text to braille
-  convertToBraille(result, spec);
+  // convertToBraille(result, spec);
   const textureMarkSelector = '.mark-symbol.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
 
@@ -45,18 +46,21 @@ function modifyPoint(result: any, spec: any) {
 
 function modifySvg(result: any, spec: any) {
 
+  initSvgPatterns();
+
+  convertToBraille(result, spec);
+
+  let textureMarkSelector = "";
+  let legendSymbolSelector = "";
   if (spec.mark === "arc" || spec.mark.type === "arc") {
-    console.log("here")
-    modifyArc(result, spec);
+    textureMarkSelector = '.mark-arc.role-mark.marks path';
+    legendSymbolSelector = '.mark-symbol.role-legend-symbol path';
   } else if (spec.mark === "bar" || spec.mark.type === "bar") {
-    modifyBar(result, spec);
-  } else if (spec.mark === "point" || spec.mark.type === "point") {
-    modifyPoint(result, spec);
-  } else if (spec.mark === "line" || spec.mark.type === "line") {
-    modifyLine(result, spec);
-  } else {
-    console.log("Oooop you are new! Unsupported mark type");
+    textureMarkSelector = '.mark-rect.role-mark.marks path';
+    legendSymbolSelector = '.mark-symbol.role-legend-symbol path';
   }
+
+  applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, legendSymbolSelector);
 }
 
 
