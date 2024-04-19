@@ -6,34 +6,41 @@ import { setVLHeight } from "../utils/setVLHeight";
 
 async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
     try {
-        const result = await vegaEmbed("#tactile", mergedSpec, { renderer: "svg" });
-        const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], mergedSpec);
-        const braillePaddingX = maxBrailleWidth * 0.1;
-        const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
-        const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
+        // if mark.type is not arc
+        if (mergedSpec.mark != "arc" && mergedSpec.mark.type != "arc") {
+            const result = await vegaEmbed("#tactile", mergedSpec, { renderer: "svg" });
+            const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], mergedSpec);
+            const braillePaddingX = maxBrailleWidth * 0.1;
+            const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
+            const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
 
+            // ================== Update Height and Width ==================
+            mergedSpec = setVLWidth(mergedSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
+            mergedSpec = setVLHeight(result, mergedSpec, numberOfTicksY);
 
-        // ================== Update Width==================
-        mergedSpec = setVLWidth(mergedSpec, maxBrailleWidth, braillePaddingX, numberOfTicksX);
-        if (mergedSpec.mark.type == "line" || mergedSpec.mark == "line") {
-            if (mergedSpec.encoding.color) {
-                // add encoding.strokeDash and set field to encoding.color.field
-                mergedSpec.encoding.strokeDash = {
-                    "field": mergedSpec.encoding.color.field,
+            // ================== Update Multi-series Line Chart ==================
+            if (mergedSpec.mark.type == "line" || mergedSpec.mark == "line") {
+                if (mergedSpec.encoding.color) {
+                    // add encoding.strokeDash and set field to encoding.color.field
+                    mergedSpec.encoding.strokeDash = {
+                        "field": mergedSpec.encoding.color.field,
+                    }
+                    // remove encoding.color 
+                    delete mergedSpec.encoding.color;
                 }
-                // remove encoding.color 
-                delete mergedSpec.encoding.color;
             }
         }
-        mergedSpec = setVLHeight(result, mergedSpec, braillePaddingX, numberOfTicksY);
+
 
         // ================== texture ==================
+        // if use specified textures, we use user specified textures
         if (mergedSpec.encoding.color && mergedSpec.encoding.color.scale && mergedSpec.encoding.color.scale.range) {
             // iterate through range, and replace each texture name to "url(#textureName)"
             mergedSpec.encoding.color.scale.range = mergedSpec.encoding.color.scale.range.map((textureName: string) => {
                 return `url(#${textureName})`;
             });
         }
+
         return mergedSpec;
     } catch (error) {
         console.error(error);

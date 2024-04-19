@@ -2,22 +2,28 @@ const d3 = require("d3");
 
 function setVLHeight(
     result: any,
-    updatedVLSpec: any,
-    braillePaddingY: number,
+    mergedSpec: any,
     numberOfTicksY: number,
 ) {
-    // if user did not specify number of ticks for y axis
-    if (!updatedVLSpec.encoding.y.axis || !updatedVLSpec.encoding.y.axis.tickCount) {
-        // set y axis tick count to be the number of ticks
-        updatedVLSpec.encoding.y.axis = {
-            ...updatedVLSpec.encoding.y.axis, // Preserve existing properties
-            "tickCount": numberOfTicksY
-        };
-    }
+    const braillePaddingY = 10;
+    const maxHeight = 500;
 
-    const currentHeight = d3.select(result.view.container()).select("svg").attr("height");
-    updatedVLSpec.height = Number(currentHeight) + numberOfTicksY * braillePaddingY;
-    return updatedVLSpec;
+    if (mergedSpec.mark !== "arc" || mergedSpec.mark.type !== "arc") {
+        // if user did not specify number of ticks for y axis
+        if (!mergedSpec.encoding.y.axis || !mergedSpec.encoding.y.axis.tickCount) {
+            // set y axis tick count to be the number of ticks
+            mergedSpec.encoding.y.axis = {
+                ...mergedSpec.encoding.y.axis, // Preserve existing properties
+                "tickCount": numberOfTicksY
+            };
+        }
+
+        const currentHeight = d3.select(result.view.container()).select("svg").attr("height");
+        let newHeight = Number(currentHeight) + numberOfTicksY * braillePaddingY
+
+        mergedSpec.height = newHeight > maxHeight ? maxHeight : newHeight;
+        return mergedSpec;
+    }
 }
 
 export { setVLHeight };

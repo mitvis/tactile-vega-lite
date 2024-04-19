@@ -1,5 +1,6 @@
 const defaultStrokeWidth = 2; // default stroke width
 
+
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
@@ -14,8 +15,6 @@ const defaultLegendPadding = 60 // distance between bottom of legend and top of 
 const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
-
-
 
 const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 
@@ -53,7 +52,7 @@ export const defaultTVLSpecLine = {
         },
         "mark": {
             "stroke": "black",
-            "strokeWidth": defaultStrokeWidth,
+            "strokeWidth": 6,
             "size": 10
         },
         "axis": {

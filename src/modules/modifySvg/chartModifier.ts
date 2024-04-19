@@ -60,7 +60,13 @@ function modifySvg(result: any, spec: any) {
     legendSymbolSelector = '.mark-symbol.role-legend-symbol path';
   }
 
+  if (spec.mark === "line" || spec.mark.type === "line") {
+    modifyStrokeDash(result, spec);
+  }
+
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, legendSymbolSelector);
+
+
 }
 
 

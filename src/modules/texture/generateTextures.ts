@@ -19,7 +19,7 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
         colorToTextureUrl[uniqueColors[1]] = "url(#densly_dotted_pattern)";
         return colorToTextureUrl;
 
-    } else if (uniqueColors.length > 5) {
+    } else if (uniqueColors.length > patternIDs.length) {
         alert('There are too many colors! Pls why would you do this to me?');
         return colorToTextureUrl;
     } else {

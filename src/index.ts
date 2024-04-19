@@ -8,34 +8,36 @@ import { updateDefault } from "./modules/modifySpec/updateDefault";
 import { terminateWorker } from "./modules/braille/translateBraille";
 import * as monaco from 'monaco-editor';
 import { initSvgPatterns } from "./modules/texture/initializeTexture";
-const d3 = require("d3");
 
 
 document.addEventListener('DOMContentLoaded', () => {
 
   const submitButton = document.getElementById('render') as HTMLButtonElement;
   const downloadButton = document.getElementById('download') as HTMLButtonElement;
-  const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
+  // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
 
   let userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A simple bar chart with embedded data.",
-    "data": {
-      "values": [
-        { "a": "A", "b": 28 }, { "a": "B", "b": 55 }, { "a": "C", "b": 43 },
-        { "a": "D", "b": 91 }, { "a": "E", "b": 81 }, { "a": "F", "b": 53 },
-        { "a": "G", "b": 19 }, { "a": "H", "b": 87 }, { "a": "I", "b": 52 }
-      ]
-    },
-    "mark": "bar",
+    "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/barley.json" },
+    "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
+    "mark": "line",
+    "width": { "step": 50 },
     "encoding": {
-      "x": { "field": "a", "type": "nominal", "axis": { "labelAngle": 0 } },
-      "y": { "field": "b", "type": "quantitative" }
+      "x": {
+        "field": "year",
+        "type": "ordinal",
+        "scale": { "padding": 0.5 }
+      },
+      "y": {
+        "aggregate": "median",
+        "field": "yield",
+        "type": "quantitative"
+      },
+      "texture": { "field": "site", "type": "nominal" }
     }
   }
-
 
 
 
@@ -73,18 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (VLSpec.encoding.color && VLSpec.encoding.color.scale && VLSpec.encoding.color.scale.range) {
       delete VLSpec.encoding.color.scale.range;
     }
-    console.log("VLSpec: ", VLSpec)
     vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
   }
 
   function renderTactileChart(spec: any) {
-    let TVLSpec = JSON.parse(JSON.stringify(spec));
     initSvgPatterns();
+    let TVLSpec = JSON.parse(JSON.stringify(spec));
     if (TVLSpec.encoding.texture) {
       TVLSpec.encoding.color = TVLSpec.encoding.texture;
       delete TVLSpec.encoding.texture;
     }
-    console.log("TVL spec: ", TVLSpec)
 
     let mergedSpec = TVLSpec;
     let defaultSpec = selectDefaultSpec(TVLSpec);
@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
   submitButton.addEventListener('click', () => {
     try {
       let spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
-      console.log("monaco editor value:", spec)
       renderTactileChart(spec);
       renderVegaLiteChart(spec);
     } catch (error) {

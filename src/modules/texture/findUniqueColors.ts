@@ -1,6 +1,4 @@
 const d3 = require('d3');
-const texturesModule = require('textures');
-const textures = texturesModule.default; // Access the actual default export
 
 // Function to find unique colors used in the chart
 function findUniqueColors(result: any, svgSelector: string): string[] {
