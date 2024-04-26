@@ -51,7 +51,7 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
                 "grid": true,
                 "gridWidth": defaultGridWidth,
                 "gridColor": "black",
-                "titlePadding": 10,
+                "titlePadding": 40,
                 "labelAngle": 0,
                 "labelPadding": 10,
                 "staggerLabels": "auto",
@@ -71,7 +71,7 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
             defaultSpec.encoding.x.axis = {
                 "grid": false,
                 "ticks": true,
-                "titlePadding": 10,
+                "titlePadding": 40,
                 "labelAngle": 0,
                 "labelPadding": 10,
                 "staggerLabels": "auto",

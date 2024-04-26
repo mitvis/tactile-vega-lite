@@ -1,11 +1,17 @@
+// marks
+// outline
 const defaultStrokeWidth = 2; // default stroke width
 
+// text to braille
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
+// axis
 const defaultXAxisTitlePadding = 20;
 const defaultTickLength = 10;
+const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
+// legend
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
 const defaultLegendPadding = 60 // distance between bottom of legend and top of chart 
 // probably don't want to hardcode this 
@@ -15,8 +21,7 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-const defaultLabelPadding = 10; // default label padding (distance from axis line)
-
+// TN & description
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 

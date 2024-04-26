@@ -147,6 +147,5 @@ export function initSvgPatterns(): void {
         .attr("height", "1")
         .attr("fill", "black");
 
-    console.log(svg)
 }
 

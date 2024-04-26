@@ -20,8 +20,11 @@ const defaultLabelPadding = 10; // default label padding (distance from axis lin
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 
+const defaultTitleYOffset = -10; // default title y offset (distance from axis)
+
+
 export const defaultTVLSpecScatter = {
-    "mark": "bar",
+    "mark": "point",
     "encoding": {
         "x": {
             "axis": {
@@ -32,9 +35,11 @@ export const defaultTVLSpecScatter = {
         },
         "y": {
             "axis": {
+                "titlePadding": defaultXAxisTitlePadding,
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
+                "titleY": defaultTitleYOffset
             }
         }
     },
@@ -75,7 +80,7 @@ export const defaultTVLSpecScatter = {
             "titleFontSize": defaultBrailleFontSize,
             "titlePadding": defaultLegendTitlePadding,
             "direction": "vertical",
-            "orient": "top",
+            // "orient": "top",
             "padding": defaultLegendPadding,
             "symbolSize": defaultLegendSymbolSize,
             "columnPadding": defaultLegentColumnPadding,

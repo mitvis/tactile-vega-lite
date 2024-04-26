@@ -46,6 +46,15 @@ function selectDefaultSpec(userSpec: any) {
 
         return defaultTVLSpecArc;
     }
+
+    if (typeof userSpec.mark === 'string' && (userSpec.mark === "point" || userSpec.mark === "circle")) {
+
+        return defaultTVLSpecScatter;
+    }
+    else if (typeof userSpec.mark === 'object' && (userSpec.mark.type === "point" || userSpec.mark.type === "circle")) {
+
+        return defaultTVLSpecScatter;
+    }
 }
 
 export { selectDefaultSpec };

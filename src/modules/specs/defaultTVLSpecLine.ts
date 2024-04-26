@@ -20,6 +20,10 @@ const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
+// TN & description
+const defaultSubtitlePadding = 40; // distance between subtitle and title
+const defaultTitlePadding = 40;
+
 export const defaultTVLSpecLine = {
     "mark": "line",
     "encoding": {
@@ -49,6 +53,10 @@ export const defaultTVLSpecLine = {
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
+            "subtitlePadding": defaultSubtitlePadding,
+            "offset": defaultTitlePadding,
+            "subtitleFont": defaultBrailleFont,
+            "subtitleFontSize": defaultBrailleFontSize,
         },
         "mark": {
             "stroke": "black",

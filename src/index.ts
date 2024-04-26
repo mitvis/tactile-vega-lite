@@ -20,24 +20,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "data": { "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/barley.json" },
-    "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
-    "mark": "line",
-    "width": { "step": 50 },
+    "description": "Stock prices of 5 Tech Companies over Time.",
+    "data": {
+      "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"
+    },
+    "title": "Stock prices of 5 Tech Companies over Time.",
+    "mark": {
+      "type": "line"
+    },
     "encoding": {
       "x": {
-        "field": "year",
-        "type": "ordinal",
-        "scale": { "padding": 0.5 }
+        "timeUnit": "year",
+        "field": "date"
       },
       "y": {
-        "aggregate": "median",
-        "field": "yield",
+        "aggregate": "mean",
+        "field": "price",
         "type": "quantitative"
       },
-      "texture": { "field": "site", "type": "nominal" }
+      "strokeDash": {
+        "field": "symbol",
+        "type": "nominal"
+      }
+    },
+    "width": 300,
+    "config": {
+      "legend": {
+        "orient": "right"
+      }
     }
   }
+
+
+
 
 
 
