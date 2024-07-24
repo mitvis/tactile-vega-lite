@@ -3,7 +3,6 @@ const defaultStrokeWidth = 2; // default stroke width
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
-const defaultXAxisTitlePadding = 20;
 const defaultTickLength = 10;
 
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
@@ -59,6 +58,7 @@ export const defaultTVLSpecArc = {
             "titleFontSize": defaultBrailleFontSize,
             "titlePadding": defaultLegendTitlePadding,
             "direction": "vertical",
+            "orient": "top",
             "padding": defaultLegendPadding,
             "symbolSize": defaultLegendSymbolSize,
             "columnPadding": defaultLegentColumnPadding,

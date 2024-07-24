@@ -17,44 +17,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
-
   let userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Stock prices of 5 Tech Companies over Time.",
+    "description": "Bar chart of the most recent fertility rates for USA, China, and Australia.",
     "data": {
-      "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"
+      "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
     },
-    "title": "Stock prices of 5 Tech Companies over Time.",
-    "mark": {
-      "type": "line"
-    },
+    "transform": [
+      {
+        "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
+      }
+    ],
+    "mark": "bar",
     "encoding": {
-      "x": {
-        "timeUnit": "year",
-        "field": "date"
-      },
+      "x": { "field": "country", "type": "nominal", "title": "Country" },
       "y": {
-        "aggregate": "mean",
-        "field": "price",
-        "type": "quantitative"
+        "field": "fertility",
+        "type": "quantitative",
+        "title": "Fertility Rate"
       },
-      "strokeDash": {
-        "field": "symbol",
-        "type": "nominal"
-      }
+      "color": { "field": "country", "type": "nominal" }
     },
-    "width": 300,
-    "config": {
-      "legend": {
-        "orient": "right"
-      }
-    }
+    "config": {}
   }
-
-
-
-
-
 
   // Initialize Monaco Editor
   const editor = monaco.editor.create(editorContainer, {

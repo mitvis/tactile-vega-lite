@@ -41,10 +41,10 @@ function updateFont(userSpec: any, defaultSpec: any) {
 
 function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
 
-    if (userSpec.config && userSpec.config.axis && userSpec.config.axis.grid && userSpec.config.axis.grid === true) {
+    if (userSpec.config && userSpec.config.axis && userSpec.config.axis.grid && (userSpec.config.axis.grid === true)) {
         defaultSpec.encoding.x.axis.grid = true;
         defaultSpec.encoding.y.axis.grid = true;
-    } else {
+    } else if (!userSpec.config || !userSpec.config.axis || !userSpec.config.axis.grid) {
         if (quantAxis === "x") {
             // append the following axis properties to the defaultSpec
             defaultSpec.encoding.x.axis = {
@@ -88,6 +88,10 @@ function updateAxis(userSpec: any, quantAxis: string, defaultSpec: any) {
             };
         }
 
+    } else if (userSpec.config.axis.grid === false) {
+        console.log(userSpec.config.axis.grid);
+        defaultSpec.encoding.x.axis.grid = false;
+        defaultSpec.encoding.y.axis.grid = false;
     }
 
 

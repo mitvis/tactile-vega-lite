@@ -46,8 +46,8 @@ export function initSvgPatterns(): void {
 
     defs.append("pattern")
         .attr("id", "dotted")
-        .attr("width", "10mm")
-        .attr("height", "10mm")
+        .attr("width", "5mm")
+        .attr("height", "5mm")
         .attr("patternUnits", "userSpaceOnUse")
         .attr("fill", "black")
         .attr("stroke", "none")
