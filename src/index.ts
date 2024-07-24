@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let userTVLSpec: any = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Bar chart of the most recent fertility rates for USA, China, and Australia.",
+    "title": "Average Life Expectancy for USA, China, and Australia.",
     "data": {
       "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
     },
@@ -32,15 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
     "encoding": {
       "x": { "field": "country", "type": "nominal", "title": "Country" },
       "y": {
-        "field": "fertility",
+        "aggregate": "average",
+        "field": "life_expect",
         "type": "quantitative",
-        "title": "Fertility Rate"
-      },
-      "color": { "field": "country", "type": "nominal" }
+        "title": "Life Expectancy"
+      }
     },
     "config": {}
   }
-
   // Initialize Monaco Editor
   const editor = monaco.editor.create(editorContainer, {
     value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
