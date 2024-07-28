@@ -9,7 +9,25 @@ export function initSvgPatterns(): void {
 
     defs.append("pattern")
         .attr("id", "no_fill")
-        .attr("fill", "white");
+        .attr("fill", "white")
+        .attr("width", "1")
+        .attr("height", "1")
+        .attr("patternUnits", "userSpaceOnUse")
+        .append("rect")
+        .attr("width", "1")
+        .attr("height", "1")
+
+    // pattern that is just fill black
+    defs.append("pattern")
+        .attr("id", "fill_black")
+        .attr("width", "1")
+        .attr("height", "1")
+        .attr("patternUnits", "userSpaceOnUse")
+        .append("rect")
+        .attr("width", "1")
+        .attr("height", "1")
+        .attr("fill", "black");
+
 
     defs.append("pattern")
         .attr("id", "densely_dotted")
@@ -140,16 +158,6 @@ export function initSvgPatterns(): void {
         .attr("stroke", "black")
         .attr("stroke-width", "0.8mm")
 
-    // pattern that is just fill black
-    defs.append("pattern")
-        .attr("id", "fill_black")
-        .attr("width", "1")
-        .attr("height", "1")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("rect")
-        .attr("width", "1")
-        .attr("height", "1")
-        .attr("fill", "black");
 
 }
 

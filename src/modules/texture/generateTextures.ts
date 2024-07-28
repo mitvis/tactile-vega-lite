@@ -14,13 +14,17 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
         colorToTextureUrl[uniqueColors[0]] = "url(#no_fill)";
         return colorToTextureUrl;
 
-    } else if (uniqueColors.length === 2) {
+    }
+
+    if (uniqueColors.length === 2) {
         // if there are only two colors, fill one with black one with white
         colorToTextureUrl[uniqueColors[0]] = "url(#fill_black)";
         colorToTextureUrl[uniqueColors[1]] = "url(#densly_dotted_pattern)";
         return colorToTextureUrl;
 
-    } else if (uniqueColors.length > patternIDs.length) {
+    }
+
+    if (uniqueColors.length > patternIDs.length) {
         alert('There are too many colors! Pls why would you do this to me?');
         return colorToTextureUrl;
     } else {

@@ -17,7 +17,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
-  let userTVLSpec: any = {
+  // let userTVLSpec: any = {
+  //   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  //   "title": "Average Life Expectancy for USA, China, and Australia.",
+  //   "data": {
+  //     "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+  //   },
+  //   "transform": [
+  //     {
+  //       "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
+  //     }
+  //   ],
+  //   "mark": "bar",
+  //   "encoding": {
+  //     "x": {
+  //       "field": "country",
+  //       "type": "nominal",
+  //       "title": "Country"
+  //     },
+  //     "y": {
+  //       "aggregate": "average",
+  //       "field": "life_expect",
+  //       "type": "quantitative",
+  //       "title": "Life Expectancy"
+  //     }
+  //   },
+  //   "config": {}
+  // }
+
+  let userTVLSpec: any =
+  {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": "Average Life Expectancy for USA, China, and Australia.",
     "data": {

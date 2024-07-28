@@ -17,6 +17,7 @@ const defaultStrokeWidth = defaultGridWidth; // default stroke width
 
 // text to braille
 const defaultBrailleFont = "Swell Braille";
+// const defaultBrailleFontSize = 90; // this should be 29pt in physical units
 const defaultBrailleFontSize = 29;
 
 // axis
@@ -56,7 +57,12 @@ export const defaultTVLSpecBar = {
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "style": "solidGrid",
+                "style": ["solidGrid", "foreground_grid"],
+            }
+        },
+        "color": {
+            "scale": {
+                "range": ["fill_black"]
             }
         }
     },
@@ -138,8 +144,11 @@ export const defaultTVLSpecBar = {
             "noGrid": {
                 "grid": false,
             },
-            "foreground": {
+            "foreground_grid": {
                 "zindex": 1
+            },
+            "background_grid": {
+                "zindex": 0
             }
         }
     }

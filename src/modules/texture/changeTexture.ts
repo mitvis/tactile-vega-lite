@@ -8,7 +8,9 @@ function applyTextures(result: any, svgSelector: string, colorTextureMap: Record
   d3.select(result.view.container()).selectAll(svgSelector).each(function (this: any) {
     // Directly apply the texture URL as the fill for each element
     const pathElement = d3.select(this);
+    // get the current fill attribute of the path element
     const currentFillColor = pathElement.style('fill');
+
     // Check if there's a corresponding texture URL for the current fill color
     const textureUrl = colorTextureMap[currentFillColor];
     if (textureUrl) {
