@@ -3,7 +3,10 @@ import { getBrailleHeightForSelectors } from "../utils/getBrailleHeightForSelect
 import { getBrailleWidthForSelectors } from "../utils/getBrailleWidthForSelectors";
 
 
+
+
 async function calculateStaggerAmount(result: any, spec: any) {
+
     let maxTextHeight;
     try {
         maxTextHeight = await getBrailleHeightForSelectors(result, ['.mark-text.role-axis-label text'], spec);
@@ -16,10 +19,9 @@ async function calculateStaggerAmount(result: any, spec: any) {
 
 }
 
-let staggerThreshold = 50;
+let staggerThreshold = 100;
 
 async function stagger(result: any, spec: any) {
-
     // wait for the maxTextHeight to be calculated
     // const staggerAmount = await calculateStaggerAmount(result, spec);
     // [TODO] fix this staggerAmount and getBrailleHeightForSelectors issues
@@ -84,8 +86,7 @@ async function staggerXAxisLabels(result: any, spec: any) {
         stagger(result, spec);
     } else if (spec.encoding.x.axis.staggerLabels === "auto") {
         // stagger the x-axis labels if the width of the label is greater than x
-        let maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], spec);
-        if (maxBrailleWidth >= staggerThreshold) {
+        if (spec.config.tactileParams.maxBrailleWidth >= staggerThreshold) {
             stagger(result, spec);
         }
     }

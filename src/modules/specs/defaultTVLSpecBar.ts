@@ -1,6 +1,19 @@
+const defaultPPI = 224; // default PPI of the display
+const minLineWidth = 1; // (mm)  minimum line width
+
+
+// Grid 
+const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+
+// Ticks
+const minTickLength = 6; // (mm) minimum tick length
+const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
+
+// const defaultbarBandPaddingInner = 
+
 // marks
 // outline
-const defaultStrokeWidth = 2; // default stroke width
+const defaultStrokeWidth = defaultGridWidth; // default stroke width
 
 // text to braille
 const defaultBrailleFont = "Swell Braille";
@@ -8,7 +21,7 @@ const defaultBrailleFontSize = 29;
 
 // axis
 const defaultXAxisTitlePadding = 20;
-const defaultTickLength = 10;
+
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
 // legend
@@ -25,6 +38,9 @@ const defaultLegendRowPadding = 20; // distance between legend rows
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 
+
+
+
 export const defaultTVLSpecBar = {
     "mark": "bar",
     "encoding": {
@@ -40,6 +56,7 @@ export const defaultTVLSpecBar = {
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
+                "style": "solidGrid",
             }
         }
     },
@@ -73,6 +90,7 @@ export const defaultTVLSpecBar = {
             "tickWidth": defaultStrokeWidth,
             "domainColor": "black"
         },
+
         "legend": {
             "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
@@ -91,6 +109,38 @@ export const defaultTVLSpecBar = {
         },
         "padding": {
             "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
+        },
+        "style": {
+            "dottedGrid": {
+                "grid": true,
+                "gridCap": "round",
+                "gridDash": [1, 6],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "dashedGrid": {
+                "grid": true,
+                "gridCap": "square",
+                "gridDash": [56, 28],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "solidGrid": {
+                "grid": true,
+                "gridCap": "butt",
+                "gridDash": [0],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "noGrid": {
+                "grid": false,
+            },
+            "foreground": {
+                "zindex": 1
+            }
         }
     }
 }

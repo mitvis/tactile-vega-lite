@@ -10,7 +10,8 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
 
     if (uniqueColors.length === 1) {
         // if there is only one unique color, fill it with black
-        colorToTextureUrl[uniqueColors[0]] = "url(#fill_black)";
+        // colorToTextureUrl[uniqueColors[0]] = "url(#fill_black)";
+        colorToTextureUrl[uniqueColors[0]] = "url(#no_fill)";
         return colorToTextureUrl;
 
     } else if (uniqueColors.length === 2) {

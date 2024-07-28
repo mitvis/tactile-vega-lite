@@ -136,7 +136,7 @@ function updateDefault(userSpec: any, defaultSpec: any) {
     let quantAxis = "";
     if (userSpec.mark === "point" || userSpec.mark.type === "point" || userSpec.mark === "line" || userSpec.mark.type === "line" || userSpec.mark === "bar" || userSpec.mark.type === "bar") {
         quantAxis = checkQuantEncoding(userSpec);
-        defaultSpec = updateAxis(userSpec, quantAxis, defaultSpec);
+        // defaultSpec = updateAxis(userSpec, quantAxis, defaultSpec);
     }
 
     defaultSpec = updateFont(userSpec, defaultSpec);

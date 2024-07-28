@@ -30,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
     "mark": "bar",
     "encoding": {
-      "x": { "field": "country", "type": "nominal", "title": "Country" },
+      "x": {
+        "field": "country",
+        "type": "nominal",
+        "title": "Country"
+      },
       "y": {
         "aggregate": "average",
         "field": "life_expect",

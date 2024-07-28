@@ -8,7 +8,7 @@ function setVLWidth(
     const chartInnerPadding = 100;
     const userSpecifiedNumberOfTicks = mergedSpec.encoding.x.axis && mergedSpec.encoding.x.axis.tickCount;
     const padding = maxBrailleWidth * mergedSpec.config.scale.barBandPaddingInner
-    const maxBarWidth = 100;
+    const maxBarWidth = 200;
     let stepWidth = Math.ceil(maxBrailleWidth + padding);
 
     // mark is NOT arc 
@@ -71,6 +71,18 @@ function setVLWidth(
                 mergedSpec = {
                     ...mergedSpec,
                     "width": width
+                }
+            }
+            return mergedSpec;
+        }
+
+        if (mergedSpec.encoding.x.type === "ordinal") {
+            // set width based on step
+            mergedSpec = {
+                ...mergedSpec,
+                "width": {
+                    // set step to be smallest of stepWidth and maxBarWidth
+                    "step": stepWidth > maxBarWidth ? maxBarWidth : stepWidth
                 }
             }
             return mergedSpec;

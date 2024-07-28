@@ -28,10 +28,12 @@ function modifySvg(result: any, spec: any) {
 
   let textureMarkSelector = "";
   let legendSymbolSelector = "";
+
   if (spec.mark === "arc" || spec.mark.type === "arc") {
     textureMarkSelector = '.mark-arc.role-mark.marks path';
     legendSymbolSelector = '.mark-symbol.role-legend-symbol path';
     applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, legendSymbolSelector);
+
   } else if (spec.mark === "bar" || spec.mark.type === "bar") {
     staggerXAxisLabels(result, spec);
     textureMarkSelector = '.mark-rect.role-mark.marks path';

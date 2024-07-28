@@ -10,6 +10,7 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
         if (mergedSpec.mark != "arc" && mergedSpec.mark.type != "arc") {
             const result = await vegaEmbed("#tactile", mergedSpec, { renderer: "svg" });
             const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], mergedSpec);
+            console.log("maxBrailleWidth: ", maxBrailleWidth);
             const braillePaddingX = maxBrailleWidth * 0.1;
             const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
             const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
@@ -28,6 +29,11 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
                     // remove encoding.color 
                     delete mergedSpec.encoding.color;
                 }
+            }
+            // add maxBrailleWidth and braillePadding to config.tactileParams
+            mergedSpec.config.tactileParams = {
+                "maxBrailleWidth": maxBrailleWidth,
+                "braillePadding": braillePaddingX
             }
         }
 

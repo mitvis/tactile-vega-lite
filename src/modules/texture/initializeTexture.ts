@@ -8,6 +8,10 @@ export function initSvgPatterns(): void {
     const defs = svg.append("defs");
 
     defs.append("pattern")
+        .attr("id", "no_fill")
+        .attr("fill", "white");
+
+    defs.append("pattern")
         .attr("id", "densely_dotted")
         .attr("width", "2.5mm")
         .attr("height", "2.5mm")
