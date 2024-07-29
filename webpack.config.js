@@ -11,6 +11,7 @@ module.exports = {
   entry: {
     main: './src/index.ts',
     simple_bar: './src/simple_bar/index.ts',
+    grouped_bar: './src/grouped_bar/index.ts',
   },
 
   module: {
@@ -73,6 +74,11 @@ module.exports = {
       template: './src/simple_bar/index.html',
       filename: 'simple_bar/index.html',
       chunks: ['simple_bar'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/grouped_bar/index.html',
+      filename: 'grouped_bar/index.html',
+      chunks: ['grouped_bar'],
     }),
     new CopyPlugin({
       patterns: [

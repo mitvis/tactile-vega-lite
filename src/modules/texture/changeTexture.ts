@@ -16,6 +16,8 @@ function applyTextures(result: any, svgSelector: string, colorTextureMap: Record
     if (textureUrl) {
       // If a corresponding texture URL exists, apply it as the new fill for the path
       pathElement.style('fill', textureUrl);
+      pathElement.style('stroke', 'black');
+      
     }
   });
 }

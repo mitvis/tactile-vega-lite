@@ -9,8 +9,6 @@ const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
 const minTickLength = 6; // (mm) minimum tick length
 const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
 
-// const defaultbarBandPaddingInner = 
-
 // marks
 // outline
 const defaultStrokeWidth = defaultGridWidth; // default stroke width

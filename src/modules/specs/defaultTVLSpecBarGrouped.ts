@@ -1,10 +1,27 @@
-const defaultStrokeWidth = 2; // default stroke width
+const defaultPPI = 224; // default PPI of the display
+const minLineWidth = 1; // (mm)  minimum line width
+
+
+// Grid 
+const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+
+
+// Ticks
+const minTickLength = 6; // (mm) minimum tick length
+const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
+
+
+// marks
+// outline
+const defaultStrokeWidth = defaultGridWidth; // default stroke width
 
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
+// axis
 const defaultXAxisTitlePadding = 20;
-const defaultTickLength = 10;
+
+const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
 const defaultLegendPadding = 60 // distance between bottom of legend and top of chart 
@@ -15,13 +32,16 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
 const defaultSubtitlePadding = 40; // distance between subtitle and title
 const defaultTitlePadding = 40;
 
 export const defaultTVLSpecBarGrouped = {
-    "mark": "bar",
+    "mark": {
+        "type": "bar",
+        "stroke": "black",
+        "strokeWidth": defaultStrokeWidth
+    },
     "encoding": {
         "x": {
             "axis": {
