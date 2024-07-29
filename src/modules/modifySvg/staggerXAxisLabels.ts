@@ -87,6 +87,7 @@ async function staggerXAxisLabels(result: any, spec: any) {
     } else if (spec.encoding.x.axis.staggerLabels === "auto") {
         // stagger the x-axis labels if the width of the label is greater than x
         if (spec.config.tactileParams.maxBrailleWidth >= staggerThreshold) {
+            console.log("staggering x-axis labels");
             stagger(result, spec);
         }
     }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vega-Lite Tactile Renderer (Bar Chart)</title>
+    <!-- import google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        .body {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        h1 {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 1em;
+        }
+
+        .container {
+            display: grid;
+            /* two columns, 1st col takes up 1/3 space, 2nd col takes up 2/3 space */
+            grid-template-columns: 1fr 2fr;
+            /* set min size for row */
+            grid-auto-rows: minmax(87vh, auto);
+
+            /* add padding */
+            padding: 10px;
+            /* add gap */
+            gap: 1%;
+
+        }
+
+        #editorContainer {
+            min-width: 40vw;
+            min-height: 87vh;
+        }
+
+        #editorContainer .monaco-editor {
+            font-family: 'Fira Code', monospace;
+            font-size: 18px;
+        }
+
+        /* remove default button style, and make pretty */
+        button {
+            background-color: #274c71;
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+            /* rounded corner */
+            border-radius: 12px;
+        }
+
+        #tactile {
+            /* center in div */
+            display: flex;
+            justify-content: center;
+        }
+
+        #visual {
+            /* center in div */
+            display: flex;
+            justify-content: center;
+        }
+
+        .render-container {
+            display: grid;
+            /* one col */
+            grid-template-columns: 1fr;
+            /* 4 rows */
+            grid-template-rows: auto auto auto auto;
+        }
+
+        .renderer {
+            min-width: 100%;
+            border: lightgrey 1px solid;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="item">
+            <h1>Tactile Vega Lite Input (Simple Bar)</h1>
+            <div>
+                <div id="editorContainer_simple_bar" style="width: 800px; height: 600px;"></div>
+                <button id="render">Render</button>
+            </div>
+        </div>
+        <div class="item">
+            <div class="render-container">
+                <div class="sub-item sub-item1">
+                    <h1>Visual Renderer</h1>
+                    <div id="visual" class="renderer"></div>
+                </div>
+
+                <div class="sub-item sub-item2">
+                    <h1>Tactile Renderer</h1>
+                    <div id="tactile" class="renderer"></div>
+                    <button id="download">Download Tactile SVG</button>
+                    <!-- <button id="downloadPNG">Download Tactile PNG</button> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

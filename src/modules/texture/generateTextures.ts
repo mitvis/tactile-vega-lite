@@ -4,22 +4,31 @@ const d3 = require('d3');
 function generateTexturesForColors(uniqueColors: string[]): Record<string, string> {
     const colorToTextureUrl: Record<string, string> = {};
     // 9 patterns in total
-    const patternIDs = ["fill_black", "densely_dotted", "vertical_line",
-        "horizontal_line", "dotted", "dashed_line",
-        "grid_pattern", "diagonal_line_left", "diagonal_line_right"];
+    const patternIDs = [
+        "noFill",
+        "solidBlackFill",
+        "denseDottedFill",
+        "verticalLineFill",
+        "horizontalLineFill",
+        "dottedFill",
+        "dashedLineFill",
+        "gridPatternFill",
+        "diagonalLineRightFill",
+        "diagonalLineLeftFill"
+    ];
 
     if (uniqueColors.length === 1) {
         // if there is only one unique color, fill it with black
-        // colorToTextureUrl[uniqueColors[0]] = "url(#fill_black)";
-        colorToTextureUrl[uniqueColors[0]] = "url(#no_fill)";
+        colorToTextureUrl[uniqueColors[0]] = "url(#solidBlackFill)";
+        // colorToTextureUrl[uniqueColors[0]] = "url(#no_fill)";
         return colorToTextureUrl;
 
     }
 
     if (uniqueColors.length === 2) {
         // if there are only two colors, fill one with black one with white
-        colorToTextureUrl[uniqueColors[0]] = "url(#fill_black)";
-        colorToTextureUrl[uniqueColors[1]] = "url(#densly_dotted_pattern)";
+        colorToTextureUrl[uniqueColors[0]] = "url(#solidBlackFill)";
+        colorToTextureUrl[uniqueColors[1]] = "url(#denseDottedFill)";
         return colorToTextureUrl;
 
     }

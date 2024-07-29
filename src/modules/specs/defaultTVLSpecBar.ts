@@ -43,13 +43,16 @@ const defaultTitlePadding = 40;
 
 
 export const defaultTVLSpecBar = {
-    "mark": "bar",
+    "mark": {
+        "type": "bar",
+    },
     "encoding": {
         "x": {
             "axis": {
                 "titlePadding": defaultXAxisTitlePadding,
                 "labelAngle": 0,
                 "labelPadding": defaultLabelPadding,
+                "staggerLabels": "auto"
             }
         },
         "y": {
@@ -57,12 +60,7 @@ export const defaultTVLSpecBar = {
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "style": ["solidGrid", "foreground_grid"],
-            }
-        },
-        "color": {
-            "scale": {
-                "range": ["fill_black"]
+                "style": ["solidGrid", "foregroundGrid"], // by default we assume that quantitative info is plotted on y (i.e. vertical bar chart), and we default to add grid for y axis
             }
         }
     },
@@ -120,7 +118,7 @@ export const defaultTVLSpecBar = {
             "dottedGrid": {
                 "grid": true,
                 "gridCap": "round",
-                "gridDash": [1, 6],
+                "gridDash": [2, 20],
                 "gridColor": "black",
                 "gridOpacity": 1,
                 "gridWidth": defaultGridWidth,
@@ -144,10 +142,10 @@ export const defaultTVLSpecBar = {
             "noGrid": {
                 "grid": false,
             },
-            "foreground_grid": {
+            "foregroundGrid": {
                 "zindex": 1
             },
-            "background_grid": {
+            "backgroundGrid": {
                 "zindex": 0
             }
         }

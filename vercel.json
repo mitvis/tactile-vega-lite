@@ -1,9 +1,8 @@
 {
-    "redirects": [
+    "rewrites": [
         {
             "source": "/simple_bar",
-            "destination": "https://vega-lite-tactile-git-simple_bar.vercel.app",
-            "permanent": true
+            "destination": "/simple_bar/index.html"
         }
     ]
 }

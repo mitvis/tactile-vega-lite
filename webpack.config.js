@@ -2,11 +2,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const { CleanPlugin } = require('webpack');
 
 
 module.exports = {
   mode: 'development', // or 'production'
-  entry: './src/index.ts', // the main entry point of your application
+  // entry: './src/index.ts', // the main entry point of your application
+  entry: {
+    main: './src/index.ts',
+    simple_bar: './src/simple_bar/index.ts',
+  },
 
   module: {
     rules: [
@@ -36,11 +41,18 @@ module.exports = {
       "fs": false, // 'fs' is typically not needed in the browser and can often be safely ignored
     },
   },
+
+
   output: {
-    filename: 'bundle.js', // the output bundle name
+    // filename: 'bundle.js', // the output bundle name
+    filename: '[name].[contenthash].bundle.js', // Ensure unique filenames
+
     path: path.resolve(__dirname, 'dist'), // output path
     publicPath: '/', // public path
+    clean: true, // Clean the output directory before emit
   },
+
+
   devtool: 'inline-source-map', // enable sourcemaps for debugging
   devServer: {
     static: {
@@ -56,6 +68,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'My Vega-Lite Wrapper', // Optional, you can specify a title
       template: 'src/index.html', // Path to your template file
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/simple_bar/index.html',
+      filename: 'simple_bar/index.html',
+      chunks: ['simple_bar'],
     }),
     new CopyPlugin({
       patterns: [

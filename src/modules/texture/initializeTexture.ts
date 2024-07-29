@@ -8,7 +8,7 @@ export function initSvgPatterns(): void {
     const defs = svg.append("defs");
 
     defs.append("pattern")
-        .attr("id", "no_fill")
+        .attr("id", "noFill")
         .attr("fill", "white")
         .attr("width", "1")
         .attr("height", "1")
@@ -19,7 +19,7 @@ export function initSvgPatterns(): void {
 
     // pattern that is just fill black
     defs.append("pattern")
-        .attr("id", "fill_black")
+        .attr("id", "solidBlackFill")
         .attr("width", "1")
         .attr("height", "1")
         .attr("patternUnits", "userSpaceOnUse")
@@ -30,7 +30,7 @@ export function initSvgPatterns(): void {
 
 
     defs.append("pattern")
-        .attr("id", "densely_dotted")
+        .attr("id", "denseDottedFill")
         .attr("width", "2.5mm")
         .attr("height", "2.5mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -41,7 +41,7 @@ export function initSvgPatterns(): void {
         .attr("fill", "black");
 
     defs.append("pattern")
-        .attr("id", "vertical_line")
+        .attr("id", "verticalLineFill")
         .attr("width", "5mm")
         .attr("height", "0.5mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -54,7 +54,7 @@ export function initSvgPatterns(): void {
         .attr("stroke-width", "1.3mm");
 
     defs.append("pattern")
-        .attr("id", "horizontal_line")
+        .attr("id", "horizontalLineFill")
         .attr("width", "0.5mm")
         .attr("height", "5mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -67,7 +67,7 @@ export function initSvgPatterns(): void {
         .attr("stroke-width", "1.3mm");
 
     defs.append("pattern")
-        .attr("id", "dotted")
+        .attr("id", "dottedFill")
         .attr("width", "5mm")
         .attr("height", "5mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -83,7 +83,7 @@ export function initSvgPatterns(): void {
         .attr("r", "1mm");
 
     defs.append("pattern")
-        .attr("id", "dashed_line")
+        .attr("id", "dashedLineFill")
         .attr("width", "7.62mm")
         .attr("height", "7.62mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -101,7 +101,7 @@ export function initSvgPatterns(): void {
         .attr("y2", "6mm")
 
     defs.append("pattern")
-        .attr("id", "grid_pattern")
+        .attr("id", "gridPatternFill")
         .attr("width", "7.5mm")
         .attr("height", "7.5mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -119,7 +119,7 @@ export function initSvgPatterns(): void {
         .attr("y2", "3.75mm")
 
     defs.append("pattern")
-        .attr("id", "diagonal_line_left")
+        .attr("id", "diagonalLineLeftFill")
         .attr("width", "10.16mm")
         .attr("height", "10.16mm")
         .attr("patternUnits", "userSpaceOnUse")
@@ -139,7 +139,7 @@ export function initSvgPatterns(): void {
         .attr("stroke-width", "0.8mm")
 
     defs.append("pattern")
-        .attr("id", "diagonal_line_right")
+        .attr("id", "diagonalLineRightFill")
         .attr("width", "5.08mm")
         .attr("height", "5.08mm")
         .attr("patternUnits", "userSpaceOnUse")
