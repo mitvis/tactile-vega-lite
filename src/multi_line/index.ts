@@ -15,43 +15,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
     // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
-    const editorContainer_simple_bar = document.getElementById('editorContainer_simple_bar') as HTMLDivElement;
+    const editorContainer_multi_line = document.getElementById('editorContainer_multi_line') as HTMLDivElement;
 
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Average Life Expectancy for USA, China, and Australia.",
+        "description": "Multi-series line chart showing life expectancy over time for several countries.",
         "data": {
             "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
         },
+        "title": "Average Fertility Rate Over Time for China and Australia",
         "transform": [
             {
-                "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
+                "filter": "datum.country === 'Australia' || datum.country === 'China'"
             }
         ],
-        "mark": "bar",
+        "mark": "line",
         "encoding": {
             "x": {
-                "field": "country",
-                "type": "nominal",
-                "title": "Country"
+                "field": "year",
+                "type": "ordinal",
+                "axis": {
+                    "title": "Year"
+                }
             },
             "y": {
                 "aggregate": "average",
-                "field": "life_expect",
+                "field": "fertility",
                 "type": "quantitative",
-                "title": "Life Expectancy"
+                "axis": {
+                    "title": "Fertility Rate",
+                    "style": [
+                        "noGrid"
+                    ]
+                }
             },
-            "texture": {
+            "strokeDash": {
+                "field": "country",
+                "type": "nominal",
                 "scale": {
-                    "range": ["solidBlackFill"]
+                    "range": ["dashed", "solid"]
                 }
             }
         },
-        "config": {}
+        "config": {
+
+        }
     }
+
     // Initialize Monaco Editor
-    const editor = monaco.editor.create(editorContainer_simple_bar, {
+    const editor = monaco.editor.create(editorContainer_multi_line, {
         value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
         language: 'json',
         theme: 'vs-light',

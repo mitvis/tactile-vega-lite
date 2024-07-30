@@ -12,6 +12,7 @@ module.exports = {
     main: './src/index.ts',
     simple_bar: './src/simple_bar/index.ts',
     grouped_bar: './src/grouped_bar/index.ts',
+    multi_line: './src/multi_line/index.ts',
   },
 
   module: {
@@ -79,6 +80,11 @@ module.exports = {
       template: './src/grouped_bar/index.html',
       filename: 'grouped_bar/index.html',
       chunks: ['grouped_bar'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/multi_line/index.html',
+      filename: 'multi_line/index.html',
+      chunks: ['multi_line'],
     }),
     new CopyPlugin({
       patterns: [

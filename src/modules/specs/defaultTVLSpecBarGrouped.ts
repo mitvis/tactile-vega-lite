@@ -28,7 +28,10 @@ const defaultLegendPadding = 60 // distance between bottom of legend and top of 
 // probably don't want to hardcode this 
 // [TODO] get y position of y axis title, 
 // y position of lengend + lengend height, maybe set padding to the difference?? 
-const defaultLegendSymbolSize = 3000;  // size of the legend symbols
+const minLegendSymbolWidth = 1 // (inch) minimum width of the legend symbols
+const minLegendSymbolHeight = 1 / 2 // (inch) minimum height of the legend symbols
+// const defaultLegendSymbolSize = defaultPPI * minLegendSymbolHeight;  // size of the legend symbols
+const defaultLegendSymbolSize = 3000;
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
@@ -64,6 +67,9 @@ export const defaultTVLSpecBarGrouped = {
         "view": {
             "stroke": "black",
             "strokeWidth": defaultStrokeWidth
+        },
+        "bar": {
+            "binSpacing": 3,
         },
         "title": {
             "font": defaultBrailleFont,
@@ -106,6 +112,48 @@ export const defaultTVLSpecBarGrouped = {
         },
         "padding": {
             "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
+        },
+        "style": {
+            "dottedGrid": {
+                "grid": true,
+                "gridCap": "round",
+                "gridDash": [2, 20],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "dashedGrid": {
+                "grid": true,
+                "gridCap": "square",
+                "gridDash": [56, 28],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "solidGrid": {
+                "grid": true,
+                "gridCap": "butt",
+                "gridDash": [0],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "noGrid": {
+                "grid": false,
+            },
+            "foregroundGrid": {
+                "zindex": 1
+            },
+            "backgroundGrid": {
+                "zindex": 0
+            }
+        },
+        "tactileParams": {
+            "defaultPPI": defaultPPI,
+            "minLineWidth": minLineWidth,
+            "defaultGridWidth": defaultGridWidth,
+            "minTickLength": minTickLength,
+            "defaultTickLength": defaultTickLength,
         }
     }
 }

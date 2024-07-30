@@ -19,7 +19,7 @@ async function calculateStaggerAmount(result: any, spec: any) {
 
 }
 
-let staggerThreshold = 100;
+let staggerThreshold = 200;
 
 async function stagger(result: any, spec: any) {
     // wait for the maxTextHeight to be calculated

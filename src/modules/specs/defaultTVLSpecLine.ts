@@ -1,11 +1,27 @@
-const defaultStrokeWidth = 2; // default stroke width
+const defaultPPI = 224; // default PPI of the display
+const minLineWidth = 1; // (mm)  minimum line width
 
+
+// Grid 
+const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+
+
+// Ticks
+const minTickLength = 6; // (mm) minimum tick length
+const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
+
+
+// marks
+// outline
+const defaultStrokeWidth = defaultGridWidth; // default stroke width
 
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
+// axis
 const defaultXAxisTitlePadding = 20;
-const defaultTickLength = 10;
+
+
 
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
 const defaultLegendPadding = 60 // distance between bottom of legend and top of chart 
@@ -92,6 +108,48 @@ export const defaultTVLSpecLine = {
         },
         "padding": {
             "top": 100, "bottom": 100, "left": 100, "right": 100
+        },
+        "style": {
+            "dottedGrid": {
+                "grid": true,
+                "gridCap": "round",
+                "gridDash": [2, 20],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "dashedGrid": {
+                "grid": true,
+                "gridCap": "square",
+                "gridDash": [56, 28],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "solidGrid": {
+                "grid": true,
+                "gridCap": "butt",
+                "gridDash": [0],
+                "gridColor": "black",
+                "gridOpacity": 1,
+                "gridWidth": defaultGridWidth,
+            },
+            "noGrid": {
+                "grid": false,
+            },
+            "foregroundGrid": {
+                "zindex": 1
+            },
+            "backgroundGrid": {
+                "zindex": 0
+            }
+        },
+        "tactileParams": {
+            "defaultPPI": defaultPPI,
+            "minLineWidth": minLineWidth,
+            "defaultGridWidth": defaultGridWidth,
+            "minTickLength": minTickLength,
+            "defaultTickLength": defaultTickLength,
         }
     }
 }

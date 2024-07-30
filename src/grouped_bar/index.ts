@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Average life expectancy for the US, Australia, and China in 1990, 1995, and 2000.",
+        "title": "Average life expectancy for the US, Australia, and China in 1990, 1995, and 2000.",
         "data": {
             "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
         },
@@ -37,13 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
             "x": {
                 "field": "year",
                 "type": "ordinal",
-                "title": "Year"
+                "title": "Year",
+                "axis": {
+                    "staggerLabels": "auto"
+                }
             },
             "y": {
                 "aggregate": "average",
                 "field": "life_expect",
                 "type": "quantitative",
-                "title": "Life Expectancy"
+                "title": "Life Expectancy",
+                "axis": {
+                    "style": ["solidGrid", "foregroundGrid"]
+                }
             },
             "xOffset": {
                 "field": "country"
@@ -52,17 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 "field": "country",
                 "type": "nominal",
                 "legend": {
-                    "title": "Country",
-                    "titleFontSize": 14,
-                    "labelFontSize": 12
+                    "title": "Country"
                 }
             }
         },
         "config": {
-            "bar": {
-                "binSpacing": 3,
-                "stroke": "transparent"
+            "legend": {
+                "orient": "top"
             }
+
         }
     }
     // Initialize Monaco Editor
