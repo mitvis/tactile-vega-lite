@@ -13,6 +13,8 @@ module.exports = {
     simple_bar: './src/simple_bar/index.ts',
     grouped_bar: './src/grouped_bar/index.ts',
     multi_line: './src/multi_line/index.ts',
+    scatter_hist: './src/scatter_hist/index.ts',
+    free_form: './src/free_form/index.ts'
   },
 
   module: {
@@ -68,7 +70,7 @@ module.exports = {
       languages: ['json'],
     }),
     new HtmlWebpackPlugin({
-      title: 'My Vega-Lite Wrapper', // Optional, you can specify a title
+      title: 'Tactile Vega Lite', // Optional, you can specify a title
       template: 'src/index.html', // Path to your template file
     }),
     new HtmlWebpackPlugin({
@@ -85,6 +87,16 @@ module.exports = {
       template: './src/multi_line/index.html',
       filename: 'multi_line/index.html',
       chunks: ['multi_line'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/scatter_hist/index.html',
+      filename: 'scatter_hist/index.html',
+      chunks: ['scatter_hist'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/free_form/index.html',
+      filename: 'free_form/index.html',
+      chunks: ['free_form'],
     }),
     new CopyPlugin({
       patterns: [

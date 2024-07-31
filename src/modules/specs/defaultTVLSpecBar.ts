@@ -11,7 +11,7 @@ const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick len
 
 // marks
 // outline
-const defaultStrokeWidth = defaultGridWidth; // default stroke width
+const defaultStrokeWidth = defaultGridWidth * 1.2; // default stroke width
 
 // text to braille
 const defaultBrailleFont = "Swell Braille";

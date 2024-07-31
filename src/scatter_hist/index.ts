@@ -15,59 +15,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
     // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
-    const editorContainer_multi_line = document.getElementById('editorContainer_multi_line') as HTMLDivElement;
+    const editorContainer_2d_hist = document.getElementById('editorContainer_2d_hist') as HTMLDivElement;
 
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Multi-series line chart showing life expectancy over time for several countries.",
+        "description": "Fertility vs Life Expectancy of multiple countries",
         "data": {
-            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+          "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
         },
-        "title": {
-            "text": "Average Fertility Rate Over Time for China and Australia"
-        },
-        "tn": "Average Fertility Rate China and Australia from 1955 to 2005",
-        "transform": [
-            {
-                "filter": "datum.country === 'Australia' || datum.country === 'China'"
-            }
-        ],
-        "mark": "line",
+        "mark": "circle",
         "encoding": {
-            "x": {
-                "field": "year",
-                "type": "ordinal",
-                "axis": {
-                    "title": "Year"
-                }
-            },
-            "y": {
-                "aggregate": "average",
-                "field": "fertility",
-                "type": "quantitative",
-                "axis": {
-                    "title": "Fertility Rate",
-                    "style": [
-                        "noGrid"
-                    ]
-                }
-            },
-            "strokeDash": {
-                "field": "country",
-                "type": "nominal",
-                "scale": {
-                    "range": ["dashed", "solid"]
-                }
-            }
-        },
-        "config": {
-
+          "x": {
+            "bin": {"maxbins": 20},
+            "field": "life_expect",
+            "type": "quantitative",
+            "axis": {"title": "Life Expectancy"}
+          },
+          "y": {
+            "bin": {"maxbins": 20},
+            "field": "fertility",
+            "type": "quantitative",
+            "axis": {"title": "Fertility Rate"}
+          },
+          "size": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "scale": {"scheme": "blues"},
+            "legend": {"title": "Count of Countries"}
+          }
         }
-    }
+      }
+      
 
     // Initialize Monaco Editor
-    const editor = monaco.editor.create(editorContainer_multi_line, {
+    const editor = monaco.editor.create(editorContainer_2d_hist, {
         value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
         language: 'json',
         theme: 'vs-light',
@@ -92,10 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderVegaLiteChart(spec: any) {
         // make a copy of the spec and call it vega-lite spec
         let VLSpec = JSON.parse(JSON.stringify(spec));
-        if (VLSpec.tn) {
-            VLSpec.title.subtitle = VLSpec.tn;
-            delete VLSpec.tn;
-        }
         if (VLSpec.encoding.texture) {
             VLSpec.encoding.color = VLSpec.encoding.texture;
             delete VLSpec.encoding.texture;
@@ -110,17 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTactileChart(spec: any) {
         initSvgPatterns();
         let TVLSpec = JSON.parse(JSON.stringify(spec));
-        if (TVLSpec.tn) {
-            TVLSpec.title.subtitle = TVLSpec.tn;
-            delete TVLSpec.tn;
-        }
         if (TVLSpec.encoding.texture) {
             TVLSpec.encoding.color = TVLSpec.encoding.texture;
             delete TVLSpec.encoding.texture;
         }
 
         let mergedSpec = TVLSpec;
+        console.log("TVLSpec: ", TVLSpec);
         let defaultSpec = selectDefaultSpec(TVLSpec);
+        console.log("defaultSpec: ", defaultSpec);
         let updatedDefaultSpec = updateDefault(TVLSpec, defaultSpec);
         mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 

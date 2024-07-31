@@ -17,59 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
-  // let userTVLSpec: any = {
-  //   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  //   "title": "Average Life Expectancy for USA, China, and Australia.",
-  //   "data": {
-  //     "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
-  //   },
-  //   "transform": [
-  //     {
-  //       "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
-  //     }
-  //   ],
-  //   "mark": "bar",
-  //   "encoding": {
-  //     "x": {
-  //       "field": "country",
-  //       "type": "nominal",
-  //       "title": "Country"
-  //     },
-  //     "y": {
-  //       "aggregate": "average",
-  //       "field": "life_expect",
-  //       "type": "quantitative",
-  //       "title": "Life Expectancy"
-  //     }
-  //   },
-  //   "config": {}
-  // }
 
   let userTVLSpec: any =
   {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Average Life Expectancy for USA, China, and Australia.",
+    "description": "A scatterplot showing the relationship between life expectancy and fertility rate in Australia over time.",
     "data": {
       "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
     },
-    "transform": [
-      {
-        "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
-      }
-    ],
-    "mark": "bar",
+    "mark": "circle",
     "encoding": {
       "x": {
-        "field": "country",
-        "type": "nominal",
-        "title": "Country"
+        "field": "fertility",
+        "bin": { "maxbins": 10 },
+        "axis": { "title": "Fertility Rate" }
       },
       "y": {
-        "aggregate": "average",
         "field": "life_expect",
+        "bin": { "maxbins": 10 },
         "type": "quantitative",
-        "title": "Life Expectancy"
-      }
+        "axis": { "title": "Life Expectancy (years)" }
+      },
+      "size": { "aggregate": "count" }
     },
     "config": {}
   }
