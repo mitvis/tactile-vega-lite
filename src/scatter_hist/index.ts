@@ -22,31 +22,39 @@ document.addEventListener('DOMContentLoaded', () => {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "description": "Fertility vs Life Expectancy of multiple countries",
         "data": {
-          "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
         },
-        "mark": "circle",
+        "transform": [
+            {
+                "filter": "datum.year == 1955"
+            }
+        ],
+        "mark": {
+            "type": "circle",
+            "color": "black"
+        },
         "encoding": {
-          "x": {
-            "bin": {"maxbins": 20},
-            "field": "life_expect",
-            "type": "quantitative",
-            "axis": {"title": "Life Expectancy"}
-          },
-          "y": {
-            "bin": {"maxbins": 20},
-            "field": "fertility",
-            "type": "quantitative",
-            "axis": {"title": "Fertility Rate"}
-          },
-          "size": {
-            "aggregate": "count",
-            "type": "quantitative",
-            "scale": {"scheme": "blues"},
-            "legend": {"title": "Count of Countries"}
-          }
+            "y": {
+                "bin": { "maxbins": 20 },
+                "field": "life_expect",
+                "type": "quantitative",
+                "axis": { "title": "Life Expectancy" }
+            },
+            "x": {
+                "bin": { "maxbins": 20 },
+                "field": "fertility",
+                "type": "quantitative",
+                "axis": { "title": "Fertility Rate" }
+            },
+            "size": {
+                "aggregate": "count",
+                "type": "quantitative",
+                "scale": { "scheme": "blues" },
+                "legend": { "title": "Count of Countries" }
+            }
         }
-      }
-      
+    }
+
 
     // Initialize Monaco Editor
     const editor = monaco.editor.create(editorContainer_2d_hist, {

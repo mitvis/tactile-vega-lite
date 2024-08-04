@@ -21,27 +21,54 @@ document.addEventListener('DOMContentLoaded', () => {
   let userTVLSpec: any =
   {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A scatterplot showing the relationship between life expectancy and fertility rate in Australia over time.",
+    "description": "Fertility vs Life Expectancy of all countries in 1955",
     "data": {
       "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
     },
-    "mark": "circle",
+    "transform": [
+      {
+        "filter": "datum.year == 1955"
+      }
+    ],
+    "mark": {
+      "type": "circle",
+      "color": "black"
+    },
     "encoding": {
       "x": {
-        "field": "fertility",
-        "bin": { "maxbins": 10 },
-        "axis": { "title": "Fertility Rate" }
+        "bin": {
+          "maxbins": 20
+        },
+        "field": "life_expect",
+        "type": "quantitative",
+        "axis": {
+          "title": "Life Expectancy",
+          "staggerLabels": true
+        }
       },
       "y": {
-        "field": "life_expect",
-        "bin": { "maxbins": 10 },
+        "bin": {
+          "maxbins": 20
+        },
+        "field": "fertility",
         "type": "quantitative",
-        "axis": { "title": "Life Expectancy (years)" }
+        "axis": {
+          "title": "Fertility Rate"
+        }
       },
-      "size": { "aggregate": "count" }
-    },
-    "config": {}
+      "size": {
+        "aggregate": "count",
+        "type": "quantitative",
+        "scale": {
+          "scheme": "blues"
+        },
+        "legend": {
+          "title": "Count of Countries"
+        }
+      }
+    }
   }
+
   // Initialize Monaco Editor
   const editor = monaco.editor.create(editorContainer, {
     value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec

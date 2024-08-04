@@ -20,31 +20,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Fertility vs Life Expectancy of multiple countries",
+        "description": "A scatterplot showing the relationship between life expectancy and fertility rate in Australia over time.",
         "data": {
             "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
         },
+        "transform": [
+            {
+                "filter": "datum.year == 1955"
+            }
+        ],
         "mark": "circle",
         "encoding": {
             "x": {
-                "bin": { "maxbins": 20 },
-                "field": "life_expect",
-                "type": "quantitative",
-                "axis": { "title": "Life Expectancy" }
-            },
-            "y": {
-                "bin": { "maxbins": 20 },
                 "field": "fertility",
                 "type": "quantitative",
                 "axis": { "title": "Fertility Rate" }
             },
-            "size": {
-                "aggregate": "count",
+            "y": {
+                "field": "life_expect",
                 "type": "quantitative",
-                "scale": { "scheme": "blues" },
-                "legend": { "title": "Count of Countries" }
+                "axis": { "title": "Life Expectancy (years)" }
             }
-        }
+        },
+        "config": {}
     }
 
 
@@ -109,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // renderVegaLiteChart(userTVLSpec);
-    // renderTactileChart(userTVLSpec);
+    renderVegaLiteChart(userTVLSpec);
+    renderTactileChart(userTVLSpec);
 
     function downloadSVG() {
         const svgElement = document.querySelector('#tactile svg');
