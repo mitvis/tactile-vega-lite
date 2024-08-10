@@ -72,6 +72,7 @@ export const defaultTVLSpecBar = {
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
+            "fontWeight": "normal",
             "subtitlePadding": defaultSubtitlePadding,
             "offset": defaultTitlePadding,
             "subtitleFont": defaultBrailleFont,
@@ -84,9 +85,11 @@ export const defaultTVLSpecBar = {
         "axis": {
             "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
+            "labelFontWeight": "normal",
             "labelAngle": 0,
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
+            "titleFontWeight": "normal",
             "tickSize": defaultTickLength,
             "tickColor": "black",
             "tickWidth": defaultStrokeWidth,
@@ -98,6 +101,7 @@ export const defaultTVLSpecBar = {
             "labelFontSize": defaultBrailleFontSize,
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
+            "fontWeight": "normal",
             "titlePadding": defaultLegendTitlePadding,
             "direction": "vertical",
             "orient": "top",
@@ -111,6 +115,11 @@ export const defaultTVLSpecBar = {
         },
         "padding": {
             "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
+        },
+        "text": {
+            "font": defaultBrailleFont,
+            "fontSize": defaultBrailleFontSize,
+            "fontWeight": "normal",
         },
         "style": {
             "dottedGrid": {
