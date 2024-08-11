@@ -3,15 +3,17 @@ const minLineWidth = 1; // (mm)  minimum line width
 
 
 // Grid 
-const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+// const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+const defaultGridWidth = 1
 
 // Ticks
-const minTickLength = 6; // (mm) minimum tick length
+const minTickLength = 3; // (mm) minimum tick length
 const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
+const defaultTickWidth = defaultGridWidth * 1.2; // default tick width
 
 // marks
 // outline
-const defaultStrokeWidth = defaultGridWidth * 1.2; // default stroke width
+const defaultStrokeWidth = defaultGridWidth * 1; // default stroke width
 
 // text to braille
 const defaultBrailleFont = "Swell Braille";
@@ -55,10 +57,12 @@ export const defaultTVLSpecBar = {
         },
         "y": {
             "axis": {
+                "titlePadding": defaultXAxisTitlePadding,
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
-                "style": ["solidGrid", "foregroundGrid"], // by default we assume that quantitative info is plotted on y (i.e. vertical bar chart), and we default to add grid for y axis
+                "style": ["solidGrid", "backgroundGrid"], // by default we assume that quantitative info is plotted on y (i.e. vertical bar chart), and we default to add grid for y axis
+
             }
         }
     },
@@ -92,8 +96,9 @@ export const defaultTVLSpecBar = {
             "titleFontWeight": "normal",
             "tickSize": defaultTickLength,
             "tickColor": "black",
-            "tickWidth": defaultStrokeWidth,
-            "domainColor": "black"
+            "tickWidth": defaultTickWidth,
+            "domainColor": "black",
+            "gridColor": "lightgray",
         },
 
         "legend": {
