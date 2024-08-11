@@ -3,11 +3,12 @@ const minLineWidth = 1; // (mm)  minimum line width
 
 
 // Grid 
-const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+// const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
+const defaultGridWidth = 1
 
 
 // Ticks
-const minTickLength = 6; // (mm) minimum tick length
+const minTickLength = 3; // (mm) minimum tick length
 const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
 
 
@@ -69,6 +70,7 @@ export const defaultTVLSpecLine = {
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
+            "fontWeight": "normal",
             "subtitlePadding": defaultSubtitlePadding,
             "offset": defaultTitlePadding,
             "subtitleFont": defaultBrailleFont,
@@ -85,6 +87,7 @@ export const defaultTVLSpecLine = {
             "labelAngle": 0,
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
+            "titleFontWeight": "normal",
             "tickSize": defaultTickLength,
             "tickColor": "black",
             "tickWidth": defaultStrokeWidth,
