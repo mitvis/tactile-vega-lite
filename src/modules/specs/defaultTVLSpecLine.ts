@@ -4,28 +4,41 @@ const minLineWidth = 1; // (mm)  minimum line width
 
 // Grid 
 // const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
-const defaultGridWidth = 1
+const defaultGridlineThickness = 2 // gridWidth
+const defaultGridlineColor = "lightgrey" //gridColor
 
+// ======= Axis ======= // 
+const defaultAxisThickness = defaultGridlineThickness * 1.2
+const defaultAxisColor = "black" // domainColor
+// Y Axis
+const defaultYAxisTitlePadding = 20; // align the start of the title and the start of the axis labels
+const defaultYAxisLabelPadding = 20; // default label padding (distance from Y axis line)
+const defaultTitleYOffset = -10; // default title y offset from the top of the axis
+
+// X Axis 
+const defaultXAxisTitlePadding = 20; // distance between X axis title and X axis labels
+const defaultXAxisLabelPadding = 20; // default label padding (distance from X axis line)
 
 // Ticks
-const minTickLength = 3; // (mm) minimum tick length
-const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
+const minTickLength = 3; // tickSize
+const defaultTickLength = minTickLength / 25.4 * defaultPPI; // tickSize
+const defaultTickThickness = defaultGridlineThickness * 2; // tickWidth
+const defaultTickColor = "black"; // tickColor
 
-
-// marks
+// Marks
 // outline
-const defaultStrokeWidth = defaultGridWidth * 1.2; // default stroke width
+const defaultStrokeWidth = 4; // default stroke width
 
+
+// Braille
 const defaultBrailleFont = "Swell Braille";
 const defaultBrailleFontSize = 29;
 
-// axis
-const defaultXAxisTitlePadding = 20;
 
 
 
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
-const defaultLegendPadding = 60 // distance between bottom of legend and top of chart 
+const defaultLegendPadding = 100 // distance between bottom of legend and top of chart 
 // probably don't want to hardcode this 
 // [TODO] get y position of y axis title, 
 // y position of lengend + lengend height, maybe set padding to the difference?? 
@@ -33,13 +46,8 @@ const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
-const defaultTitleYOffset = -10; // default title y offset (distance from axis)
 
 const defaultLabelPadding = 10; // default label padding (distance from axis line)
-
-// TN & description
-const defaultSubtitlePadding = 40; // distance between subtitle and title
-const defaultTitlePadding = 40;
 
 export const defaultTVLSpecLine = {
     "mark": "line",
@@ -71,8 +79,6 @@ export const defaultTVLSpecLine = {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
-            "subtitlePadding": defaultSubtitlePadding,
-            "offset": defaultTitlePadding,
             "subtitleFont": defaultBrailleFont,
             "subtitleFontSize": defaultBrailleFontSize,
         },
@@ -96,8 +102,10 @@ export const defaultTVLSpecLine = {
         "legend": {
             "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
+            "labelFontWeight": "normal",
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
+            "titleFontWeight": "normal",
             "titlePadding": defaultLegendTitlePadding,
             "direction": "vertical",
             "orient": "top",
@@ -119,7 +127,7 @@ export const defaultTVLSpecLine = {
                 "gridDash": [2, 20],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "dashedGrid": {
                 "grid": true,
@@ -127,7 +135,7 @@ export const defaultTVLSpecLine = {
                 "gridDash": [56, 28],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "solidGrid": {
                 "grid": true,
@@ -135,7 +143,7 @@ export const defaultTVLSpecLine = {
                 "gridDash": [0],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "noGrid": {
                 "grid": false,
@@ -150,8 +158,8 @@ export const defaultTVLSpecLine = {
         "tactileParams": {
             "defaultPPI": defaultPPI,
             "minLineWidth": minLineWidth,
-            "defaultGridWidth": defaultGridWidth,
-            "minTickLength": minTickLength,
+            "defaultGridWidth": defaultGridlineThickness,
+            "minTickLength": defaultTickLength,
             "defaultTickLength": defaultTickLength,
         }
     }

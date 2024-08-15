@@ -17,11 +17,11 @@ function modifyPoint(result: any, spec: any) {
 
 
 
-function modifySvg(result: any, spec: any) {
+async function modifySvg(result: any, spec: any) {
 
   initSvgPatterns();
 
-  convertToBraille(result, spec);
+  await convertToBraille(result, spec);
 
   modifyLegendSymbol(result, spec); // make the legend symbol to be a rectangle with width twice the height
 

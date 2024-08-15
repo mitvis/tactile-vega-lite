@@ -1,36 +1,3 @@
-// // Import the Worker and any necessary libraries
-// const worker = new Worker('worker.js');
-
-// // Initialize messageId and callbacks Map outside of the translateBraille function
-// let messageId = 0;
-// const callbacks = new Map();
-
-// // Set up the onmessage handler for the worker only once, outside the translateBraille function
-// worker.onmessage = (event) => {
-//   const { id, translatedText } = event.data;
-//   const callback = callbacks.get(id);
-//   if (callback) {
-//     callback(translatedText);
-//     callbacks.delete(id); // Clean up after calling the callback
-//   }
-// };
-
-// // The translateBraille function sends messages to the worker and registers callbacks
-// function translateBraille(text:string, callback: (brailleText: string) => void) {
-//   const id = messageId++;
-//   callbacks.set(id, callback);
-//   worker.postMessage({
-//     id,
-//     text: text,
-//     tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
-//   });
-// }
-
-// function terminateWorker() {
-//   worker.postMessage({ action: 'terminate' }); // This will be caught by the worker's 'message' event listener
-// }
-
-// Assuming the definition of the message structure sent to and received from the worker
 interface WorkerMessage {
   id: number;
   text: string;
@@ -52,10 +19,16 @@ const callbacks = new Map<number, (brailleText: string) => void>();
 function initializeWorker(): void {
   // Check if the worker exists and is active; if not, create a new one
   if (!worker) {
+
+    console.log("Initializing worker...");
+
     worker = new Worker('worker.js');
 
     // Set up the onmessage handler for the worker
     worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
+
+      console.log("Worker received message:", event.data);
+
       const { id, translatedText } = event.data;
       const callback = callbacks.get(id);
       if (callback) {
@@ -63,22 +36,73 @@ function initializeWorker(): void {
         callbacks.delete(id); // Clean up after calling the callback
       }
     };
+
+    worker.onerror = function (error) {
+      console.error("Worker error:", error);
+    };
   }
 }
 
-function translateBraille(text: string, callback: (brailleText: string) => void): void {
+function translateBraille(text: string): Promise<string> {
   initializeWorker(); // Ensure the worker is ready before sending a message
-  if (worker) {
-    const id = messageId++;
-    callbacks.set(id, callback);
-    const message: WorkerMessage = {
-      id,
-      text: text,
-      tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
-    };
-    worker.postMessage(message);
-  }
+
+  return new Promise((resolve, reject) => {
+    if (worker) {
+      const id = messageId++;
+      callbacks.set(id, (brailleText: string) => {
+        resolve(brailleText);
+      });
+      const message: WorkerMessage = {
+        id,
+        text: text,
+        tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
+      };
+      worker.postMessage(message);
+    } else {
+      reject(new Error("Worker is not initialized"));
+    }
+  });
 }
+
+
+// function translateBraille(text: string, callback: (brailleText: string) => void): void {
+
+//   console.log("Translating text:", text);
+
+//   initializeWorker(); // Ensure the worker is ready before sending a message
+
+//   if (worker) {
+//     const id = messageId++;
+
+//     console.log("Sending message with ID:", id);
+
+//     callbacks.set(id, callback);
+
+//     const message: WorkerMessage = {
+//       id,
+//       text: text,
+//       tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
+//     };
+//     worker.postMessage(message);
+//   }
+// }
+
+
+// function translateBraille(text: string, callback: (brailleText: string) => void): void {
+//   initializeWorker(); // Ensure the worker is ready before sending a message
+//   if (worker) {
+//     const id = messageId++;
+//     callbacks.set(id, callback);
+//     const message: WorkerMessage = {
+//       id,
+//       text: text,
+//       tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
+//     };
+//     worker.postMessage(message);
+//   }
+// }
+
+
 
 function terminateWorker(): void {
   if (worker) {

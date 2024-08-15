@@ -31,7 +31,8 @@ function updateFontAcross(obj: any, userFont: string, userFontSize: number) {
 function updateFont(userSpec: any, defaultSpec: any) {
     // update defaultSpec with userSpec font info  
     if (userSpec.config && userSpec.config.text) {
-        const userFont = userSpec.config.text.brailleFont;
+        const userFont = userSpec.config.text.font;
+        // console.log(userFont);
         // find the corresponding fontSize for the userFont
         const userFontSize = fontProperties[userFont as keyof typeof fontProperties];
         updateFontAcross(defaultSpec, userFont, userFontSize);

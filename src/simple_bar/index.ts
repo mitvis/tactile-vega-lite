@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
     }
 
-    function renderTactileChart(spec: any) {
+    async function renderTactileChart(spec: any) {
         initSvgPatterns();
         let TVLSpec = JSON.parse(JSON.stringify(spec));
         if (TVLSpec.encoding.texture) {
@@ -102,13 +102,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let updatedDefaultSpec = updateDefault(TVLSpec, defaultSpec);
         mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 
-        elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
-            console.log("final updated Spec: ", elaboratedTVLSpec)
-            vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
-                modifySvg(result, elaboratedTVLSpec);
-                terminateWorker();
-            }).catch(error => console.error(error));
-        });
+        const elaboratedTVLSpec = await elaborateTVLSpec(mergedSpec);
+        console.log("final updated Spec: ", elaboratedTVLSpec);
+
+        const result = await vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" });
+        await modifySvg(result, elaboratedTVLSpec);
+        terminateWorker();
+
+        // elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
+        //     console.log("final updated Spec: ", elaboratedTVLSpec)
+        //     vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
+        //         await modifySvg(result, elaboratedTVLSpec);
+        //         terminateWorker();
+        //     }).catch(error => console.error(error));
+        // });
     };
 
     renderVegaLiteChart(userTVLSpec);

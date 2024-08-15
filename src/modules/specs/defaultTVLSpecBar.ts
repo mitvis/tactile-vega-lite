@@ -4,26 +4,37 @@ const minLineWidth = 1; // (mm)  minimum line width
 
 // Grid 
 // const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
-const defaultGridWidth = 1
+const defaultGridlineThickness = 2 // gridWidth
+const defaultGridlineColor = "lightgrey" //gridColor
+
+// ======= Axis ======= // 
+const defaultAxisThickness = defaultGridlineThickness * 1.2
+const defaultAxisColor = "black" // domainColor
+// Y Axis
+const defaultYAxisTitlePadding = 20; // align the start of the title and the start of the axis labels
+const defaultYAxisLabelPadding = 20; // default label padding (distance from Y axis line)
+const defaultTitleYOffset = -10; // default title y offset from the top of the axis
+
+// X Axis 
+const defaultXAxisTitlePadding = 20; // distance between X axis title and X axis labels
+const defaultXAxisLabelPadding = 20; // default label padding (distance from X axis line)
 
 // Ticks
-const minTickLength = 3; // (mm) minimum tick length
-const defaultTickLength = minTickLength / 25.4 * defaultPPI; // default tick length
-const defaultTickWidth = defaultGridWidth * 1.2; // default tick width
+const minTickLength = 3; // tickSize
+const defaultTickLength = minTickLength / 25.4 * defaultPPI; // tickSize
+const defaultTickThickness = defaultGridlineThickness * 2; // tickWidth
+const defaultTickColor = "black"; // tickColor
 
-// marks
+
+// Marks
 // outline
-const defaultStrokeWidth = defaultGridWidth * 1; // default stroke width
+const defaultStrokeWidth = 4; // default stroke width
 
-// text to braille
+
+// Braille
 const defaultBrailleFont = "Swell Braille";
-// const defaultBrailleFontSize = 90; // this should be 29pt in physical units
 const defaultBrailleFontSize = 29;
 
-// axis
-const defaultXAxisTitlePadding = 20;
-
-const defaultLabelPadding = 10; // default label padding (distance from axis line)
 
 // legend
 const defaultLegendTitlePadding = 20; // distance between legend title and legend labels
@@ -34,10 +45,6 @@ const defaultLegendPadding = 60 // distance between bottom of legend and top of 
 const defaultLegendSymbolSize = 3000;  // size of the legend symbols
 const defaultLegentColumnPadding = 20; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
-
-// TN & description
-const defaultSubtitlePadding = 40; // distance between subtitle and title
-const defaultTitlePadding = 40;
 
 
 
@@ -51,18 +58,19 @@ export const defaultTVLSpecBar = {
             "axis": {
                 "titlePadding": defaultXAxisTitlePadding,
                 "labelAngle": 0,
-                "labelPadding": defaultLabelPadding,
+                "labelPadding": defaultXAxisLabelPadding,
                 "staggerLabels": "auto"
             }
         },
         "y": {
             "axis": {
-                "titlePadding": defaultXAxisTitlePadding,
+                "titlePadding": defaultYAxisTitlePadding,
+                "titleY": defaultTitleYOffset,
                 "titleAlign": "left",
                 "titleAngle": 0,
                 "titleAnchor": "end",
+                "labelPadding": defaultYAxisLabelPadding,
                 "style": ["solidGrid", "backgroundGrid"], // by default we assume that quantitative info is plotted on y (i.e. vertical bar chart), and we default to add grid for y axis
-
             }
         }
     },
@@ -77,8 +85,6 @@ export const defaultTVLSpecBar = {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
-            "subtitlePadding": defaultSubtitlePadding,
-            "offset": defaultTitlePadding,
             "subtitleFont": defaultBrailleFont,
             "subtitleFontSize": defaultBrailleFontSize,
         },
@@ -87,27 +93,36 @@ export const defaultTVLSpecBar = {
             "strokeWidth": defaultStrokeWidth
         },
         "axis": {
+
+            "titleFont": defaultBrailleFont,
+            "titleFontSize": defaultBrailleFontSize,
+            "titleFontWeight": "normal",
+
             "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
             "labelFontWeight": "normal",
             "labelAngle": 0,
-            "titleFont": defaultBrailleFont,
-            "titleFontSize": defaultBrailleFontSize,
-            "titleFontWeight": "normal",
+
             "tickSize": defaultTickLength,
-            "tickColor": "black",
-            "tickWidth": defaultTickWidth,
-            "domainColor": "black",
-            "gridColor": "lightgray",
+            "tickColor": defaultTickColor,
+            "tickWidth": defaultTickThickness,
+
+            "domainWidth": defaultAxisThickness,
+            "domainColor": defaultAxisColor,
+
+            "gridWidth": defaultGridlineThickness,
+            "gridColor": defaultGridlineColor
         },
 
         "legend": {
-            "labelFont": defaultBrailleFont,
-            "labelFontSize": defaultBrailleFontSize,
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
             "titlePadding": defaultLegendTitlePadding,
+
+            "labelFont": defaultBrailleFont,
+            "labelFontSize": defaultBrailleFontSize,
+
             "direction": "vertical",
             "orient": "top",
             "padding": defaultLegendPadding,
@@ -133,7 +148,7 @@ export const defaultTVLSpecBar = {
                 "gridDash": [2, 20],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "dashedGrid": {
                 "grid": true,
@@ -141,7 +156,7 @@ export const defaultTVLSpecBar = {
                 "gridDash": [56, 28],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "solidGrid": {
                 "grid": true,
@@ -149,7 +164,7 @@ export const defaultTVLSpecBar = {
                 "gridDash": [0],
                 "gridColor": "black",
                 "gridOpacity": 1,
-                "gridWidth": defaultGridWidth,
+                "gridWidth": defaultGridlineThickness,
             },
             "noGrid": {
                 "grid": false,

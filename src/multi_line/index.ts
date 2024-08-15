@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "title": {
             "text": "Average Fertility Rate Over Time for China and Australia"
         },
-        "tn": "Average Fertility Rate China and Australia from 1955 to 2005",
         "transform": [
             {
                 "filter": "datum.country === 'Australia' || datum.country === 'China'"
@@ -66,6 +65,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let VLSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Multi-series line chart showing life expectancy over time for several countries.",
+        "data": {
+            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+        },
+        "title": {
+            "text": "Average Fertility Rate Over Time for China and Australia"
+        },
+        "transform": [
+            {
+                "filter": "datum.country === 'Australia' || datum.country === 'China'"
+            }
+        ],
+        "mark": "line",
+        "encoding": {
+            "x": {
+                "field": "year",
+                "type": "ordinal",
+                "axis": {
+                    "title": "Year",
+                    "grid": false
+                }
+            },
+            "y": {
+                "aggregate": "average",
+                "field": "fertility",
+                "type": "quantitative",
+                "axis": {
+                    "title": "Fertility Rate",
+                }
+            },
+            "color": {
+                "field": "country"
+            }
+        },
+        "config": {}
+    }
+
     // Initialize Monaco Editor
     const editor = monaco.editor.create(editorContainer_multi_line, {
         value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
@@ -92,10 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderVegaLiteChart(spec: any) {
         // make a copy of the spec and call it vega-lite spec
         let VLSpec = JSON.parse(JSON.stringify(spec));
-        if (VLSpec.tn) {
-            VLSpec.title.subtitle = VLSpec.tn;
-            delete VLSpec.tn;
-        }
+        // if (VLSpec.tn) {
+        //     VLSpec.title.subtitle = VLSpec.tn;
+        //     delete VLSpec.tn;
+        // }
         if (VLSpec.encoding.texture) {
             VLSpec.encoding.color = VLSpec.encoding.texture;
             delete VLSpec.encoding.texture;
@@ -107,33 +145,38 @@ document.addEventListener('DOMContentLoaded', () => {
         vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
     }
 
-    function renderTactileChart(spec: any) {
+    async function renderTactileChart(spec: any) {
         initSvgPatterns();
         let TVLSpec = JSON.parse(JSON.stringify(spec));
-        if (TVLSpec.tn) {
-            TVLSpec.title.subtitle = TVLSpec.tn;
-            delete TVLSpec.tn;
-        }
         if (TVLSpec.encoding.texture) {
             TVLSpec.encoding.color = TVLSpec.encoding.texture;
             delete TVLSpec.encoding.texture;
         }
 
         let mergedSpec = TVLSpec;
+        console.log("TVLSpec: ", TVLSpec);
         let defaultSpec = selectDefaultSpec(TVLSpec);
+        console.log("defaultSpec: ", defaultSpec);
         let updatedDefaultSpec = updateDefault(TVLSpec, defaultSpec);
         mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 
-        elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
-            console.log("final updated Spec: ", elaboratedTVLSpec)
-            vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
-                modifySvg(result, elaboratedTVLSpec);
-                terminateWorker();
-            }).catch(error => console.error(error));
-        });
+        const elaboratedTVLSpec = await elaborateTVLSpec(mergedSpec);
+        console.log("final updated Spec: ", elaboratedTVLSpec);
+
+        const result = await vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" });
+        await modifySvg(result, elaboratedTVLSpec);
+        terminateWorker();
+
+        // elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
+        //     console.log("final updated Spec: ", elaboratedTVLSpec)
+        //     vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
+        //         await modifySvg(result, elaboratedTVLSpec);
+        //         terminateWorker();
+        //     }).catch(error => console.error(error));
+        // });
     };
 
-    renderVegaLiteChart(userTVLSpec);
+    renderVegaLiteChart(VLSpec);
     renderTactileChart(userTVLSpec);
 
     function downloadSVG() {
