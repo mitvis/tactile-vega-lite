@@ -40,15 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 "aggregate": "average",
                 "field": "life_expect",
                 "type": "quantitative",
-                "title": "Life Expectancy"
+                "title": "Life Expectancy", 
+                "axis": {
+                    "grid": true
+                }
             },
             "texture": {
                 "scale": {
-                    "range": ["solidBlackFill"]
+                    "range": ["solidGrayFill"]
                 }
             }
-        },
-        "config": {}
+        }
     }
     // Initialize Monaco Editor
     const editor = monaco.editor.create(editorContainer_simple_bar, {

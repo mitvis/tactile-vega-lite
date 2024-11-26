@@ -1,29 +1,35 @@
 const defaultPPI = 224; // default PPI of the display
 const minLineWidth = 1; // (mm)  minimum line width
 
+// ===================================== // 
+// ======== Navigational Aids ========== // 
+// ===================================== // 
 
-// Grid 
+
+// ======= Gridlines ======= // 
 // const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
-const defaultGridlineThickness = 2 // gridWidth
-const defaultGridlineColor = "lightgrey" //gridColor
+const defaultGridlineThickness = 1 // gridWidth
+const defaultGridlineColor = "black" //gridColor
 
 // ======= Axis ======= // 
-const defaultAxisThickness = defaultGridlineThickness * 1.2
+const defaultAxisThickness = 2.5
 const defaultAxisColor = "black" // domainColor
 // Y Axis
 const defaultYAxisTitlePadding = 20; // align the start of the title and the start of the axis labels
 const defaultYAxisLabelPadding = 20; // default label padding (distance from Y axis line)
 const defaultTitleYOffset = -10; // default title y offset from the top of the axis
 
+
 // X Axis 
 const defaultXAxisTitlePadding = 20; // distance between X axis title and X axis labels
 const defaultXAxisLabelPadding = 20; // default label padding (distance from X axis line)
 
-// Ticks
+// ======= Ticks ======= // 
 const minTickLength = 3; // tickSize
 const defaultTickLength = minTickLength / 25.4 * defaultPPI; // tickSize
-const defaultTickThickness = defaultGridlineThickness * 2; // tickWidth
+const defaultTickThickness = 2.5 // tickWidth
 const defaultTickColor = "black"; // tickColor
+
 
 // Marks
 // outline
@@ -71,10 +77,10 @@ export const defaultTVLSpecLine = {
     // config
     "config": {
         "background": "white",
-        "view": {
-            "stroke": "black",
-            "strokeWidth": defaultStrokeWidth
-        },
+        // "view": {
+        //     "stroke": "black",
+        //     "strokeWidth": defaultStrokeWidth
+        // },
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
@@ -88,16 +94,27 @@ export const defaultTVLSpecLine = {
             "size": 10
         },
         "axis": {
-            "labelFont": defaultBrailleFont,
-            "labelFontSize": defaultBrailleFontSize,
-            "labelAngle": 0,
             "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
             "titleFontWeight": "normal",
+
+            "titleAngle": 0,
+            "titleAlign": "left",
+
+            "labelFont": defaultBrailleFont,
+            "labelFontSize": defaultBrailleFontSize,
+            "labelFontWeight": "normal",
+            "labelAngle": 0,
+
             "tickSize": defaultTickLength,
-            "tickColor": "black",
-            "tickWidth": defaultStrokeWidth,
-            "domainColor": "black"
+            "tickColor": defaultTickColor,
+            "tickWidth": defaultTickThickness,
+
+            "domainWidth": defaultAxisThickness,
+            "domainColor": defaultAxisColor,
+
+            "gridWidth": defaultGridlineThickness,
+            "gridColor": defaultGridlineColor
         },
         "legend": {
             "labelFont": defaultBrailleFont,
@@ -142,7 +159,7 @@ export const defaultTVLSpecLine = {
                 "gridCap": "butt",
                 "gridDash": [0],
                 "gridColor": "black",
-                "gridOpacity": 1,
+                "gridOpacity": 0.7,
                 "gridWidth": defaultGridlineThickness,
             },
             "noGrid": {

@@ -46,14 +46,14 @@ export function modifyStrokeDash(result: any, spec: any) {
 
     if (num_lines > 1) {
         // let strokeDashArray = ["10, 10", "0, 0", "40, 10", "20, 5", "6, 6"];
-        let strokeDashArray = ["10, 10", "0, 0", "2, 4", "10, 10, 4, 10", "10, 10, 4, 4, 4, 10"];
+        let strokeDashArray = ["20, 10", "0, 0", "2, 4", "10, 10, 4, 10", "10, 10, 4, 4, 4, 10"];
 
         interface StrokeDashMap {
             [key: string]: string;
         }
 
         const strokeDashMapDict: StrokeDashMap = {
-            "dashed": "10, 10",
+            "dashed": "20, 10",
             "solid": "0, 0",
             // "dotted": "40, 10",
             "dotted": "2, 4",
