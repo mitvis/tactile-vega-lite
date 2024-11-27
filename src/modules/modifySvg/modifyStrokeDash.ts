@@ -55,11 +55,8 @@ export function modifyStrokeDash(result: any, spec: any) {
         const strokeDashMapDict: StrokeDashMap = {
             "dashed": "20, 10",
             "solid": "0, 0",
-            // "dotted": "40, 10",
-            "dotted": "2, 4",
-            // "dash-dot": "20, 5",
-            "dash-dot": "10, 10, 4, 10",
-            "dash-dot-dot": "10, 10, 4, 4, 4, 10"
+            "longDashed": "40, 10",
+            "dotted": "2, 4"
         };
 
         // if spec.strokeDash.scale.range is definted, use it to set the strokeDashArray

@@ -14,39 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
-    // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
     const editorContainer_grouped_bar = document.getElementById('editorContainer_grouped_bar') as HTMLDivElement;
-
-
-    // let userTVLSpec: any = {
-    //     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    //     "data": {
-    //         "values": [
-    //             { "category": "Tech", "group": "2019", "value": 0.1 },
-    //             { "category": "Tech", "group": "2020", "value": 0.6 },
-    //             { "category": "Tech", "group": "2021", "value": 0.9 },
-    //             { "category": "HealthTech", "group": "2019", "value": 0.7 },
-    //             { "category": "HealthTech", "group": "2020", "value": 0.2 },
-    //             { "category": "HealthTech", "group": "2021", "value": 1.1 },
-    //             { "category": "FinTech", "group": "2019", "value": 0.6 },
-    //             { "category": "FinTech", "group": "2020", "value": 0.1 },
-    //             { "category": "FinTech", "group": "2021", "value": 0.2 }
-    //         ]
-    //     },
-    //     "title": "Investment Trends in Technology Sectors: 2019-2021",
-    //     "mark": "bar",
-    //     "encoding": {
-    //         "x": { "field": "category" },
-    //         "y": { "field": "value", "type": "quantitative" },
-    //         "xOffset": { "field": "group" },
-    //         "color": { "field": "group" }
-    //     },
-    //     "config": {
-    //         "axis": {
-    //             "grid": false
-    //         }
-    //     }
-    // }
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -62,7 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "filter": "datum.year === 1990 || datum.year === 1995 || datum.year === 2000"
             }
         ],
-        "mark": "bar",
+        "mark": {
+            "type": "bar",
+        },
         "encoding": {
             "x": {
                 "field": "year",
@@ -81,14 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
             "xOffset": {
                 "field": "country"
             },
-            "color": {
+            "texture": {
                 "field": "country",
                 "type": "nominal",
                 "legend": {
                     "title": "Country"
                 },
                 "scale": {
-                    "range": ["dottedFill", "diagonalLineRightFill", "horizontalLineFill"]
+                    "range": ["dottedFill", "diagonalLeftFill", "solidGrayFill"]
                 }
             }
         },

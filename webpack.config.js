@@ -6,8 +6,8 @@ const { CleanPlugin } = require('webpack');
 
 
 module.exports = {
-  mode: 'development', // or 'production'
-  // entry: './src/index.ts', // the main entry point of your application
+  mode: 'development',
+  cache: true,
   entry: {
     main: './src/index.ts',
     simple_bar: './src/simple_bar/index.ts',
@@ -42,7 +42,7 @@ module.exports = {
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
       "buffer": require.resolve("buffer/"),
-      "fs": false, // 'fs' is typically not needed in the browser and can often be safely ignored
+      "fs": false,
     },
   },
 
@@ -50,7 +50,6 @@ module.exports = {
   output: {
     // filename: 'bundle.js', // the output bundle name
     filename: '[name].[contenthash].bundle.js', // Ensure unique filenames
-
     path: path.resolve(__dirname, 'dist'), // output path
     publicPath: '/', // public path
     clean: true, // Clean the output directory before emit
@@ -70,8 +69,8 @@ module.exports = {
       languages: ['json'],
     }),
     new HtmlWebpackPlugin({
-      title: 'Tactile Vega Lite', // Optional, you can specify a title
-      template: 'src/index.html', // Path to your template file
+      title: 'Tactile Vega Lite',
+      template: 'src/index.html',
     }),
     new HtmlWebpackPlugin({
       template: './src/simple_bar/index.html',
@@ -100,11 +99,10 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'src/worker.js', to: 'worker.js' }, // Copy worker.js to dist directory
+        { from: 'src/worker.js', to: 'worker.js' },
         { from: 'node_modules/liblouis-build/build-no-tables-utf32.js', to: 'lib/' },
         { from: 'node_modules/liblouis-build/build-no-tables-utf16.js', to: 'lib/' },
         { from: 'node_modules/liblouis/easy-api.js', to: 'lib/' },
-        // Optionally, copy the tables directory if needed
         { from: 'node_modules/liblouis-build/tables/', to: 'lib/tables/' },
       ],
     }),

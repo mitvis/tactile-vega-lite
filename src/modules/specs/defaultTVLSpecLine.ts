@@ -60,6 +60,7 @@ export const defaultTVLSpecLine = {
     "encoding": {
         "x": {
             "axis": {
+                "titleAnchor": "start",
                 "titlePadding": defaultXAxisTitlePadding,
                 "labelAngle": 0,
                 "labelPadding": defaultLabelPadding,
@@ -77,10 +78,9 @@ export const defaultTVLSpecLine = {
     // config
     "config": {
         "background": "white",
-        // "view": {
-        //     "stroke": "black",
-        //     "strokeWidth": defaultStrokeWidth
-        // },
+        "view": {
+            "stroke": "transparent"
+        },
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,

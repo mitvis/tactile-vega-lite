@@ -6,9 +6,6 @@ const defaultPPI = 224; // default PPI of the display
 // ===================================== // 
 
 
-// remove 
-
-
 // ======= Gridlines ======= // 
 // const defaultGridWidth = minLineWidth / 25.4 * defaultPPI; // default grid width
 const defaultGridlineThickness = 1 // gridWidth
@@ -85,10 +82,10 @@ export const defaultTVLSpecBar = {
     // config
     "config": {
         "background": "white",
-        // "view": {
-        //     "stroke": "black",
-        //     "strokeWidth": defaultStrokeWidth
-        // },
+        "view": {
+            // remove right border from view
+            "stroke": "transparent"
+        },
         "title": {
             "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
@@ -98,7 +95,7 @@ export const defaultTVLSpecBar = {
             "offset": defaultTitleOffset
         },
         "mark": {
-            "stroke": "black",
+            "stroke": "#808080",
             "strokeWidth": defaultStrokeWidth
         },
         "axis": {

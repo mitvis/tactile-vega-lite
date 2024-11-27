@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
             }
         ],
-        "mark": "bar",
+        "mark": {
+            "type": "bar"
+        },
         "encoding": {
             "x": {
                 "field": "country",
@@ -40,9 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 "aggregate": "average",
                 "field": "life_expect",
                 "type": "quantitative",
-                "title": "Life Expectancy", 
+                "title": "Life Expectancy",
                 "axis": {
-                    "grid": true
+                    "grid": true,
+                    "style": ["dottedGrid"]
                 }
             },
             "texture": {
