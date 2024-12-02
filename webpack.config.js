@@ -3,20 +3,53 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
+const fs = require('fs');
+
+// Dynamically generate entry points for examples
+const generateEntryPoints = () => {
+  const srcPath = path.resolve(__dirname, 'src');
+  const dirs = fs.readdirSync(srcPath).filter(dir =>
+    fs.existsSync(path.join(srcPath, dir, 'index.ts'))
+  );
+  const entry = {};
+  dirs.forEach(dir => {
+    entry[dir] = path.join(srcPath, dir, 'index.ts');
+  });
+  return entry;
+};
+
+// Generate HtmlWebpackPlugin instances dynamically
+const generateHtmlPlugins = () => {
+  const srcPath = path.resolve(__dirname, 'src');
+  const dirs = fs.readdirSync(srcPath).filter(dir =>
+    fs.existsSync(path.join(srcPath, dir, 'index.html'))
+  );
+  return dirs.map(dir =>
+    new HtmlWebpackPlugin({
+      template: `src/${dir}/index.html`,
+      filename: `${dir}/index.html`,
+      chunks: [dir],
+    })
+  );
+};
 
 module.exports = {
   mode: 'development',
   cache: true,
+  // entry: {
+  //   main: './src/index.ts',
+  //   simple_bar: './src/simple_bar/index.ts',
+  //   grouped_bar: './src/grouped_bar/index.ts',
+  //   stacked_bar: './src/stacked_bar/index.ts',
+  //   dual_line: './src/dual_line/index.ts',
+  //   multi_series: './src/multi_series/index.ts',
+  //   pie: './src/pie/index.ts',
+  //   scatter: './src/scatter/index.ts',
+
+  // },
   entry: {
     main: './src/index.ts',
-    simple_bar: './src/simple_bar/index.ts',
-    grouped_bar: './src/grouped_bar/index.ts',
-    stacked_bar: './src/stacked_bar/index.ts',
-    dual_line: './src/dual_line/index.ts',
-    multi_series: './src/multi_series/index.ts',
-    pie: './src/pie/index.ts',
-    scatter: './src/scatter/index.ts',
-
+    ...generateEntryPoints(), // Include dynamically found entries
   },
 
   module: {
@@ -65,6 +98,60 @@ module.exports = {
     compress: true, // Enable gzip compression
     port: 9000, // Default to port 9000
   },
+  // plugins: [
+  //   new MonacoWebpackPlugin({
+  //     languages: ['json'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     title: 'Tactile Vega Lite',
+  //     template: 'src/index.html',
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/simple_bar/index.html',
+  //     filename: 'simple_bar/index.html',
+  //     chunks: ['simple_bar'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/grouped_bar/index.html',
+  //     filename: 'grouped_bar/index.html',
+  //     chunks: ['grouped_bar'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/dual_line/index.html',
+  //     filename: 'dual_line/index.html',
+  //     chunks: ['dual_line'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/multi_series/index.html',
+  //     filename: 'multi_series/index.html',
+  //     chunks: ['multi_series'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/scatter/index.html',
+  //     filename: 'scatter/index.html',
+  //     chunks: ['scatter'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/pie/index.html',
+  //     filename: 'pie/index.html',
+  //     chunks: ['pie'],
+  //   }),
+  //   new HtmlWebpackPlugin({
+  //     template: './src/stacked_bar/index.html',
+  //     filename: 'stacked_bar/index.html',
+  //     chunks: ['stacked_bar'],
+  //   }),
+  //   new CopyPlugin({
+  //     patterns: [
+  //       { from: 'src/worker.js', to: 'worker.js' },
+  //       { from: 'node_modules/liblouis-build/build-no-tables-utf32.js', to: 'lib/' },
+  //       { from: 'node_modules/liblouis-build/build-no-tables-utf16.js', to: 'lib/' },
+  //       { from: 'node_modules/liblouis/easy-api.js', to: 'lib/' },
+  //       { from: 'node_modules/liblouis-build/tables/', to: 'lib/tables/' },
+  //     ],
+  //   }),
+  // ],
+
   plugins: [
     new MonacoWebpackPlugin({
       languages: ['json'],
@@ -73,41 +160,7 @@ module.exports = {
       title: 'Tactile Vega Lite',
       template: 'src/index.html',
     }),
-    new HtmlWebpackPlugin({
-      template: './src/simple_bar/index.html',
-      filename: 'simple_bar/index.html',
-      chunks: ['simple_bar'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/grouped_bar/index.html',
-      filename: 'grouped_bar/index.html',
-      chunks: ['grouped_bar'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/dual_line/index.html',
-      filename: 'dual_line/index.html',
-      chunks: ['dual_line'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/multi_series/index.html',
-      filename: 'multi_series/index.html',
-      chunks: ['multi_series'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/scatter/index.html',
-      filename: 'scatter/index.html',
-      chunks: ['scatter'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/pie/index.html',
-      filename: 'pie/index.html',
-      chunks: ['pie'],
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/stacked_bar/index.html',
-      filename: 'stacked_bar/index.html',
-      chunks: ['stacked_bar'],
-    }),
+    ...generateHtmlPlugins(), // Dynamically generated HTML plugins
     new CopyPlugin({
       patterns: [
         { from: 'src/worker.js', to: 'worker.js' },
@@ -118,11 +171,11 @@ module.exports = {
       ],
     }),
   ],
-  externals: {
-    // Exclude liblouis from bundling
-    // 'liblouis-build': 'commonjs liblouis-build',
-    // 'liblouis/easy-api': 'commonjs liblouis/easy-api',
-    // 'liblouis/capi.js': 'commonjs liblouis/capi.js',
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 
 };
