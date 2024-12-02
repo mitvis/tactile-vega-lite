@@ -20,31 +20,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "A scatterplot showing the relationship between life expectancy and fertility rate in Australia over time.",
         "data": {
-            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"
         },
-        "transform": [
-            {
-                "filter": "datum.year == 1955"
-            }
-        ],
-        "mark": "circle",
+        "title": "Weather in Seattle",
+        "mark": "bar",
         "encoding": {
             "x": {
-                "field": "fertility",
-                "type": "quantitative",
-                "axis": { "title": "Fertility Rate" }
+                "timeUnit": "month",
+                "field": "date",
+                "type": "ordinal",
+                "title": "Month of the year"
             },
             "y": {
-                "field": "life_expect",
-                "type": "quantitative",
-                "axis": { "title": "Life Expectancy (years)" }
+                "aggregate": "count",
+                "type": "quantitative"
+            },
+            "color": {
+                "field": "weather",
+                "type": "nominal",
+                "scale": {
+                    "domain": [
+                        "sun",
+                        "fog",
+                        "drizzle",
+                        "rain",
+                        "snow"
+                    ],
+                    "range": [
+                        "denseDottedFill",
+                        "diagonalLeftFill",
+                        "solidGrayFill",
+                        "dottedFill",
+                        "diagonalRightFill"
+                    ]
+                }
             }
         },
-        "config": {}
+        "config": {
+            "axis": {
+                "grid": false
+            }
+        }
     }
-
 
     // Initialize Monaco Editor
     const editor = monaco.editor.create(editorContainer_free, {

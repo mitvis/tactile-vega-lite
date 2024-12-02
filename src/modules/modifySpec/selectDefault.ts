@@ -4,6 +4,7 @@ import { defaultTVLSpecBar } from "../specs/defaultTVLSpecBar"
 import { defaultTVLSpecBarGrouped } from "../specs/defaultTVLSpecBarGrouped"
 import { defaultTVLSpecLine } from "../specs/defaultTVLSpecLine";
 import { defaultTVLSpecScatter } from "../specs/defaultTVLSpecScatter";
+
 import { defaultTVLSpecArc } from "../specs/defaultTVLSpecArc";
 // select defaultTVLspec based on mark type 
 function selectDefaultSpec(userSpec: any) {

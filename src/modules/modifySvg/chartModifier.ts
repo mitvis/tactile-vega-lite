@@ -6,6 +6,7 @@ import { adjustYTitle } from "./adjustYTitle";
 import { modifyStrokeDash } from "./modifyStrokeDash";
 import { initSvgPatterns } from "../texture/initializeTexture";
 import { modifyLegendSymbol } from "./modifyLegendSymbol";
+import { adjustLineTransforms } from "./straddleTickMark";
 // modify the Point mark 
 function modifyPoint(result: any, spec: any) {
   // convert text to braille
@@ -14,6 +15,8 @@ function modifyPoint(result: any, spec: any) {
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
 
 }
+
+
 
 
 
@@ -40,6 +43,7 @@ async function modifySvg(result: any, spec: any) {
     legendSymbolSelector = '.mark-symbol.role-legend-symbol path';
     applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, legendSymbolSelector);
     adjustYTitle(result, spec);
+    adjustLineTransforms(result, spec);
 
   }
 

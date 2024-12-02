@@ -87,30 +87,31 @@ export const defaultTVLSpecBar = {
             "stroke": "transparent"
         },
         "title": {
-            "font": defaultBrailleFont,
+            // "font": defaultBrailleFont,
             "fontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
-            "subtitleFont": defaultBrailleFont,
+            // "subtitleFont": defaultBrailleFont,
             "subtitleFontSize": defaultBrailleFontSize,
             "offset": defaultTitleOffset
         },
         "mark": {
-            "stroke": "#808080",
-            "strokeWidth": defaultStrokeWidth
+            "stroke": "black",
+            "strokeWidth": 0
         },
         "axis": {
 
-            "titleFont": defaultBrailleFont,
+            // "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
             "titleFontWeight": "normal",
 
             "titleAngle": 0,
             "titleAlign": "left",
 
-            "labelFont": defaultBrailleFont,
+            // "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
             "labelFontWeight": "normal",
             "labelAngle": 0,
+            "labelLimit": 0,
 
             "tickSize": defaultTickLength,
             "tickColor": defaultTickColor,
@@ -124,12 +125,12 @@ export const defaultTVLSpecBar = {
         },
 
         "legend": {
-            "titleFont": defaultBrailleFont,
+            // "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
             "titlePadding": defaultLegendTitlePadding,
 
-            "labelFont": defaultBrailleFont,
+            // "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
 
             "direction": "vertical",
@@ -145,11 +146,10 @@ export const defaultTVLSpecBar = {
         "padding": {
             "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off
         },
-        "text": {
-            "font": defaultBrailleFont,
-            "fontSize": defaultBrailleFontSize,
-            "fontWeight": "normal",
-        },
+
+        "font": defaultBrailleFont,
+
+
         "style": {
             "dottedGrid": {
                 "grid": true,

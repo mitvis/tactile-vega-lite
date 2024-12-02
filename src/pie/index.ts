@@ -15,97 +15,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
     // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
-    const editorContainer_multi_line = document.getElementById('editorContainer_multi_line') as HTMLDivElement;
+    const editorContainer_pie = document.getElementById('editorContainer_pie') as HTMLDivElement;
 
     let userTVLSpec: any =
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Multi-series line chart showing life expectancy over time for several countries.",
+        "description": "A simple pie chart with embedded data.",
         "data": {
-            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+            "values": [
+                {
+                    "category": 1,
+                    "value": 4
+                },
+                {
+                    "category": 2,
+                    "value": 6
+                },
+                {
+                    "category": 3,
+                    "value": 10
+                },
+                {
+                    "category": 4,
+                    "value": 3
+                },
+                {
+                    "category": 5,
+                    "value": 7
+                },
+                {
+                    "category": 6,
+                    "value": 8
+                }
+            ]
         },
-        "title": {
-            "text": "Average Fertility Rate Over Time for China and Australia"
-        },
-        "transform": [
-            {
-                "filter": "datum.country === 'Australia' || datum.country === 'China'"
-            }
-        ],
-        "mark": "line",
+        "mark": "arc",
         "encoding": {
-            "x": {
-                "field": "year",
-                "type": "ordinal",
-                "axis": {
-                    "title": "Year"
-                }
+            "theta": {
+                "field": "value",
+                "type": "quantitative"
             },
-            "y": {
-                "aggregate": "average",
-                "field": "fertility",
-                "type": "quantitative",
-                "axis": {
-                    "title": "Fertility Rate",
-                    "style": [
-                        "noGrid"
-                    ]
-                }
-            },
-            "strokeDash": {
-                "field": "country",
+            "texture": {
+                "field": "category",
                 "type": "nominal",
                 "scale": {
-                    "range": ["dashed", "solid"]
+                    "range": [
+                        "denseDottedFill",
+                        "diagonalLeftFill",
+                        "dottedFill",
+                        "solidGrayFill",
+                        "diagonalRightFill",
+                        "verticalFill"
+                    ]
                 }
             }
-        },
-        "config": {
-
         }
     }
 
-    let VLSpec = {
-        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Multi-series line chart showing life expectancy over time for several countries.",
-        "data": {
-            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
-        },
-        "title": {
-            "text": "Average Fertility Rate Over Time for China and Australia"
-        },
-        "transform": [
-            {
-                "filter": "datum.country === 'Australia' || datum.country === 'China'"
-            }
-        ],
-        "mark": "line",
-        "encoding": {
-            "x": {
-                "field": "year",
-                "type": "ordinal",
-                "axis": {
-                    "title": "Year",
-                    "grid": false
-                }
-            },
-            "y": {
-                "aggregate": "average",
-                "field": "fertility",
-                "type": "quantitative",
-                "axis": {
-                    "title": "Fertility Rate",
-                }
-            },
-            "color": {
-                "field": "country"
-            }
-        },
-        "config": {}
-    }
-
     // Initialize Monaco Editor
-    const editor = monaco.editor.create(editorContainer_multi_line, {
+    const editor = monaco.editor.create(editorContainer_pie, {
         value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
         language: 'json',
         theme: 'vs-light',
@@ -130,10 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderVegaLiteChart(spec: any) {
         // make a copy of the spec and call it vega-lite spec
         let VLSpec = JSON.parse(JSON.stringify(spec));
-        // if (VLSpec.tn) {
-        //     VLSpec.title.subtitle = VLSpec.tn;
-        //     delete VLSpec.tn;
-        // }
         if (VLSpec.encoding.texture) {
             VLSpec.encoding.color = VLSpec.encoding.texture;
             delete VLSpec.encoding.texture;
@@ -166,17 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" });
         await modifySvg(result, elaboratedTVLSpec);
         terminateWorker();
-
-        // elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
-        //     console.log("final updated Spec: ", elaboratedTVLSpec)
-        //     vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
-        //         await modifySvg(result, elaboratedTVLSpec);
-        //         terminateWorker();
-        //     }).catch(error => console.error(error));
-        // });
     };
 
-    renderVegaLiteChart(VLSpec);
+    renderVegaLiteChart(userTVLSpec);
     renderTactileChart(userTVLSpec);
 
     function downloadSVG() {
@@ -185,15 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('SVG not found');
             return;
         }
-        // Serialize the SVG to a string
         const serializer = new XMLSerializer();
         const svgString = serializer.serializeToString(svgElement);
-        // Create a Blob object
         const blob = new Blob([svgString], { type: 'image/svg+xml' });
-        // Create a download link and trigger the download
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'tactile-visualization.svg'; // Name of the file to download
+        link.download = 'tactile-visualization.svg';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -201,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     submitButton.addEventListener('click', () => {
         try {
-            let spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
+            let spec = JSON.parse(editor.getValue());
             renderTactileChart(spec);
             renderVegaLiteChart(spec);
         } catch (error) {
@@ -209,8 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
-    // downloadButtonPNG.addEventListener('click', downloadPNG);
 
 });

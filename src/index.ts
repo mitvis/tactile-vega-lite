@@ -21,54 +21,76 @@ document.addEventListener('DOMContentLoaded', () => {
   let userTVLSpec: any =
   {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Fertility vs Life Expectancy of all countries in 1955",
+    "description": "Lifespan of Common Endangered African Birds",
     "data": {
-      "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+      "values": [
+        { "Bird": "Grey Crowned Crane", "Lifespan": 22, "Condition": "Captive" },
+        { "Bird": "Grey Crowned Crane", "Lifespan": 60, "Condition": "Wild" },
+        { "Bird": "African Penguin", "Lifespan": 18, "Condition": "Captive" },
+        { "Bird": "African Penguin", "Lifespan": 30, "Condition": "Wild" },
+        { "Bird": "Hooded Vulture", "Lifespan": 20, "Condition": "Captive" },
+        { "Bird": "Hooded Vulture", "Lifespan": 25, "Condition": "Wild" },
+        { "Bird": "Northern Bald Ibis", "Lifespan": 12, "Condition": "Captive" },
+        { "Bird": "Northern Bald Ibis", "Lifespan": 25, "Condition": "Wild" },
+        { "Bird": "Blue Crowned Crane", "Lifespan": 21, "Condition": "Captive" },
+        { "Bird": "Blue Crowned Crane", "Lifespan": 25, "Condition": "Wild" }
+      ]
     },
-    "transform": [
-      {
-        "filter": "datum.year == 1955"
-      }
-    ],
-    "mark": {
-      "type": "circle",
-      "color": "black"
-    },
+    "mark": "bar",
     "encoding": {
-      "x": {
-        "bin": {
-          "maxbins": 20
-        },
-        "field": "life_expect",
-        "type": "quantitative",
-        "axis": {
-          "title": "Life Expectancy",
-          "staggerLabels": true
-        }
-      },
       "y": {
-        "bin": {
-          "maxbins": 20
+        "field": "Bird",
+        "type": "nominal",
+        "axis": {
+          "title": "Types of African Endangered Birds",
+          "labelAngle": 0
         },
-        "field": "fertility",
+        "sort": ["Blue Crowned Crane", "Northern Bald Ibis", "Hooded Vulture", "African Penguin", "Grey Crowned Crane"]
+      },
+      "x": {
+        "field": "Lifespan",
         "type": "quantitative",
         "axis": {
-          "title": "Fertility Rate"
+          "title": "Lifespan in Years",
+          "values": [0, 20, 40, 60],
+          "style": ["solidGrid"],
+          "tickCount": 8,
+          "staggerLabels": true
+        },
+        "scale": {
+          "domain": [0, 70]
         }
       },
-      "size": {
-        "aggregate": "count",
-        "type": "quantitative",
-        "scale": {
-          "scheme": "blues"
-        },
+      "texture": {
+        "field": "Condition",
+        "type": "nominal",
         "legend": {
-          "title": "Count of Countries"
+          "title": "Key"
+        },
+        "scale": {
+          "domain": ["Captive", "Wild"],
+          "range": ["denseDottedFill", "solidGrayFill"]
         }
+      },
+      "yOffset": { "field": "Condition" }
+    },
+    "title": {
+      "text": "Lifespan of Common Endangered African Birds"
+    },
+    "config": {
+      "mark": {
+        "stroke": "black",
+        "strokeWidth": 2
+      },
+      "legend": {
+        "direction": "horizontal",
+        "orient": "top"
+      },
+      "axis": {
+        "labelLimit": 0
       }
     }
   }
-
   // Initialize Monaco Editor
   const editor = monaco.editor.create(editorContainer, {
     value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec

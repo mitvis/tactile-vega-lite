@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TVL - 2D Histogram Scatterplot</title>
+    <title>TVL - Bar Chart</title>
     <!-- import google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,27 +59,22 @@
             font-size: 12px;
             margin: 4px 2px;
             cursor: pointer;
-            /* rounded corner */
             border-radius: 12px;
         }
 
         #tactile {
-            /* center in div */
             display: flex;
             justify-content: center;
         }
 
         #visual {
-            /* center in div */
             display: flex;
             justify-content: center;
         }
 
         .render-container {
             display: grid;
-            /* one col */
             grid-template-columns: 1fr;
-            /* 4 rows */
             grid-template-rows: auto auto auto auto;
         }
 
@@ -96,9 +91,9 @@
 
     <div class="container">
         <div class="item">
-            <h1>Tactile Vega Lite Input (2D Histogram Scatterplot)</h1>
+            <h1>Tactile Vega Lite Input (Pie)</h1>
             <div>
-                <div id="editorContainer_2d_hist" style="width: 800px; height: 600px;"></div>
+                <div id="editorContainer_pie" style="width: 800px; height: 600px;"></div>
                 <button id="render">Render</button>
             </div>
         </div>
@@ -113,7 +108,6 @@
                     <h1>Tactile Renderer</h1>
                     <div id="tactile" class="renderer"></div>
                     <button id="download">Download Tactile SVG</button>
-                    <!-- <button id="downloadPNG">Download Tactile PNG</button> -->
                 </div>
             </div>
         </div>

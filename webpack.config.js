@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const { CleanPlugin } = require('webpack');
 
 
 module.exports = {
@@ -12,9 +11,12 @@ module.exports = {
     main: './src/index.ts',
     simple_bar: './src/simple_bar/index.ts',
     grouped_bar: './src/grouped_bar/index.ts',
-    multi_line: './src/multi_line/index.ts',
-    scatter_hist: './src/scatter_hist/index.ts',
-    free_form: './src/free_form/index.ts'
+    stacked_bar: './src/stacked_bar/index.ts',
+    dual_line: './src/dual_line/index.ts',
+    multi_series: './src/multi_series/index.ts',
+    pie: './src/pie/index.ts',
+    scatter: './src/scatter/index.ts',
+
   },
 
   module: {
@@ -48,7 +50,6 @@ module.exports = {
 
 
   output: {
-    // filename: 'bundle.js', // the output bundle name
     filename: '[name].[contenthash].bundle.js', // Ensure unique filenames
     path: path.resolve(__dirname, 'dist'), // output path
     publicPath: '/', // public path
@@ -83,19 +84,29 @@ module.exports = {
       chunks: ['grouped_bar'],
     }),
     new HtmlWebpackPlugin({
-      template: './src/multi_line/index.html',
-      filename: 'multi_line/index.html',
-      chunks: ['multi_line'],
+      template: './src/dual_line/index.html',
+      filename: 'dual_line/index.html',
+      chunks: ['dual_line'],
     }),
     new HtmlWebpackPlugin({
-      template: './src/scatter_hist/index.html',
-      filename: 'scatter_hist/index.html',
-      chunks: ['scatter_hist'],
+      template: './src/multi_series/index.html',
+      filename: 'multi_series/index.html',
+      chunks: ['multi_series'],
     }),
     new HtmlWebpackPlugin({
-      template: './src/free_form/index.html',
-      filename: 'free_form/index.html',
-      chunks: ['free_form'],
+      template: './src/scatter/index.html',
+      filename: 'scatter/index.html',
+      chunks: ['scatter'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/pie/index.html',
+      filename: 'pie/index.html',
+      chunks: ['pie'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/stacked_bar/index.html',
+      filename: 'stacked_bar/index.html',
+      chunks: ['stacked_bar'],
     }),
     new CopyPlugin({
       patterns: [

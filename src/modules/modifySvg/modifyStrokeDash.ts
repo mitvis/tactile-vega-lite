@@ -45,8 +45,7 @@ export function modifyStrokeDash(result: any, spec: any) {
     // console.log("uniqueColors", uniqueColors);
 
     if (num_lines > 1) {
-        // let strokeDashArray = ["10, 10", "0, 0", "40, 10", "20, 5", "6, 6"];
-        let strokeDashArray = ["20, 10", "0, 0", "2, 4", "10, 10, 4, 10", "10, 10, 4, 4, 4, 10"];
+        let strokeDashArray = ["20, 10", "0, 0", "40, 10", "10, 10, 4, 10", "10, 10, 4, 4, 4, 10"];
 
         interface StrokeDashMap {
             [key: string]: string;
@@ -55,7 +54,7 @@ export function modifyStrokeDash(result: any, spec: any) {
         const strokeDashMapDict: StrokeDashMap = {
             "dashed": "20, 10",
             "solid": "0, 0",
-            "longDashed": "40, 10",
+            "longDashed": "40, 20",
             "dotted": "2, 4"
         };
 

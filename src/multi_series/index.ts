@@ -14,50 +14,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitButton = document.getElementById('render') as HTMLButtonElement;
     const downloadButton = document.getElementById('download') as HTMLButtonElement;
-    // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
-    const editorContainer_2d_hist = document.getElementById('editorContainer_2d_hist') as HTMLDivElement;
+    const editorContainer_multiseries = document.getElementById('editorContainer_multiseries') as HTMLDivElement;
 
-    let userTVLSpec: any =
-    {
+    let userTVLSpec: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "description": "Fertility vs Life Expectancy of multiple countries",
+        "description": "Stock prices of 4 Tech Companies over Time.",
         "data": {
-            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"
         },
+        "title": "Stock prices of 4 Tech Companies over Time.",
         "transform": [
             {
-                "filter": "datum.year == 1955"
+                "filter": "datum.symbol === 'AAPL' || datum.symbol === 'GOOG' || datum.symbol === 'IBM' || datum.symbol == 'AMZN'"
             }
         ],
         "mark": {
-            "type": "circle",
-            "color": "black"
+            "type": "line"
         },
         "encoding": {
-            "y": {
-                "bin": { "maxbins": 20 },
-                "field": "life_expect",
-                "type": "quantitative",
-                "axis": { "title": "Life Expectancy" }
-            },
             "x": {
-                "bin": { "maxbins": 20 },
-                "field": "fertility",
-                "type": "quantitative",
-                "axis": { "title": "Fertility Rate" }
+                "timeUnit": "year",
+                "field": "date"
             },
-            "size": {
-                "aggregate": "count",
-                "type": "quantitative",
-                "scale": { "scheme": "blues" },
-                "legend": { "title": "Count of Countries" }
+            "y": {
+                "aggregate": "mean",
+                "field": "price",
+                "type": "quantitative"
+            },
+            "strokeDash": {
+                "field": "symbol",
+                "type": "nominal",
+                "scale": {
+                    "range": ["dashed", "solid", "dotted", "longDashed"]
+                }
+            }
+        },
+        "width": 300,
+        "config": {
+            "axis": {
+                "grid": false,
+            }
+        }
+    }
+    let VLSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Stock prices of 4 Tech Companies over Time.",
+        "data": {
+            "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"
+        },
+        "title": "Stock prices of 4 Tech Companies over Time.",
+        "transform": [
+            {
+                "filter": "datum.symbol === 'AAPL' || datum.symbol === 'GOOG' || datum.symbol === 'IBM' || datum.symbol == 'AMZN'"
+            }
+        ],
+        "mark": {
+            "type": "line"
+        },
+        "encoding": {
+            "x": {
+                "timeUnit": "year",
+                "field": "date"
+            },
+            "y": {
+                "aggregate": "mean",
+                "field": "price",
+                "type": "quantitative"
+            },
+            "color": {
+                "field": "symbol",
+                "type": "nominal",
+                "scale": {
+                    "range": ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]
+                }
+            }
+        },
+        "width": 300,
+        "config": {
+            "axis": {
+                "grid": false,
             }
         }
     }
 
-
     // Initialize Monaco Editor
-    const editor = monaco.editor.create(editorContainer_2d_hist, {
+    const editor = monaco.editor.create(editorContainer_multiseries, {
         value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
         language: 'json',
         theme: 'vs-light',
@@ -93,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
     }
 
-    function renderTactileChart(spec: any) {
+    async function renderTactileChart(spec: any) {
         initSvgPatterns();
         let TVLSpec = JSON.parse(JSON.stringify(spec));
         if (TVLSpec.encoding.texture) {
@@ -108,16 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let updatedDefaultSpec = updateDefault(TVLSpec, defaultSpec);
         mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 
-        elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
-            console.log("final updated Spec: ", elaboratedTVLSpec)
-            vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
-                modifySvg(result, elaboratedTVLSpec);
-                terminateWorker();
-            }).catch(error => console.error(error));
-        });
+        const elaboratedTVLSpec = await elaborateTVLSpec(mergedSpec);
+        console.log("final updated Spec: ", elaboratedTVLSpec);
+
+        const result = await vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" });
+        await modifySvg(result, elaboratedTVLSpec);
+        terminateWorker();
     };
 
-    renderVegaLiteChart(userTVLSpec);
+    renderVegaLiteChart(VLSpec);
     renderTactileChart(userTVLSpec);
 
     function downloadSVG() {
@@ -126,15 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('SVG not found');
             return;
         }
-        // Serialize the SVG to a string
         const serializer = new XMLSerializer();
         const svgString = serializer.serializeToString(svgElement);
-        // Create a Blob object
         const blob = new Blob([svgString], { type: 'image/svg+xml' });
-        // Create a download link and trigger the download
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'tactile-visualization.svg'; // Name of the file to download
+        link.download = 'tactile-visualization.svg';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -142,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     submitButton.addEventListener('click', () => {
         try {
-            let spec = JSON.parse(editor.getValue()); // Get value from Monaco Editor
+            let spec = JSON.parse(editor.getValue());
             renderTactileChart(spec);
             renderVegaLiteChart(spec);
         } catch (error) {
@@ -150,8 +187,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Bind the downloadSVG function to the download button's click event
     downloadButton.addEventListener('click', downloadSVG);
-    // downloadButtonPNG.addEventListener('click', downloadPNG);
-
 });
