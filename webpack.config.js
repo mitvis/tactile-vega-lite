@@ -36,17 +36,6 @@ const generateHtmlPlugins = () => {
 module.exports = {
   mode: 'development',
   cache: true,
-  // entry: {
-  //   main: './src/index.ts',
-  //   simple_bar: './src/simple_bar/index.ts',
-  //   grouped_bar: './src/grouped_bar/index.ts',
-  //   stacked_bar: './src/stacked_bar/index.ts',
-  //   dual_line: './src/dual_line/index.ts',
-  //   multi_series: './src/multi_series/index.ts',
-  //   pie: './src/pie/index.ts',
-  //   scatter: './src/scatter/index.ts',
-
-  // },
   entry: {
     main: './src/index.ts',
     ...generateEntryPoints(), // Include dynamically found entries
@@ -98,59 +87,6 @@ module.exports = {
     compress: true, // Enable gzip compression
     port: 9000, // Default to port 9000
   },
-  // plugins: [
-  //   new MonacoWebpackPlugin({
-  //     languages: ['json'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     title: 'Tactile Vega Lite',
-  //     template: 'src/index.html',
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/simple_bar/index.html',
-  //     filename: 'simple_bar/index.html',
-  //     chunks: ['simple_bar'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/grouped_bar/index.html',
-  //     filename: 'grouped_bar/index.html',
-  //     chunks: ['grouped_bar'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/dual_line/index.html',
-  //     filename: 'dual_line/index.html',
-  //     chunks: ['dual_line'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/multi_series/index.html',
-  //     filename: 'multi_series/index.html',
-  //     chunks: ['multi_series'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/scatter/index.html',
-  //     filename: 'scatter/index.html',
-  //     chunks: ['scatter'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/pie/index.html',
-  //     filename: 'pie/index.html',
-  //     chunks: ['pie'],
-  //   }),
-  //   new HtmlWebpackPlugin({
-  //     template: './src/stacked_bar/index.html',
-  //     filename: 'stacked_bar/index.html',
-  //     chunks: ['stacked_bar'],
-  //   }),
-  //   new CopyPlugin({
-  //     patterns: [
-  //       { from: 'src/worker.js', to: 'worker.js' },
-  //       { from: 'node_modules/liblouis-build/build-no-tables-utf32.js', to: 'lib/' },
-  //       { from: 'node_modules/liblouis-build/build-no-tables-utf16.js', to: 'lib/' },
-  //       { from: 'node_modules/liblouis/easy-api.js', to: 'lib/' },
-  //       { from: 'node_modules/liblouis-build/tables/', to: 'lib/tables/' },
-  //     ],
-  //   }),
-  // ],
 
   plugins: [
     new MonacoWebpackPlugin({

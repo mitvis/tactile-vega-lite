@@ -6,15 +6,15 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
     // 9 patterns in total
     const patternIDs = [
         "noFill",
-        "solidBlackFill",
+        "solidGrayFill",
         "denseDottedFill",
-        "verticalLineFill",
-        "horizontalLineFill",
+        "verticalFill",
+        "horizontalFill",
         "dottedFill",
-        "dashedLineFill",
-        "gridPatternFill",
-        "diagonalLineRightFill",
-        "diagonalLineLeftFill"
+        "diamondFill",
+        "crossFill",
+        "diagonalRightFill",
+        "diagonalLeftFill"
     ];
 
     if (uniqueColors.length === 1) {

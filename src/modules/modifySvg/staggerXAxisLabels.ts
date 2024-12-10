@@ -10,7 +10,7 @@ async function calculateStaggerAmount(result: any, spec: any) {
     let maxTextHeight;
     try {
         maxTextHeight = await getBrailleHeightForSelectors(result, ['.mark-text.role-axis-label text'], spec);
-        console.log("maxTextHeight", maxTextHeight)
+        // console.log("maxTextHeight", maxTextHeight)
 
     } catch (error) {
         console.error("Error in calculateStaggerAmount: ", error);

@@ -7,18 +7,12 @@ import { modifyStrokeDash } from "./modifyStrokeDash";
 import { initSvgPatterns } from "../texture/initializeTexture";
 import { modifyLegendSymbol } from "./modifyLegendSymbol";
 import { adjustLineTransforms } from "./straddleTickMark";
-// modify the Point mark 
+
 function modifyPoint(result: any, spec: any) {
-  // convert text to braille
-  // convertToBraille(result, spec);
   const textureMarkSelector = '.mark-symbol.role-mark.marks path';
   applyTexturesToVegaLiteChart(spec, result, textureMarkSelector, '.mark-symbol.role-legend-symbol path');
 
 }
-
-
-
-
 
 async function modifySvg(result: any, spec: any) {
 
@@ -51,6 +45,7 @@ async function modifySvg(result: any, spec: any) {
     staggerXAxisLabels(result, spec);
     modifyStrokeDash(result, spec);
     adjustYTitle(result, spec);
+    adjustLineTransforms(result, spec);
   }
 
   if (spec.mark === "point" || spec.mark.type === "point") {
@@ -58,6 +53,7 @@ async function modifySvg(result: any, spec: any) {
     // change all colors to black
     modifyPoint(result, spec);
     adjustYTitle(result, spec);
+    adjustLineTransforms(result, spec);
   }
 }
 

@@ -49,7 +49,7 @@ const defaultLegendPadding = 60 // distance between bottom of legend and top of 
 // [TODO] get y position of y axis title, 
 // y position of lengend + lengend height, maybe set padding to the difference?? 
 const defaultLegendSymbolSize = 3000;  // size of the legend symbols
-const defaultLegentColumnPadding = 20; // distance between legend columns
+const defaultLegentColumnPadding = 80; // distance between legend columns
 const defaultLegendRowPadding = 20; // distance between legend rows
 
 
@@ -71,7 +71,7 @@ export const defaultTVLSpecBar = {
         },
         "y": {
             "axis": {
-                "titleAnchor": "end",
+                "titleAnchor": "start",
                 "titlePadding": defaultYAxisTitlePadding,
                 "titleY": defaultTitleYOffset,
                 "labelPadding": defaultYAxisLabelPadding,
@@ -87,31 +87,29 @@ export const defaultTVLSpecBar = {
             "stroke": "transparent"
         },
         "title": {
-            // "font": defaultBrailleFont,
+
             "fontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
-            // "subtitleFont": defaultBrailleFont,
+
             "subtitleFontSize": defaultBrailleFontSize,
             "offset": defaultTitleOffset
         },
         "mark": {
             "stroke": "black",
-            "strokeWidth": 0
+            "strokeWidth": 2
         },
         "axis": {
 
-            // "titleFont": defaultBrailleFont,
             "titleFontSize": defaultBrailleFontSize,
             "titleFontWeight": "normal",
 
             "titleAngle": 0,
             "titleAlign": "left",
 
-            // "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
             "labelFontWeight": "normal",
             "labelAngle": 0,
-            "labelLimit": 0,
+            "labelLimit": 0, // so that long braille labels do not get truncated
 
             "tickSize": defaultTickLength,
             "tickColor": defaultTickColor,
@@ -125,13 +123,13 @@ export const defaultTVLSpecBar = {
         },
 
         "legend": {
-            // "titleFont": defaultBrailleFont,
+
             "titleFontSize": defaultBrailleFontSize,
             "fontWeight": "normal",
             "titlePadding": defaultLegendTitlePadding,
 
-            // "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
+            "labelOffset": 15, // spacing between legend symbols and legend labels
 
             "direction": "vertical",
             "orient": "top",
@@ -142,6 +140,7 @@ export const defaultTVLSpecBar = {
         },
         "scale": {
             "barBandPaddingInner": 0.3,
+            // "barBandPaddingInner": 0,
         },
         "padding": {
             "top": 100, "bottom": 100, "left": 200, "right": 200 // padding around the chart, so that nothing gets cut off

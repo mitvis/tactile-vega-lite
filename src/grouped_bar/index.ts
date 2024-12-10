@@ -55,17 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 "field": "country",
                 "type": "nominal",
                 "legend": {
-                    "title": "Country"
+                    "title": "Key"
                 },
                 "scale": {
-                    "range": ["dottedFill", "diagonalLeftFill", "solidGrayFill"]
+                    "domain": ["Australia", "China", "United States"],
+                    // "range": ["dottedFill", "diagonalLeftFill", "solidGrayFill"]
                 }
             }
         },
         "config": {
-            "legend": {
-                "orient": "top"
-            },
             "axis": {
                 "grid": false
             }
@@ -127,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("final updated Spec: ", elaboratedTVLSpec)
             vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
                 modifySvg(result, elaboratedTVLSpec);
-                terminateWorker();
+                // terminateWorker();
             }).catch(error => console.error(error));
         });
     };

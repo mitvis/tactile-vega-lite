@@ -10,7 +10,7 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
         if (mergedSpec.mark != "arc" && mergedSpec.mark.type != "arc") {
             const result = await vegaEmbed("#tactile", mergedSpec, { renderer: "svg" });
             const maxBrailleWidth = await getBrailleWidthForSelectors(result, ['.mark-text.role-axis-label text'], mergedSpec);
-            console.log("maxBrailleWidth: ", maxBrailleWidth);
+            // console.log("maxBrailleWidth: ", maxBrailleWidth);
             const braillePaddingX = maxBrailleWidth * 0.1;
             const numberOfTicksX = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "x");
             const numberOfTicksY = await getNumberOfTicks(result, ['.mark-text.role-axis-label text'], "y");
@@ -37,7 +37,6 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
             }
         }
 
-
         // ================== texture ==================
         // if use specified textures, we use user specified textures
         if (mergedSpec.encoding.color && mergedSpec.encoding.color.scale && mergedSpec.encoding.color.scale.range) {
@@ -45,12 +44,39 @@ async function elaborateTVLSpec(mergedSpec: any): Promise<VisualizationSpec> {
             mergedSpec.encoding.color.scale.range = mergedSpec.encoding.color.scale.range.map((textureName: string) => {
                 return `url(#${textureName})`;
             });
-        }
+        } else {
+            // find the number of unique colors from mergedSpec.encoding.color.scale.domain
+            if (mergedSpec.encoding.color && mergedSpec.encoding.color.scale && mergedSpec.encoding.color.scale.domain) {
+                // get the domain of the color scale
+                const domain = mergedSpec.encoding.color.scale.domain;
+                // get the number of unique colors
+                const numUniqueColors = domain.length;
 
+                const textureNames = [
+                    "noFill",
+                    "solidGrayFill",
+                    "denseDottedFill",
+                    "verticalFill",
+                    "horizontalFill",
+                    "dottedFill",
+                    "diamondFill",
+                    "crossFill",
+                    "diagonalRightFill",
+                    "diagonalLeftFill"
+                ];
+
+                // randomly select textures from the textureNames array based on the number of unique colors
+                mergedSpec.encoding.color.scale.range = domain.map((color: string, index: number) => {
+                    return `url(#${textureNames[index % textureNames.length]}`;
+                });
+            } else if (mergedSpec.encoding.color && !mergedSpec.encoding.color.scale) {
+                throw new Error("Please define the domain of the color scale");
+            }
+        }
         return mergedSpec;
     } catch (error) {
         console.error(error);
-        throw error; // Re-throw the error to ensure the rejection of the promise
+        throw error;
     }
 }
 

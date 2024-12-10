@@ -18,7 +18,7 @@ async function getBrailleHeightForSelectors(result: any, svgSelectionCriteria: s
     try {
         // Await the Braille translation
         const brailleText = await translateBraille(originalText || "");
-        console.log("brailleText", brailleText);
+        // console.log("brailleText", brailleText);
 
         // Temporarily set the translated Braille text and styles to measure the height
         textElement.textContent = brailleText;
@@ -27,7 +27,7 @@ async function getBrailleHeightForSelectors(result: any, svgSelectionCriteria: s
 
         // Get the height of the text element
         const height = textElement.getBBox().height;
-        console.log("height", height);
+        // console.log("height", height);
 
         return height;
     } catch (error) {

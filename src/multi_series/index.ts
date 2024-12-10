@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "field": "symbol",
                 "type": "nominal",
                 "scale": {
+                    "domain": ["AAPL", "GOOG", "IBM", "AMZN"],
                     "range": ["dashed", "solid", "dotted", "longDashed"]
                 }
             }

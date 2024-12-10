@@ -18,7 +18,7 @@ const defaultAxisColor = "black" // domainColor
 // Y Axis
 const defaultYAxisTitlePadding = 20; // align the start of the title and the start of the axis labels
 const defaultYAxisLabelPadding = 20; // default label padding (distance from Y axis line)
-const defaultTitleYOffset = -30; // default title y offset from the top of the axis
+const defaultTitleYOffset = -15; // default title y offset from the top of the axis
 
 // X Axis 
 const defaultXAxisTitlePadding = 20; // distance between X axis title and X axis labels
@@ -127,6 +127,7 @@ export const defaultTVLSpecBarGrouped = {
 
             "labelFont": defaultBrailleFont,
             "labelFontSize": defaultBrailleFontSize,
+            "labelLimit": 0,
 
             "direction": "vertical",
             "orient": "top",

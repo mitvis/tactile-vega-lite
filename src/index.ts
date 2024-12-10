@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "type": "nominal",
         "axis": {
           "title": "Types of African Endangered Birds",
-          "labelAngle": 0
         },
         "sort": ["Blue Crowned Crane", "Northern Bald Ibis", "Hooded Vulture", "African Penguin", "Grey Crowned Crane"]
       },
@@ -52,13 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "type": "quantitative",
         "axis": {
           "title": "Lifespan in Years",
-          "values": [0, 20, 40, 60],
           "style": ["solidGrid"],
-          "tickCount": 8,
           "staggerLabels": true
-        },
-        "scale": {
-          "domain": [0, 70]
         }
       },
       "texture": {
@@ -68,27 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
           "title": "Key"
         },
         "scale": {
-          "domain": ["Captive", "Wild"],
-          "range": ["denseDottedFill", "solidGrayFill"]
-        }
+          "domain": ["Captive", "Wild"],        }
       },
       "yOffset": { "field": "Condition" }
     },
     "title": {
       "text": "Lifespan of Common Endangered African Birds"
-    },
-    "config": {
-      "mark": {
-        "stroke": "black",
-        "strokeWidth": 2
-      },
-      "legend": {
-        "direction": "horizontal",
-        "orient": "top"
-      },
-      "axis": {
-        "labelLimit": 0
-      }
     }
   }
   // Initialize Monaco Editor

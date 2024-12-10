@@ -9,12 +9,12 @@ self.onmessage = (t) => {
     liblouis.enableOnDemandTableLoading("lib/tables/");
 
     const { id: s, text: i, tableName: e } = t.data;
-    console.log("Text received for translation:", i);
-    console.log("Translation table:", e);
+    // console.log("Text received for translation:", i);
+    // console.log("Translation table:", e);
 
     const l = liblouis.translateString(e, i);
 
-    console.log("Translated Braille text:", l);
+    // console.log("Translated Braille text:", l);
 
     self.postMessage({ id: s, translatedText: l });
 };

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "aggregate": "count",
                 "type": "quantitative"
             },
-            "color": {
+            "texture": {
                 "field": "weather",
                 "type": "nominal",
                 "scale": {
