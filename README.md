@@ -1,8 +1,37 @@
-# vega_lite_tactile
+# Tactile Vega Lite
 
-`npm start` to run locally
+## Overview
 
-Design Examples used in user testing can be found at: https://vega-lite-tactile.vercel.app/simple_bar, https://vega-lite-tactile.vercel.app/multi-line 
+`vega_lite_tactile` is a project designed to prototype tactile charts using smart defaults. It provides examples and tools for creating accessible data visualizations with tactile design considerations.
 
-Locally: http://localhost:9000/simple_bar or http://localhost:9000/multi_line
+## Installation
 
+1. Install dependencies:
+   run `npm install` to install all dependencies
+
+## Running the Project
+
+To run the project locally:
+
+1. Start the development server:
+   `npm start` to run locally
+
+2. Access the application in your browser:
+   - [http://localhost:9000/](http://localhost:9000/)
+   - [http://localhost:9000/simple_bar](http://localhost:9000/simple_bar)
+   - [http://localhost:9000/multi_series](http://localhost:9000/multi_series)
+   - [http://localhost:9000/dual_line](http://localhost:9000/dual_line)
+   - [http://localhost:9000/stacked_bar](http://localhost:9000/stacked_bar)
+   - [http://localhost:9000/grouped_bar](http://localhost:9000/grouped_bar)
+   - [http://localhost:9000/pie](http://localhost:9000/pie)
+
+## Design Examples
+
+Examples used in user testing are available online:
+
+- [Simple Bar Chart](https://vega-lite-tactile.vercel.app/simple_bar)
+- [Multi-line Chart](https://vega-lite-tactile.vercel.app/multi_series)
+  Additonal examples:
+- [Dual-line Chart](https://vega-lite-tactile.vercel.app/dual_line)
+- [Stacked Bar Chart](https://vega-lite-tactile.vercel.app/stacked_bar)
+- [Grouped Bar Chart](https://vega-lite-tactile.vercel.app/grouped_bar)

@@ -1,75 +1,73 @@
-import vegaEmbed from "vega-embed";
+import vegaEmbed from 'vega-embed';
 import { modifySvg } from './modules/modifySvg/chartModifier';
 import './style.css';
-import { elaborateTVLSpec } from "./modules/modifySpec/elaborateSpec";
-import { mergeSpec } from "./modules/modifySpec/mergeSpec";
-import { selectDefaultSpec } from "./modules/modifySpec/selectDefault";
-import { updateDefault } from "./modules/modifySpec/updateDefault";
-import { terminateWorker } from "./modules/braille/translateBraille";
+import { elaborateTVLSpec } from './modules/modifySpec/elaborateSpec';
+import { mergeSpec } from './modules/modifySpec/mergeSpec';
+import { selectDefaultSpec } from './modules/modifySpec/selectDefault';
+import { updateDefault } from './modules/modifySpec/updateDefault';
+import { terminateWorker } from './modules/braille/translateBraille';
 import * as monaco from 'monaco-editor';
-import { initSvgPatterns } from "./modules/texture/initializeTexture";
-
+import { initSvgPatterns } from './modules/texture/initializeTexture';
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const submitButton = document.getElementById('render') as HTMLButtonElement;
   const downloadButton = document.getElementById('download') as HTMLButtonElement;
   // const downloadButtonPNG = document.getElementById('downloadPNG') as HTMLButtonElement;
   const editorContainer = document.getElementById('editorContainer') as HTMLDivElement;
 
-
-  let userTVLSpec: any =
-  {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Lifespan of Common Endangered African Birds",
-    "data": {
-      "values": [
-        { "Bird": "Grey Crowned Crane", "Lifespan": 22, "Condition": "Captive" },
-        { "Bird": "Grey Crowned Crane", "Lifespan": 60, "Condition": "Wild" },
-        { "Bird": "African Penguin", "Lifespan": 18, "Condition": "Captive" },
-        { "Bird": "African Penguin", "Lifespan": 30, "Condition": "Wild" },
-        { "Bird": "Hooded Vulture", "Lifespan": 20, "Condition": "Captive" },
-        { "Bird": "Hooded Vulture", "Lifespan": 25, "Condition": "Wild" },
-        { "Bird": "Northern Bald Ibis", "Lifespan": 12, "Condition": "Captive" },
-        { "Bird": "Northern Bald Ibis", "Lifespan": 25, "Condition": "Wild" },
-        { "Bird": "Blue Crowned Crane", "Lifespan": 21, "Condition": "Captive" },
-        { "Bird": "Blue Crowned Crane", "Lifespan": 25, "Condition": "Wild" }
-      ]
+  let userTVLSpec: any = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    description: 'Lifespan of Common Endangered African Birds',
+    data: {
+      values: [
+        { Bird: 'Grey Crowned Crane', Lifespan: 22, Condition: 'Captive' },
+        { Bird: 'Grey Crowned Crane', Lifespan: 60, Condition: 'Wild' },
+        { Bird: 'African Penguin', Lifespan: 18, Condition: 'Captive' },
+        { Bird: 'African Penguin', Lifespan: 30, Condition: 'Wild' },
+        { Bird: 'Hooded Vulture', Lifespan: 20, Condition: 'Captive' },
+        { Bird: 'Hooded Vulture', Lifespan: 25, Condition: 'Wild' },
+        { Bird: 'Northern Bald Ibis', Lifespan: 12, Condition: 'Captive' },
+        { Bird: 'Northern Bald Ibis', Lifespan: 25, Condition: 'Wild' },
+        { Bird: 'Blue Crowned Crane', Lifespan: 21, Condition: 'Captive' },
+        { Bird: 'Blue Crowned Crane', Lifespan: 25, Condition: 'Wild' },
+      ],
     },
-    "mark": "bar",
-    "encoding": {
-      "y": {
-        "field": "Bird",
-        "type": "nominal",
-        "axis": {
-          "title": "Types of African Endangered Birds",
+    mark: 'bar',
+    encoding: {
+      y: {
+        field: 'Bird',
+        type: 'nominal',
+        axis: {
+          title: 'Types of African Endangered Birds',
         },
-        "sort": ["Blue Crowned Crane", "Northern Bald Ibis", "Hooded Vulture", "African Penguin", "Grey Crowned Crane"]
+        sort: ['Blue Crowned Crane', 'Northern Bald Ibis', 'Hooded Vulture', 'African Penguin', 'Grey Crowned Crane'],
       },
-      "x": {
-        "field": "Lifespan",
-        "type": "quantitative",
-        "axis": {
-          "title": "Lifespan in Years",
-          "style": ["solidGrid"],
-          "staggerLabels": true
-        }
-      },
-      "texture": {
-        "field": "Condition",
-        "type": "nominal",
-        "legend": {
-          "title": "Key"
+      x: {
+        field: 'Lifespan',
+        type: 'quantitative',
+        axis: {
+          title: 'Lifespan in Years',
+          style: ['solidGrid'],
+          staggerLabels: true,
         },
-        "scale": {
-          "domain": ["Captive", "Wild"],        }
       },
-      "yOffset": { "field": "Condition" }
+      texture: {
+        field: 'Condition',
+        type: 'nominal',
+        legend: {
+          title: 'Key',
+        },
+        scale: {
+          domain: ['Captive', 'Wild'],
+          range: ['denseDottedFill', 'solidGrayFill'],
+        },
+      },
+      yOffset: { field: 'Condition' },
     },
-    "title": {
-      "text": "Lifespan of Common Endangered African Birds"
-    }
-  }
+    title: {
+      text: 'Lifespan of Common Endangered African Birds',
+    },
+  };
   // Initialize Monaco Editor
   const editor = monaco.editor.create(editorContainer, {
     value: JSON.stringify(userTVLSpec, null, 2), // Initial value set to userTVLSpec
@@ -100,11 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
       VLSpec.encoding.color = VLSpec.encoding.texture;
       delete VLSpec.encoding.texture;
     }
-    // VLSpec.encoding.color.scale.range exists 
+    // VLSpec.encoding.color.scale.range exists
     if (VLSpec.encoding.color && VLSpec.encoding.color.scale && VLSpec.encoding.color.scale.range) {
       delete VLSpec.encoding.color.scale.range;
     }
-    vegaEmbed("#visual", VLSpec, { renderer: "svg" }).then(result => { }).catch(error => console.error(error));
+    vegaEmbed('#visual', VLSpec, { renderer: 'svg' })
+      .then((result) => {})
+      .catch((error) => console.error(error));
   }
 
   function renderTactileChart(spec: any) {
@@ -121,13 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
     mergedSpec = mergeSpec(TVLSpec, updatedDefaultSpec);
 
     elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
-      console.log("final updated Spec: ", elaboratedTVLSpec)
-      vegaEmbed("#tactile", elaboratedTVLSpec, { renderer: "svg" }).then(result => {
-        modifySvg(result, elaboratedTVLSpec);
-        terminateWorker();
-      }).catch(error => console.error(error));
+      console.log('final updated Spec: ', elaboratedTVLSpec);
+      vegaEmbed('#tactile', elaboratedTVLSpec, { renderer: 'svg' })
+        .then((result) => {
+          modifySvg(result, elaboratedTVLSpec);
+          terminateWorker();
+        })
+        .catch((error) => console.error(error));
     });
-  };
+  }
 
   renderVegaLiteChart(userTVLSpec);
   renderTactileChart(userTVLSpec);
@@ -165,5 +167,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind the downloadSVG function to the download button's click event
   downloadButton.addEventListener('click', downloadSVG);
   // downloadButtonPNG.addEventListener('click', downloadPNG);
-
 });
