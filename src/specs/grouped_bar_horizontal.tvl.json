@@ -1,0 +1,94 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Lifespan of Common Endangered African Birds",
+  "data": {
+    "values": [
+      {
+        "Bird": "Grey Crowned Crane",
+        "Lifespan": 22,
+        "Condition": "Captive"
+      },
+      {
+        "Bird": "Grey Crowned Crane",
+        "Lifespan": 60,
+        "Condition": "Wild"
+      },
+      {
+        "Bird": "African Penguin",
+        "Lifespan": 18,
+        "Condition": "Captive"
+      },
+      {
+        "Bird": "African Penguin",
+        "Lifespan": 30,
+        "Condition": "Wild"
+      },
+      {
+        "Bird": "Hooded Vulture",
+        "Lifespan": 20,
+        "Condition": "Captive"
+      },
+      {
+        "Bird": "Hooded Vulture",
+        "Lifespan": 25,
+        "Condition": "Wild"
+      },
+      {
+        "Bird": "Northern Bald Ibis",
+        "Lifespan": 12,
+        "Condition": "Captive"
+      },
+      {
+        "Bird": "Northern Bald Ibis",
+        "Lifespan": 25,
+        "Condition": "Wild"
+      },
+      {
+        "Bird": "Blue Crowned Crane",
+        "Lifespan": 21,
+        "Condition": "Captive"
+      },
+      {
+        "Bird": "Blue Crowned Crane",
+        "Lifespan": 25,
+        "Condition": "Wild"
+      }
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "Bird",
+      "type": "nominal",
+      "axis": {
+        "title": "Types of African Endangered Birds"
+      },
+      "sort": ["Blue Crowned Crane", "Northern Bald Ibis", "Hooded Vulture", "African Penguin", "Grey Crowned Crane"]
+    },
+    "x": {
+      "field": "Lifespan",
+      "type": "quantitative",
+      "axis": {
+        "title": "Lifespan in Years",
+        "style": ["solidGrid"],
+        "staggerLabels": true
+      }
+    },
+    "texture": {
+      "field": "Condition",
+      "type": "nominal",
+      "legend": {
+        "title": "Key"
+      },
+      "scale": {
+        "domain": ["Captive", "Wild"]
+      }
+    },
+    "yOffset": {
+      "field": "Condition"
+    }
+  },
+  "title": {
+    "text": "Lifespan of Common Endangered African Birds"
+  }
+}

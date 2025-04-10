@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Multi-series line chart showing life expectancy over time for several countries.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+  },
+  "title": {
+    "text": "Average Fertility Rate Over Time for China and Australia"
+  },
+  "transform": [
+    {
+      "filter": "datum.country === 'Australia' || datum.country === 'China'"
+    }
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "axis": {
+        "title": "Year"
+      }
+    },
+    "y": {
+      "aggregate": "average",
+      "field": "fertility",
+      "type": "quantitative",
+      "axis": {
+        "title": "Fertility Rate",
+        "style": ["noGrid"]
+      }
+    },
+    "strokeDash": {
+      "field": "country",
+      "type": "nominal",
+      "scale": {
+        "range": ["dashed", "solid"]
+      }
+    }
+  }
+}

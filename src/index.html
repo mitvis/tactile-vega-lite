@@ -34,7 +34,6 @@
       padding: 10px;
       /* add gap */
       gap: 1%;
-
     }
 
     #editorContainer {
@@ -87,13 +86,31 @@
       min-width: 100%;
       border: lightgrey 1px solid;
     }
-  </style>
 
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+    }
+
+    .chart-type-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
-
-
   <div class="container">
     <div class="item">
       <h1>Tactile Vega Lite</h1>
@@ -116,7 +133,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </body>
 

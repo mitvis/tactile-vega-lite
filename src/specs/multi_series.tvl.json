@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stock prices of 4 Tech Companies over Time.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"
+  },
+  "title": "Stock prices of 4 Tech Companies over Time.",
+  "transform": [
+    {
+      "filter": "datum.symbol === 'AAPL' || datum.symbol === 'GOOG' || datum.symbol === 'IBM' || datum.symbol == 'AMZN'"
+    }
+  ],
+  "mark": {
+    "type": "line"
+  },
+  "encoding": {
+    "x": {
+      "timeUnit": "year",
+      "field": "date"
+    },
+    "y": {
+      "aggregate": "mean",
+      "field": "price",
+      "type": "quantitative"
+    },
+    "strokeDash": {
+      "field": "symbol",
+      "type": "nominal",
+      "scale": {
+        "domain": ["AAPL", "GOOG", "IBM", "AMZN"],
+        "range": ["dashed", "solid", "dotted", "longDashed"]
+      }
+    }
+  },
+  "width": 300,
+  "config": {
+    "axis": {
+      "grid": false
+    }
+  }
+}

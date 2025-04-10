@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/seattle-weather.csv"
+  },
+  "title": "Weather in Seattle",
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "ordinal",
+      "title": "Month of the year"
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative"
+    },
+    "texture": {
+      "field": "weather",
+      "type": "nominal",
+      "scale": {
+        "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+        "range": ["denseDottedFill", "diagonalLeftFill", "solidGrayFill", "dottedFill", "diagonalRightFill"]
+      }
+    }
+  },
+  "config": {
+    "axis": {
+      "grid": false
+    }
+  }
+}

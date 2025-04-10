@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Average life expectancy for the US, Australia, and China in 1990, 1995, and 2000.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
+  },
+  "transform": [
+    {
+      "filter": "datum.country === 'United States' || datum.country === 'Australia' || datum.country === 'China'"
+    },
+    {
+      "filter": "datum.year === 1990 || datum.year === 1995 || datum.year === 2000"
+    }
+  ],
+  "mark": {
+    "type": "bar"
+  },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Year",
+      "axis": {
+        "staggerLabels": "auto"
+      }
+    },
+    "y": {
+      "aggregate": "average",
+      "field": "life_expect",
+      "type": "quantitative",
+      "title": "Life Expectancy"
+    },
+    "xOffset": {
+      "field": "country"
+    },
+    "texture": {
+      "field": "country",
+      "type": "nominal",
+      "legend": {
+        "title": "Key"
+      },
+      "scale": {
+        "domain": ["Australia", "China", "United States"],
+        "range": ["dottedFill", "diagonalRightFill", "horizontalFill"]
+      }
+    }
+  },
+  "config": {
+    "axis": {
+      "grid": false
+    }
+  }
+}
