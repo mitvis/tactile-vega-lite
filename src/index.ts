@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (VLSpec.encoding.color && VLSpec.encoding.color.scale && VLSpec.encoding.color.scale.range) {
       delete VLSpec.encoding.color.scale.range;
     }
-    vegaEmbed('#visual', VLSpec, { renderer: 'svg' })
+    vegaEmbed('#visual', VLSpec, { renderer: 'svg', actions: false })
       .then((result) => {})
       .catch((error) => console.error(error));
   }
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     elaborateTVLSpec(mergedSpec).then((elaboratedTVLSpec) => {
       console.log('final updated Spec: ', elaboratedTVLSpec);
-      vegaEmbed('#tactile', elaboratedTVLSpec, { renderer: 'svg' })
+      vegaEmbed('#tactile', elaboratedTVLSpec, { renderer: 'svg', actions: false })
         .then((result) => {
           modifySvg(result, elaboratedTVLSpec);
           terminateWorker();
