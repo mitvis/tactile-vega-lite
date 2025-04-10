@@ -18,12 +18,6 @@ To run the project locally:
 
 2. Access the application in your browser:
    - [http://localhost:9000/](http://localhost:9000/)
-   - [http://localhost:9000/simple_bar](http://localhost:9000/simple_bar)
-   - [http://localhost:9000/multi_series](http://localhost:9000/multi_series)
-   - [http://localhost:9000/dual_line](http://localhost:9000/dual_line)
-   - [http://localhost:9000/stacked_bar](http://localhost:9000/stacked_bar)
-   - [http://localhost:9000/grouped_bar](http://localhost:9000/grouped_bar)
-   - [http://localhost:9000/pie](http://localhost:9000/pie)
 
 ## Design Examples
 
