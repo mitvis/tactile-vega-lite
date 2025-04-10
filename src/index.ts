@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   editorContainer.parentElement?.insertBefore(selectorContainer, editorContainer);
 
   // Initialize with the default chart
-  let currentExample = 'grouped_bar_horizontal';
+  let currentExample = exampleCharts[0];
   let userTVLSpec = exampleSpecs[currentExample];
 
   // Initialize Monaco Editor
