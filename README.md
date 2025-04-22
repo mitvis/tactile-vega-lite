@@ -25,7 +25,8 @@ Examples used in user testing are available online:
 
 - [Simple Bar Chart](https://vega-lite-tactile.vercel.app/simple_bar)
 - [Multi-line Chart](https://vega-lite-tactile.vercel.app/multi_series)
-  Additonal examples:
+  
+Additonal examples:
 - [Dual-line Chart](https://vega-lite-tactile.vercel.app/dual_line)
 - [Stacked Bar Chart](https://vega-lite-tactile.vercel.app/stacked_bar)
 - [Grouped Bar Chart](https://vega-lite-tactile.vercel.app/grouped_bar)
