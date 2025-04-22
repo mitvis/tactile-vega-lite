@@ -48,15 +48,21 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      // [FONT]
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-      },
+        test: /\.ttf$/,
+        use: [
+            {
+                loader: 'base64-inline-loader',
+                options: {
+                    name: './src/assets/fonts/[hash].[ext]'
+                }
+            }
+        ]
+      }
     ],
   },
   resolve: {
