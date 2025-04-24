@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import textures from 'textures';
 
+export const textureNames = ['noFill', 'solidGrayFill', 'denseDottedFill', 'verticalFill', 'horizontalFill', 'dottedFill', 'diamondFill', 'crossFill', 'diagonalRightFill', 'diagonalLeftFill'];
+
 export function initSvgPatterns(): void {
   // Select the SVG element
   const svg = d3.select('#tactile svg');
@@ -20,22 +22,10 @@ export function initSvgPatterns(): void {
   svg.call(dottedFill);
 
   // Line-based patterns using textures.js
-  const verticalFill = textures
-    .lines()
-    .id('verticalFill')
-    .orientation('vertical')
-    .size(5) // 5mm
-    .strokeWidth(1.3) // 1.3mm
-    .stroke('black');
+  const verticalFill = textures.lines().id('verticalFill').orientation('vertical').heavier(1.2).stroke('black');
   svg.call(verticalFill);
 
-  const horizontalFill = textures
-    .lines()
-    .id('horizontalFill')
-    .orientation('horizontal')
-    .size(5) // 5mm
-    .strokeWidth(1.3) // 1.3mm
-    .stroke('black');
+  const horizontalFill = textures.lines().id('horizontalFill').orientation('horizontal').heavier(1.2).stroke('black');
   svg.call(horizontalFill);
 
   const diagonalLeftFill = textures.lines().id('diagonalLeftFill').orientation('6/8').heavier().thinner();
