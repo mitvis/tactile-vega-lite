@@ -1,154 +1,55 @@
-const d3 = require("d3");
+import * as d3 from 'd3';
+import textures from 'textures';
 
 export function initSvgPatterns(): void {
-    // Select the SVG element
-    const svg = d3.select("#tactile svg");
+  // Select the SVG element
+  const svg = d3.select('#tactile svg');
 
-    // Define the patterns
-    const defs = svg.append("defs");
+  // Basic fills using textures.js
+  const noFill = textures.lines().id('noFill').size(1).strokeWidth(0).background('white');
+  svg.call(noFill);
 
-    defs.append("pattern")
-        .attr("id", "noFill")
-        .attr("fill", "white")
-        .attr("width", "1")
-        .attr("height", "1")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("rect")
-        .attr("width", "1")
-        .attr("height", "1")
+  const solidGrayFill = textures.lines().id('solidGrayFill').size(1).strokeWidth(0).background('#808080');
+  svg.call(solidGrayFill);
 
-    defs.append("pattern")
-        .attr("id", "solidGrayFill")
-        .attr("width", "1")
-        .attr("height", "1")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("rect")
-        .attr("width", "1")
-        .attr("height", "1")
-        .attr("fill", "#808080");
+  // Circle-based patterns using textures.js
+  const denseDottedFill = textures.circles().id('denseDottedFill').size(10).radius(2).fill('black');
+  svg.call(denseDottedFill);
 
-    // diamond fill
+  const dottedFill = textures.circles().id('dottedFill').heavier().fill('black');
+  svg.call(dottedFill);
 
-    defs.append("pattern")
-        .attr("id", "diamondFill")
-        .attr("patternUnits", "userSpaceOnUse")
-        .attr("width", "13.23mm")
-        .attr("height", "26.46mm")
-        .attr("patternTransform", "scale(2) rotate(0)")
-        .append("path")
-        .attr("d", "M12.5 0L0 25l12.5 25L25 25 12.5 0zm25 50L25 75l12.5 25L50 75 37.5 50z")
-        .attr("stroke-width", "1")
-        .attr("stroke", "none")
-        .attr("fill", "#000000")
+  // Line-based patterns using textures.js
+  const verticalFill = textures
+    .lines()
+    .id('verticalFill')
+    .orientation('vertical')
+    .size(5) // 5mm
+    .strokeWidth(1.3) // 1.3mm
+    .stroke('black');
+  svg.call(verticalFill);
 
-    defs.append("pattern")
-        .attr("id", "denseDottedFill")
-        .attr("width", "2.5mm")
-        .attr("height", "2.5mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("circle")
-        .attr("cx", "1.25mm")
-        .attr("cy", "1.25mm")
-        .attr("r", "0.6mm")
-        .attr("fill", "black");
+  const horizontalFill = textures
+    .lines()
+    .id('horizontalFill')
+    .orientation('horizontal')
+    .size(5) // 5mm
+    .strokeWidth(1.3) // 1.3mm
+    .stroke('black');
+  svg.call(horizontalFill);
 
-    defs.append("pattern")
-        .attr("id", "verticalFill")
-        .attr("width", "5mm")
-        .attr("height", "0.5mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("line")
-        .attr("x1", "1.25mm")
-        .attr("y1", "-1mm")
-        .attr("x2", "1.25mm")
-        .attr("y2", "1.5mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "1.3mm");
+  const diagonalLeftFill = textures.lines().id('diagonalLeftFill').orientation('6/8').heavier().thinner();
+  svg.call(diagonalLeftFill);
 
-    defs.append("pattern")
-        .attr("id", "horizontalFill")
-        .attr("width", "0.5mm")
-        .attr("height", "5mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("line")
-        .attr("x1", "-1mm")
-        .attr("y1", "1.25mm")
-        .attr("x2", "1.5mm")
-        .attr("y2", "1.25mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "1.3mm");
+  const diagonalRightFill = textures.lines().id('diagonalRightFill').heavier();
+  svg.call(diagonalRightFill);
 
-    defs.append("pattern")
-        .attr("id", "dottedFill")
-        .attr("width", "5mm")
-        .attr("height", "5mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .attr("fill", "black")
-        .attr("stroke", "none")
-        .append("circle")
-        .attr("cx", "1.25mm")
-        .attr("cy", "1.25mm")
-        .attr("r", "1mm")
-        .append("circle")
-        .attr("cx", "6.25mm")
-        .attr("cy", "6.25mm")
-        .attr("r", "1mm");
+  // Some patterns need more specific control, so we'll use direct D3 approach
+  const defs = svg.append('defs');
 
-    defs.append("pattern")
-        .attr("id", "crossFill")
-        .attr("width", "5.08mm") // Space between lines
-        .attr("height", "5.08mm") // Pattern unit height
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("line")
-        .attr("x1", "2.54mm") // Center of the pattern width
-        .attr("y1", "0mm")
-        .attr("x2", "2.54mm")
-        .attr("y2", "5.08mm") // Full height of the pattern
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.8mm")
-        .attr("stroke-dasharray", "1mm, 1mm"); // Creates a dashed effect
+  // diamondFill - complex pattern with specific path
+  defs.append('pattern').attr('id', 'diamondFill').attr('patternUnits', 'userSpaceOnUse').attr('width', '13.23mm').attr('height', '26.46mm').attr('patternTransform', 'scale(2) rotate(0)').append('path').attr('d', 'M12.5 0L0 25l12.5 25L25 25 12.5 0zm25 50L25 75l12.5 25L50 75 37.5 50z').attr('stroke-width', '1').attr('stroke', 'none').attr('fill', '#000000');
 
-    defs.append("pattern")
-        .attr("id", "diagonalLeftFill")
-        .attr("width", "5.08mm")
-        .attr("height", "5.08mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("line")
-        .attr("x1", "-0.5mm")
-        .attr("y1", "-1.27mm")
-        .attr("x2", "7.12mm")
-        .attr("y2", "6.35mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.8mm")
-        .append("line")
-        .attr("x1", "-1.77mm")
-        .attr("y1", "2.54mm")
-        .attr("x2", "2.04mm")
-        .attr("y2", "-1.27mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.8mm");
-
-
-    defs.append("pattern")
-        .attr("id", "diagonalRightFill")
-        .attr("width", "5.08mm")
-        .attr("height", "5.08mm")
-        .attr("patternUnits", "userSpaceOnUse")
-        .append("line")
-        .attr("x1", "7.12mm")
-        .attr("y1", "-1.27mm")
-        .attr("x2", "-0.5mm")
-        .attr("y2", "6.35mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.8mm")
-        .append("line")
-        .attr("x1", "2.04mm")
-        .attr("y1", "-1.27mm")
-        .attr("x2", "-1.77mm")
-        .attr("y2", "2.54mm")
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.8mm")
-
-
+  // crossFill - needs dashed lines which textures.js doesn't directly support
+  defs.append('pattern').attr('id', 'crossFill').attr('width', '5.08mm').attr('height', '5.08mm').attr('patternUnits', 'userSpaceOnUse').append('line').attr('x1', '2.54mm').attr('y1', '0mm').attr('x2', '2.54mm').attr('y2', '5.08mm').attr('stroke', 'black').attr('stroke-width', '0.8mm').attr('stroke-dasharray', '1mm, 1mm');
 }
-

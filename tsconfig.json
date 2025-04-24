@@ -3,8 +3,6 @@
     /* Visit https://aka.ms/tsconfig to read more about this file */
     "target": "es6", // or a higher version like "es6"
     // "module": "es6", // for using ES modules
-    "strict": true, // enables strict type-checking options
-    "esModuleInterop": true, // enables compatibility with non-ES module libraries
     "outDir": "./dist", // output directory for compiled files
     "sourceMap": true, // enables source map generation for debugging
     "typeRoots": ["./node_modules/@types", "./types"],

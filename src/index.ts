@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   editorContainer.parentElement?.insertBefore(selectorContainer, editorContainer);
 
   // Initialize with the default chart
-  let currentExample = exampleCharts[0];
+  const lastSelectedExample = localStorage.getItem('tvl-selected');
+  let currentExample = lastSelectedExample && exampleCharts.includes(lastSelectedExample) ? lastSelectedExample : exampleCharts[0];
   let userTVLSpec = exampleSpecs[currentExample];
 
   // Initialize Monaco Editor
@@ -160,6 +161,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Render both charts with the new spec
       renderVegaLiteChart(userTVLSpec);
       renderTactileChart(userTVLSpec);
+
+      localStorage.setItem('tvl-selected', currentExample);
     } else {
       console.error(`Failed to load chart spec for ${currentExample}`);
     }
