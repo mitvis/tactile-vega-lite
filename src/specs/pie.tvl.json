@@ -5,27 +5,43 @@
     "values": [
       {
         "category": 1,
-        "value": 4
+        "value": 1
       },
       {
         "category": 2,
-        "value": 6
+        "value": 1
       },
       {
         "category": 3,
-        "value": 10
+        "value": 1
       },
       {
         "category": 4,
-        "value": 3
+        "value": 1
       },
       {
         "category": 5,
-        "value": 7
+        "value": 1
       },
       {
         "category": 6,
-        "value": 8
+        "value": 1
+      },
+      {
+        "category": 7,
+        "value": 1
+      },
+      {
+        "category": 8,
+        "value": 1
+      },
+      {
+        "category": 9,
+        "value": 1
+      },
+      {
+        "category": 10,
+        "value": 1
       }
     ]
   },
@@ -37,10 +53,9 @@
     },
     "texture": {
       "field": "category",
-      "type": "nominal",
-      "scale": {
-        "range": ["noFill", "solidGrayFill", "denseDottedFill", "verticalFill", "horizontalFill", "dottedFill"]
-      }
+      "type": "nominal"
     }
-  }
+  },
+  "width": 500,
+  "height": 500
 }

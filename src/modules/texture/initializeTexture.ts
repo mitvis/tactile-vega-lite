@@ -34,12 +34,30 @@ export function initSvgPatterns(): void {
   const diagonalRightFill = textures.lines().id('diagonalRightFill').heavier();
   svg.call(diagonalRightFill);
 
-  // Some patterns need more specific control, so we'll use direct D3 approach
-  const defs = svg.append('defs');
+  // Diamond pattern
+  const s = 13.23;
+  const diamondFill = textures
+    .paths()
+    .id('diamondFill')
+    .size(s)
+    .d(() => {
+      const center = s / 2;
+      const radius = s * 0.4;
+      return (
+        `M ${center} ${center - radius} ` + // Top
+        `L ${center + radius} ${center} ` + // Right
+        `L ${center} ${center + radius} ` + // Bottom
+        `L ${center - radius} ${center} Z`
+      ); // Left and close
+    })
+    .fill('#000000')
+    .stroke('none');
+  svg.call(diamondFill);
 
-  // diamondFill - complex pattern with specific path
-  defs.append('pattern').attr('id', 'diamondFill').attr('patternUnits', 'userSpaceOnUse').attr('width', '13.23mm').attr('height', '26.46mm').attr('patternTransform', 'scale(2) rotate(0)').append('path').attr('d', 'M12.5 0L0 25l12.5 25L25 25 12.5 0zm25 50L25 75l12.5 25L50 75 37.5 50z').attr('stroke-width', '1').attr('stroke', 'none').attr('fill', '#000000');
+  // Cross pattern with dashed line
+  const crossFill = textures.lines().id('crossFill').orientation('vertical').thinner();
+  svg.call(crossFill);
 
-  // crossFill - needs dashed lines which textures.js doesn't directly support
-  defs.append('pattern').attr('id', 'crossFill').attr('width', '5.08mm').attr('height', '5.08mm').attr('patternUnits', 'userSpaceOnUse').append('line').attr('x1', '2.54mm').attr('y1', '0mm').attr('x2', '2.54mm').attr('y2', '5.08mm').attr('stroke', 'black').attr('stroke-width', '0.8mm').attr('stroke-dasharray', '1mm, 1mm');
+  // Add dash array to cross pattern
+  svg.select('#crossFill path').attr('stroke-dasharray', '2mm 1.5mm');
 }
