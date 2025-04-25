@@ -22,7 +22,7 @@ export function initSvgPatterns(): void {
   svg.call(dottedFill);
 
   // Line-based patterns using textures.js
-  const verticalFill = textures.lines().id('verticalFill').orientation('vertical').heavier(1.2).stroke('black');
+  const verticalFill = textures.lines().id('verticalFill').orientation('vertical').heavier(1.2).thinner().stroke('black');
   svg.call(verticalFill);
 
   const horizontalFill = textures.lines().id('horizontalFill').orientation('horizontal').heavier(1.2).stroke('black');
