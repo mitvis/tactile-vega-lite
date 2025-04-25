@@ -35,7 +35,7 @@ export function initSvgPatterns(): void {
   svg.call(diagonalRightFill);
 
   // Diamond pattern
-  const s = 13.23;
+  const s = 25;
   const diamondFill = textures
     .paths()
     .id('diamondFill')
