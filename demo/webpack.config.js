@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const fs = require('fs');
 
@@ -84,6 +85,18 @@ module.exports = {
       template: 'src/index.html',
     }),
     ...generateHtmlPlugins(), // Dynamically generated HTML plugins
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'node_modules/tactile-vega-lite/dist/worker.min.js'),
+          to: 'worker.js'
+        },
+        {
+          from: path.resolve(__dirname, 'node_modules/tactile-vega-lite/dist/lib'),
+          to: 'lib'
+        }
+      ]
+    })
   ],
 
   optimization: {

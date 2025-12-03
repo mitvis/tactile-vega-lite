@@ -4,9 +4,7 @@ import './style.css';
 import * as monaco from 'monaco-editor';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // For local development, use a local worker file instead of CDN
-  // Comment this out to test CDN loading
-  // setWorkerUrl('/worker.js');
+  setWorkerUrl('/worker.js');
 
   // List of available chart specs (filenames without extension)
   const exampleCharts = [

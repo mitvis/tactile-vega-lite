@@ -17,7 +17,7 @@ const callbacks = new Map<number, (brailleText: string) => void>();
 
 // Global worker URL configuration
 // Default to CDN, can be overridden by setWorkerUrl()
-let workerUrl: string = 'https://cdn.jsdelivr.net/npm/tactile-vega-lite@0.1.0/dist/worker.min.js';
+let workerUrl: string;
 
 /**
  * Set the URL for the braille translation worker
@@ -34,7 +34,7 @@ export function setWorkerUrl(url: string): void {
 // Function to initialize or reinitialize the worker
 function initializeWorker(): void {
   // Check if the worker exists and is active; if not, create a new one
-  if (!worker) {
+  if (!worker && workerUrl) {
 
     worker = new Worker(workerUrl);
 
@@ -50,7 +50,7 @@ function initializeWorker(): void {
     };
 
     worker.onerror = function (error) {
-      console.error("Worker error:", error);
+      console.error("Worker error:", workerUrl, error);
     };
   }
 }
@@ -62,12 +62,13 @@ function translateBraille(text: string): Promise<string> {
     if (worker) {
       const id = messageId++;
       callbacks.set(id, (brailleText: string) => {
+        console.log('translated: ', brailleText)
         resolve(brailleText);
       });
       const message: WorkerMessage = {
         id,
         text: text,
-        tableName: "en-ueb-g2.ctb" // Specify the Braille translation table
+        tableName: "en-ueb-g2.ctb"
       };
       worker.postMessage(message);
     } else {

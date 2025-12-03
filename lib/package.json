@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "liblouis": "^0.4.0",
-    "liblouis-build": "3.2.0-rc"
+    "liblouis-build": "^3.2.0-rc"
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
