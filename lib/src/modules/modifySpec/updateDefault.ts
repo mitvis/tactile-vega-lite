@@ -141,7 +141,6 @@ function updateDefault(userSpec: any, defaultSpec: any) {
   defaultSpec = updateFont(userSpec, defaultSpec);
 
   if (defaultSpec.mark === 'bar' || defaultSpec.mark.type === 'bar') {
-    debugger;
     if (userSpec.encoding.xOffset || userSpec.encoding.yOffset) defaultSpec = updateGroupedBarAxis(quantAxis, defaultSpec);
   }
   if (defaultSpec.mark === 'line' || defaultSpec.mark.type === 'line') {

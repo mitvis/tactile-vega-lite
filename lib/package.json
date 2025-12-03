@@ -48,8 +48,8 @@
   "peerDependencies": {
     "d3": "^7.0.0",
     "textures": "^1.0.0",
-    "vega-embed": "^6.0.0",
-    "vega-lite": "^5.0.0"
+    "vega-embed": "^6.24.0",
+    "vega-lite": "^5.16.3"
   },
   "dependencies": {
     "liblouis": "^0.4.0",

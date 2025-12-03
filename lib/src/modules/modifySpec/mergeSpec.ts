@@ -15,3 +15,5 @@ function mergeSpec(userSpec: any, defaultSpec: any) {
     });
     return mergedSpec;
 }
+
+export { mergeSpec }
