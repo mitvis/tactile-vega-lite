@@ -1,8 +1,0 @@
-{
-    "rewrites": [
-        {
-            "source": "/simple_bar",
-            "destination": "/simple_bar/index.html"
-        }
-    ]
-}

@@ -1,0 +1,62 @@
+{
+  "name": "tactile-vega-lite",
+  "version": "0.1.0",
+  "description": "A library to compile Tactile Vega-Lite specifications into accessible SVG visualizations with braille labels and tactile textures",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./worker": "./dist/worker.min.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prebuild": "npm run generate:fonts",
+    "build": "npm run build:lib && npm run build:worker",
+    "build:lib": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "tsc --module commonjs --outDir dist",
+    "build:esm": "tsc --module esnext --outDir dist/esm && node scripts/rename-esm.js",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build:worker": "node scripts/build-worker.js",
+    "generate:fonts": "node scripts/generate-fonts.js",
+    "clean": "rm -rf dist src/fonts-embedded.ts"
+  },
+  "keywords": [
+    "vega-lite",
+    "tactile",
+    "braille",
+    "accessibility",
+    "visualization",
+    "svg",
+    "a11y",
+    "data-visualization"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/tactile-vega-lite.git"
+  },
+  "peerDependencies": {
+    "d3": "^7.0.0",
+    "textures": "^1.0.0",
+    "vega-embed": "^6.0.0",
+    "vega-lite": "^5.0.0"
+  },
+  "dependencies": {
+    "liblouis": "^0.4.0",
+    "liblouis-build": "3.2.0-rc"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "typescript": "^5.3.3"
+  }
+}
