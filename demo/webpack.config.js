@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const fs = require('fs');
@@ -37,14 +36,24 @@ module.exports = {
   mode: 'development',
   cache: true,
   entry: {
-    main: './src/index.ts',
+    main: './src/index.tsx',
     ...generateEntryPoints(), // Include dynamically found entries
   },
 
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.tsx$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['babel-preset-solid', '@babel/preset-typescript'],
+          },
+        },
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -56,6 +65,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'], // resolve these extensions
+    mainFields: ['main', 'module'], // Prefer CJS over ESM
+    alias: {
+      'tactile-vega-lite': path.resolve(__dirname, '../lib/dist/index.js'),
+    },
+    fallback: {
+      stream: false, // PapaParse tries to use stream but we don't need it for browser
+    },
   },
 
 
@@ -77,9 +93,6 @@ module.exports = {
   },
 
   plugins: [
-    new MonacoWebpackPlugin({
-      languages: ['json'],
-    }),
     new HtmlWebpackPlugin({
       title: 'Tactile Vega Lite Demo',
       template: 'src/index.html',
