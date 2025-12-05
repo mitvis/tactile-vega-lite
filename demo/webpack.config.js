@@ -78,7 +78,7 @@ module.exports = {
   output: {
     filename: '[name].[contenthash].bundle.js', // Ensure unique filenames
     path: path.resolve(__dirname, 'dist'), // output path
-    publicPath: '/', // public path
+    publicPath: process.env.NODE_ENV === 'production' ? '/tactile-vega-lite/' : '/', // public path
     clean: true, // Clean the output directory before emit
   },
 
