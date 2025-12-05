@@ -10,6 +10,7 @@ export function TactileRenderer(props: TactileRendererProps) {
   let containerRef: HTMLDivElement | undefined;
   const [isRendering, setIsRendering] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+  const [svgReady, setSvgReady] = createSignal(false);
   let renderCounter = 0;
 
   // Render whenever the spec prop changes
@@ -22,6 +23,7 @@ export function TactileRenderer(props: TactileRendererProps) {
 
       // Clear container immediately
       containerRef.innerHTML = '';
+      setSvgReady(false);
 
       renderTactileChart(spec, thisRender);
     }
@@ -39,6 +41,7 @@ export function TactileRenderer(props: TactileRendererProps) {
       // Only append if we're still the latest render
       if (renderNumber === renderCounter && containerRef) {
         containerRef.appendChild(result.svg);
+        setSvgReady(true);
       }
     } catch (err) {
       console.error('Error rendering tactile chart:', err);
@@ -55,6 +58,7 @@ export function TactileRenderer(props: TactileRendererProps) {
           errorMessage = err;
         }
         setError(errorMessage);
+        setSvgReady(false);
       }
     } finally {
       // ALWAYS clear isRendering, regardless of whether this render is stale
@@ -96,7 +100,7 @@ export function TactileRenderer(props: TactileRendererProps) {
 
       <div ref={containerRef} class="tactile-container"></div>
 
-      <Show when={!error() && containerRef?.querySelector('svg')}>
+      <Show when={svgReady() && !error()}>
         <Button onClick={downloadSVG} variant="secondary">
           Download Tactile SVG
         </Button>

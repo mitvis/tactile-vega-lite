@@ -44,7 +44,9 @@ export function VisualRenderer(props: VisualRendererProps) {
         .then(() => {
           console.log('Visual chart rendered successfully');
         })
-        .catch((error) => console.error('Error rendering visual chart:', error));
+        .catch((error) => {
+          console.error('Error rendering visual chart:', error);
+        });
     } catch (error) {
       console.error('Error preparing visual chart spec:', error);
     }
