@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { translateBraille } from "../braille/translateBraille";
-import { checkQuantEncoding } from "./checkQuantEncoding";
 
 let maxTextWidth;
 
@@ -47,21 +46,25 @@ async function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: st
     const brailleFont = spec.config.title.font;
     const brailleFontSize = spec.config.title.fontSize;
 
-    // Detect orientation to select the correct axis
-    const orientation = checkQuantEncoding(spec);
+    // Select the X axis to measure horizontal label widths
+    // SVG DOM order: Y-axis is nodes[0], X-axis is nodes[1]
     const axisSelection = ".mark-text.role-axis-label";
     const axisLabels = d3.select(result.view.container()).selectAll(axisSelection);
     const nodes = axisLabels.nodes() as Element[];
 
-    // Select the quantitative axis based on orientation
-    // Use Vega's internal data to find the axis that matches the orientation
-    const quantAxis: Element | undefined = nodes.find(n => (n.parentNode as any).__data__?.datum?.scale === orientation);
+    // Try to find X axis using Vega's internal data
+    let xAxis: Element | undefined = nodes.find(n => (n.parentNode as any).__data__?.datum?.scale === 'x');
 
-    if (!quantAxis) {
-        throw new Error("Quantitative axis not found");
+    // Fallback: X axis is typically the second node in SVG DOM
+    if (!xAxis && nodes.length) {
+        xAxis = nodes[0];
     }
 
-    const textElements = quantAxis?.querySelectorAll(svgSelectionCriteria.join(', '));
+    if (!xAxis) {
+        throw new Error("X axis not found");
+    }
+
+    const textElements = xAxis?.querySelectorAll(svgSelectionCriteria.join(', '));
 
     const widthPromises = Array.from(textElements).map(async (textElement: any) => {
         const originalText = textElement.textContent;
