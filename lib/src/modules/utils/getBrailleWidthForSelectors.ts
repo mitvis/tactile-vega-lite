@@ -54,18 +54,8 @@ async function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: st
     const nodes = axisLabels.nodes() as Element[];
 
     // Select the quantitative axis based on orientation
-    let quantAxis: Element;
-    if (orientation === 'x') {
-        // Vertical bars: X-axis is quantitative, comes first
-        quantAxis = nodes[0];
-    } else if (orientation === 'y') {
-        // Horizontal bars: X-axis is quantitative (even though Y has the data)
-        // The first axis in SVG is typically the X-axis (horizontal/bottom)
-        quantAxis = nodes[0];
-    } else {
-        // Fallback to first axis
-        quantAxis = nodes[0];
-    }
+    // Use Vega's internal data to find the axis that matches the orientation
+    const quantAxis: Element | undefined = nodes.find(n => (n.parentNode as any).__data__?.datum?.scale === orientation);
 
     if (!quantAxis) {
         throw new Error("Quantitative axis not found");

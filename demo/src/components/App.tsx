@@ -1,4 +1,4 @@
-import { createSignal, onMount } from 'solid-js';
+import { createSignal, onMount, batch } from 'solid-js';
 import { editorState, setEditorState, resetEditorState } from '../store';
 import { EditorPanel } from './editor/EditorPanel';
 import { RenderPanel } from './render/RenderPanel';
@@ -59,20 +59,23 @@ export function App() {
     // Parse spec to state
     const parsedState = parseSpecToState(spec);
 
-    // Update editor state, handling encodings specially to prevent merging
-    Object.entries(parsedState).forEach(([key, value]) => {
-      if (key === 'encodings') {
-        // Clear whatever encoding channels currently exist in state
-        Object.keys(editorState.encodings).forEach(channel => {
-          setEditorState('encodings', channel as any, undefined);
-        });
-        // Then set only the encodings from the new spec
-        Object.entries(value || {}).forEach(([channel, encoding]) => {
-          setEditorState('encodings', channel as any, encoding as any);
-        });
-      } else {
-        setEditorState(key as any, value as any);
-      }
+    // Batch all state updates to prevent multiple reactive re-renders
+    batch(() => {
+      // Update editor state, handling encodings specially to prevent merging
+      Object.entries(parsedState).forEach(([key, value]) => {
+        if (key === 'encodings') {
+          // Clear whatever encoding channels currently exist in state
+          Object.keys(editorState.encodings).forEach(channel => {
+            setEditorState('encodings', channel as any, undefined);
+          });
+          // Then set only the encodings from the new spec
+          Object.entries(value || {}).forEach(([channel, encoding]) => {
+            setEditorState('encodings', channel as any, encoding as any);
+          });
+        } else {
+          setEditorState(key as any, value as any);
+        }
+      });
     });
 
     // Load data if it's a URL
@@ -80,8 +83,11 @@ export function App() {
       try {
         setEditorState('isLoadingData', true);
         const { fields, data } = await introspectDataFromUrl(parsedState.dataUrl);
-        setEditorState('dataFields', fields);
-        setEditorState('parsedData', data);
+        // Batch data updates
+        batch(() => {
+          setEditorState('dataFields', fields);
+          setEditorState('parsedData', data);
+        });
       } catch (error) {
         console.error('Error loading data:', error);
         setEditorState('dataError', error instanceof Error ? error.message : 'Failed to load data');
