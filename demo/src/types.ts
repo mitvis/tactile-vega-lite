@@ -65,6 +65,32 @@ export interface FieldInfo {
 }
 
 /**
+ * Axis configuration
+ */
+export interface AxisConfig {
+  title?: string;
+  staggerLabels?: boolean | string;
+  grid?: boolean;
+  style?: string[];
+}
+
+/**
+ * Scale configuration
+ */
+export interface ScaleConfig {
+  zero?: boolean;
+  domain?: string[];
+  range?: any[];
+}
+
+/**
+ * Legend configuration
+ */
+export interface LegendConfig {
+  title?: string;
+}
+
+/**
  * Base channel encoding
  */
 export interface ChannelEncoding {
@@ -72,6 +98,11 @@ export interface ChannelEncoding {
   type: FieldType | null;
   aggregate?: AggregateFunction;
   timeUnit?: TimeUnit;
+  axis?: AxisConfig;
+  scale?: ScaleConfig;
+  sort?: any;
+  title?: string;
+  staggerLabel?: boolean;
 }
 
 /**
@@ -92,6 +123,7 @@ export interface TextureChannelEncoding {
     domain?: string[];
     range?: TextureType[];
   };
+  legend?: LegendConfig;
 }
 
 /**
@@ -104,6 +136,19 @@ export interface StrokeDashEncoding {
     domain?: string[];
     range?: StrokeDashPattern[];
   };
+}
+
+/**
+ * Shape channel encoding
+ */
+export interface ShapeEncoding {
+  field?: string;
+  type?: FieldType;
+  scale?: {
+    domain?: string[];
+    range?: string[];
+  };
+  legend?: LegendConfig;
 }
 
 /**
@@ -122,7 +167,9 @@ export interface Encodings {
   theta?: ChannelEncoding;
   texture?: TextureChannelEncoding;
   xOffset?: SimpleChannelEncoding;
+  yOffset?: SimpleChannelEncoding;
   strokeDash?: StrokeDashEncoding;
+  shape?: ShapeEncoding;
 }
 
 /**
@@ -150,13 +197,17 @@ export interface EditorState {
   // Encodings
   encodings: Encodings;
 
+  // Top-level spec properties
+  description?: string;
+  width?: number;
+  height?: number;
+  config?: any;
+  transforms?: any[];
+
   // UI state
   showJsonViewer: boolean;
   isLoadingData: boolean;
   dataError: string | null;
-
-  // Generated spec (derived)
-  generatedSpec: TactileVegaLiteSpec | null;
 }
 
 /**
@@ -168,7 +219,9 @@ export interface EncodingVisibilityMap {
   theta: boolean;
   texture: boolean;
   xOffset: boolean;
+  yOffset: boolean;
   strokeDash: boolean;
+  shape: boolean;
 }
 
 /**

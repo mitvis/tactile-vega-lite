@@ -115,9 +115,6 @@ export async function tactileVegaLite(
       // Render with vega-embed
       let result;
       try {
-        // Debug: log the elaborated spec before rendering
-        console.log('elaboratedTVLSpec before main render:', JSON.stringify(elaboratedTVLSpec, null, 2));
-
         result = await vegaEmbed(container, elaboratedTVLSpec, {
           renderer: 'svg',
           actions: false,
@@ -145,10 +142,6 @@ export async function tactileVegaLite(
       // Terminate worker to clean up resources
       terminateWorker();
 
-      // Debug: Log what's in the container
-      console.log('Container children:', container.children);
-      console.log('Container innerHTML length:', container.innerHTML.length);
-
       // Extract the SVG element
       const svgElement = container.querySelector('svg');
       if (!svgElement) {
@@ -157,8 +150,6 @@ export async function tactileVegaLite(
 
       // Clone the SVG to detach it from the temporary container
       const clonedSvg = svgElement.cloneNode(true) as SVGElement;
-
-      console.log('Returning cloned SVG:', clonedSvg.tagName);
 
       // Remove temporary container
       document.body.removeChild(container);

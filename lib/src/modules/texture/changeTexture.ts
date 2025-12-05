@@ -35,17 +35,13 @@ function mapUserDefinedTexture(spec: any, uniqueColors: string[]): Record<string
 // Main function to apply textures to colors in a Vega-Lite chart
 function applyTexturesToVegaLiteChart(spec: any, result: any, markSelector: string, legendSymbolSelector: string) {
   const uniqueColors = findUniqueColors(result, markSelector);
-  console.log('uniquecolors: ', uniqueColors);
   let colorTextureMap: Record<string, string> = {};
-  console.log('applyTexturesToVegaLiteChart');
   if (spec.encoding && spec.encoding.color && spec.encoding.color.scale && spec.encoding.color.scale.range) {
     // use specified textures if the above are specified
-    console.log('range specified: ', spec.encoding.color.scale.range);
     colorTextureMap = mapUserDefinedTexture(spec, uniqueColors);
   }
   // generate random ones if only spec.encoding.color is specified
   else if (spec.encoding.color && !spec.encoding.color.scale && !spec.encoding.color.scale.range) {
-    console.log('here: ', colorTextureMap);
     colorTextureMap = generateTexturesForColors(uniqueColors);
   } else {
     console.error('No color scale specified in the Vega-Lite spec');

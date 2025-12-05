@@ -62,7 +62,6 @@ function translateBraille(text: string): Promise<string> {
     if (worker) {
       const id = messageId++;
       callbacks.set(id, (brailleText: string) => {
-        console.log('translated: ', brailleText)
         resolve(brailleText);
       });
       const message: WorkerMessage = {

@@ -1,10 +1,9 @@
-import { createSignal, onMount, createEffect } from 'solid-js';
-import { editorState, setEditorState } from '../store';
+import { createSignal, onMount } from 'solid-js';
+import { editorState, setEditorState, resetEditorState } from '../store';
 import { EditorPanel } from './editor/EditorPanel';
 import { RenderPanel } from './render/RenderPanel';
 import { parseSpecToState } from '../utils/exampleLoader';
 import { introspectDataFromUrl, inferFieldTypes } from '../utils/dataIntrospection';
-import { buildSpecFromState } from '../utils/specBuilder';
 
 // Import example specs
 import simple_bar from '../specs/simple_bar.tvl.json';
@@ -46,25 +45,6 @@ export function App() {
     await loadExample('simple_bar');
   });
 
-  // Auto-generate spec whenever editor state changes
-  createEffect(() => {
-    // Track relevant parts of editor state
-    const {
-      chartType,
-      title,
-      dataSource,
-      dataUrl,
-      parsedData,
-      filterExpression,
-      mark,
-      encodings,
-    } = editorState;
-
-    // Build spec from current state
-    const spec = buildSpecFromState(editorState);
-    setEditorState('generatedSpec', spec);
-  });
-
   async function loadExample(exampleName: string) {
     const spec = exampleSpecs[exampleName];
     if (!spec) {
@@ -72,12 +52,27 @@ export function App() {
       return;
     }
 
+    // Reset to clean state before loading new example
+    // This ensures old properties (like theta, filterExpression) are cleared
+    resetEditorState();
+
     // Parse spec to state
     const parsedState = parseSpecToState(spec);
 
-    // Update editor state
+    // Update editor state, handling encodings specially to prevent merging
     Object.entries(parsedState).forEach(([key, value]) => {
-      setEditorState(key as any, value as any);
+      if (key === 'encodings') {
+        // Clear whatever encoding channels currently exist in state
+        Object.keys(editorState.encodings).forEach(channel => {
+          setEditorState('encodings', channel as any, undefined);
+        });
+        // Then set only the encodings from the new spec
+        Object.entries(value || {}).forEach(([channel, encoding]) => {
+          setEditorState('encodings', channel as any, encoding as any);
+        });
+      } else {
+        setEditorState(key as any, value as any);
+      }
     });
 
     // Load data if it's a URL

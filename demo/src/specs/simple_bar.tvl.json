@@ -9,9 +9,7 @@
       "filter": "datum.country === 'United States' || datum.country === 'China' || datum.country === 'Australia'"
     }
   ],
-  "mark": {
-    "type": "bar"
-  },
+  "mark": "bar",
   "encoding": {
     "x": {
       "field": "country",

@@ -6,6 +6,7 @@ import {
   TextureChannelEncoding,
   StrokeDashEncoding,
   SimpleChannelEncoding,
+  ShapeEncoding,
   FieldType,
   AggregateFunction,
   TimeUnit,
@@ -20,11 +21,30 @@ import { TextureType } from 'tactile-vega-lite';
 export function parseSpecToState(spec: TactileVegaLiteSpec): Partial<EditorState> {
   const state: Partial<EditorState> = {};
 
-  // Title
+  // Title - always use string format
   if (spec.title) {
-    state.title = typeof spec.title === 'string' ? spec.title : (spec.title as any).text || '';
+    if (typeof spec.title === 'string') {
+      state.title = spec.title;
+    } else {
+      // Extract text from object format
+      state.title = (spec.title as any).text || '';
+    }
   } else {
     state.title = '';
+  }
+
+  // Top-level spec properties - store directly in state
+  if ((spec as any).description) {
+    state.description = (spec as any).description;
+  }
+  if ((spec as any).width) {
+    state.width = (spec as any).width;
+  }
+  if ((spec as any).height) {
+    state.height = (spec as any).height;
+  }
+  if ((spec as any).config) {
+    state.config = (spec as any).config;
   }
 
   // Data
@@ -41,13 +61,26 @@ export function parseSpecToState(spec: TactileVegaLiteSpec): Partial<EditorState
 
   // Transform (filter)
   if (spec.transform && Array.isArray(spec.transform)) {
-    const filterTransform = (spec.transform as any[]).find((t: any) => t.filter);
-    if (filterTransform) {
-      state.filterExpression = filterTransform.filter;
+    const filterTransforms = (spec.transform as any[]).filter((t: any) => t.filter);
+
+    if (filterTransforms.length === 1) {
+      // Single filter - store in filterExpression
+      state.filterExpression = filterTransforms[0].filter;
+      state.transforms = undefined; // Explicitly clear transforms
+    } else if (filterTransforms.length > 1) {
+      // Multiple transforms - store entire array and use first filter for UI
+      state.filterExpression = filterTransforms[0].filter;
+      state.transforms = spec.transform;
+    } else {
+      state.filterExpression = null;
+      state.transforms = undefined; // Explicitly clear transforms
     }
+  } else {
+    state.filterExpression = null;
+    state.transforms = undefined; // Explicitly clear transforms
   }
 
-  // Chart type from mark
+  // Chart type and mark
   const markType = typeof spec.mark === 'string' ? spec.mark : spec.mark?.type;
   state.chartType = detectChartType(markType);
   state.mark = { type: markType as any };
@@ -56,34 +89,37 @@ export function parseSpecToState(spec: TactileVegaLiteSpec): Partial<EditorState
   state.encodings = {};
 
   if (spec.encoding) {
-    // X encoding
+    // Parse all supported channels
     if (spec.encoding.x) {
       state.encodings.x = parseChannelEncoding(spec.encoding.x);
     }
 
-    // Y encoding
     if (spec.encoding.y) {
       state.encodings.y = parseChannelEncoding(spec.encoding.y);
     }
 
-    // Theta encoding
     if (spec.encoding.theta) {
       state.encodings.theta = parseChannelEncoding(spec.encoding.theta);
     }
 
-    // Texture encoding
     if (spec.encoding.texture) {
       state.encodings.texture = parseTextureEncoding(spec.encoding.texture);
     }
 
-    // XOffset encoding
     if (spec.encoding.xOffset) {
       state.encodings.xOffset = parseSimpleChannelEncoding(spec.encoding.xOffset);
     }
 
-    // StrokeDash encoding
+    if ((spec.encoding as any).yOffset) {
+      state.encodings.yOffset = parseSimpleChannelEncoding((spec.encoding as any).yOffset);
+    }
+
     if (spec.encoding.strokeDash) {
       state.encodings.strokeDash = parseStrokeDashEncoding(spec.encoding.strokeDash);
+    }
+
+    if ((spec.encoding as any).shape) {
+      state.encodings.shape = parseShapeEncoding((spec.encoding as any).shape);
     }
   }
 
@@ -115,6 +151,40 @@ function parseChannelEncoding(encoding: any): ChannelEncoding {
 
   if (encoding.timeUnit) {
     parsed.timeUnit = encoding.timeUnit as TimeUnit;
+  }
+
+  // Extract axis configuration
+  if (encoding.axis) {
+    parsed.axis = {
+      title: encoding.axis.title,
+      staggerLabels: encoding.axis.staggerLabels,
+      grid: encoding.axis.grid,
+      style: encoding.axis.style,
+    };
+  }
+
+  // Extract scale configuration
+  if (encoding.scale) {
+    parsed.scale = {
+      zero: encoding.scale.zero,
+      domain: encoding.scale.domain,
+      range: encoding.scale.range,
+    };
+  }
+
+  // Extract sort
+  if (encoding.sort) {
+    parsed.sort = encoding.sort;
+  }
+
+  // Extract direct title property
+  if (encoding.title) {
+    parsed.title = encoding.title;
+  }
+
+  // Extract staggerLabel (alternate name)
+  if (encoding.staggerLabel !== undefined) {
+    parsed.staggerLabel = encoding.staggerLabel;
   }
 
   return parsed;
@@ -154,6 +224,13 @@ function parseTextureEncoding(encoding: any): TextureChannelEncoding {
     }
   }
 
+  // Extract legend configuration
+  if (encoding.legend) {
+    parsed.legend = {
+      title: encoding.legend.title,
+    };
+  }
+
   return parsed;
 }
 
@@ -179,6 +256,40 @@ function parseStrokeDashEncoding(encoding: any): StrokeDashEncoding {
     if (encoding.scale.range) {
       parsed.scale.range = encoding.scale.range as StrokeDashPattern[];
     }
+  }
+
+  return parsed;
+}
+
+/**
+ * Parse a shape encoding
+ */
+function parseShapeEncoding(encoding: any): ShapeEncoding {
+  const parsed: ShapeEncoding = {};
+
+  if (encoding.field) {
+    parsed.field = encoding.field;
+  }
+
+  if (encoding.type) {
+    parsed.type = encoding.type as FieldType;
+  }
+
+  if (encoding.scale) {
+    parsed.scale = {};
+    if (encoding.scale.domain) {
+      parsed.scale.domain = encoding.scale.domain;
+    }
+    if (encoding.scale.range) {
+      parsed.scale.range = encoding.scale.range;
+    }
+  }
+
+  // Extract legend configuration
+  if (encoding.legend) {
+    parsed.legend = {
+      title: encoding.legend.title,
+    };
   }
 
   return parsed;

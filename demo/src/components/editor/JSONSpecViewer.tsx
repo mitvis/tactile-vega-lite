@@ -1,16 +1,22 @@
-import { Show, createSignal } from 'solid-js';
+import { Show, createSignal, createMemo } from 'solid-js';
 import { editorState } from '../../store';
+import { buildSpecFromState } from '../../utils/specBuilder';
 
 export function JSONSpecViewer() {
   const [isExpanded, setIsExpanded] = createSignal(false);
 
+  // Compute spec from editor state
+  const spec = createMemo(() => buildSpecFromState(editorState));
+
   const formattedSpec = () => {
-    if (!editorState.generatedSpec) return 'No spec generated yet';
-    return JSON.stringify(editorState.generatedSpec, null, 2);
+    const currentSpec = spec();
+    if (!currentSpec) return 'No spec generated yet';
+    return JSON.stringify(currentSpec, null, 2);
   };
 
   const copyToClipboard = () => {
-    if (editorState.generatedSpec) {
+    const currentSpec = spec();
+    if (currentSpec) {
       navigator.clipboard.writeText(formattedSpec());
     }
   };
@@ -24,7 +30,7 @@ export function JSONSpecViewer() {
         >
           {isExpanded() ? 'Hide' : 'Show'} JSON Specification
         </button>
-        <Show when={isExpanded() && editorState.generatedSpec}>
+        <Show when={isExpanded() && spec()}>
           <button class="button button-secondary" onClick={copyToClipboard}>
             Copy JSON
           </button>

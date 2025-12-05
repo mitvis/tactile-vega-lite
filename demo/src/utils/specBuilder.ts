@@ -5,6 +5,7 @@ import {
   TextureChannelEncoding,
   StrokeDashEncoding,
   SimpleChannelEncoding,
+  ShapeEncoding,
 } from '../types';
 
 /**
@@ -23,9 +24,23 @@ export function buildSpecFromState(state: EditorState): TactileVegaLiteSpec | nu
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
   };
 
-  // Title
+  // Title - always use string format
   if (state.title) {
     spec.title = state.title;
+  }
+
+  // Top-level spec properties - direct access
+  if (state.description) {
+    (spec as any).description = state.description;
+  }
+  if (state.width) {
+    (spec as any).width = state.width;
+  }
+  if (state.height) {
+    (spec as any).height = state.height;
+  }
+  if (state.config) {
+    (spec as any).config = state.config;
   }
 
   // Data
@@ -36,22 +51,28 @@ export function buildSpecFromState(state: EditorState): TactileVegaLiteSpec | nu
   }
 
   // Transform (filter)
-  if (state.filterExpression) {
+  if (state.transforms) {
+    // Use complete transform array
+    spec.transform = state.transforms;
+  } else if (state.filterExpression) {
+    // Single filter expression
     spec.transform = [
       {
         filter: state.filterExpression,
       },
     ];
+  } else {
+    spec.transform = undefined;
   }
 
-  // Mark
+  // Mark - use string format (simpler, matches test specs)
   if (state.chartType === 'pie') {
     spec.mark = 'arc';
   } else {
-    spec.mark = { type: state.mark.type };
+    spec.mark = state.mark.type;
   }
 
-  // Encodings
+  // Encodings - NO MORE mergePassthroughProps!
   spec.encoding = {};
 
   if (state.encodings.x) {
@@ -89,10 +110,24 @@ export function buildSpecFromState(state: EditorState): TactileVegaLiteSpec | nu
     }
   }
 
+  if (state.encodings.yOffset) {
+    const yOffsetSpec = buildSimpleChannelSpec(state.encodings.yOffset);
+    if (yOffsetSpec) {
+      (spec.encoding as any).yOffset = yOffsetSpec;
+    }
+  }
+
   if (state.encodings.strokeDash) {
     const strokeDashSpec = buildStrokeDashSpec(state.encodings.strokeDash);
     if (strokeDashSpec) {
       spec.encoding.strokeDash = strokeDashSpec;
+    }
+  }
+
+  if (state.encodings.shape) {
+    const shapeSpec = buildShapeSpec(state.encodings.shape);
+    if (shapeSpec) {
+      (spec.encoding as any).shape = shapeSpec;
     }
   }
 
@@ -103,14 +138,22 @@ export function buildSpecFromState(state: EditorState): TactileVegaLiteSpec | nu
  * Build a channel encoding specification (x, y, theta)
  */
 function buildChannelSpec(encoding: ChannelEncoding): any | null {
-  if (!encoding.field || !encoding.type) {
+  // Field is required unless aggregate is "count"
+  if (!encoding.field && encoding.aggregate !== 'count') {
     return null;
   }
 
-  const spec: any = {
-    field: encoding.field,
-    type: encoding.type,
-  };
+  const spec: any = {};
+
+  // Only add field if present (count aggregate doesn't need field)
+  if (encoding.field) {
+    spec.field = encoding.field;
+  }
+
+  // Type is optional (can be omitted if timeUnit or aggregate is present)
+  if (encoding.type) {
+    spec.type = encoding.type;
+  }
 
   if (encoding.aggregate) {
     spec.aggregate = encoding.aggregate;
@@ -118,6 +161,29 @@ function buildChannelSpec(encoding: ChannelEncoding): any | null {
 
   if (encoding.timeUnit) {
     spec.timeUnit = encoding.timeUnit;
+  }
+
+  // Direct property assignment - no more Proxy issues!
+  if (encoding.axis) {
+    spec.axis = encoding.axis;
+  }
+
+  if (encoding.scale) {
+    spec.scale = encoding.scale;
+  }
+
+  if (encoding.sort) {
+    spec.sort = encoding.sort;
+  }
+
+  // Direct title property (overrides axis.title)
+  if (encoding.title) {
+    spec.title = encoding.title;
+  }
+
+  // staggerLabel property
+  if (encoding.staggerLabel !== undefined) {
+    spec.staggerLabel = encoding.staggerLabel;
   }
 
   return spec;
@@ -167,14 +233,21 @@ function buildTextureSpec(encoding: TextureChannelEncoding): any | null {
       spec.scale.domain = encoding.scale.domain;
       hasContent = true;
     }
-    if (encoding.scale.range && encoding.scale.range.length > 0) {
+    // Include range even if empty - user explicitly set it
+    if (encoding.scale.range !== undefined) {
       spec.scale.range = encoding.scale.range;
       hasContent = true;
     }
   }
 
+  // Include legend configuration
+  if (encoding.legend) {
+    spec.legend = encoding.legend;
+    hasContent = true;
+  }
+
   // If no field but has scale range, still valid (uniform texture)
-  if (!hasContent && encoding.scale?.range && encoding.scale.range.length > 0) {
+  if (!hasContent && encoding.scale?.range !== undefined) {
     return { scale: { range: encoding.scale.range } };
   }
 
@@ -202,6 +275,39 @@ function buildStrokeDashSpec(encoding: StrokeDashEncoding): any | null {
     if (encoding.scale.range && encoding.scale.range.length > 0) {
       spec.scale.range = encoding.scale.range;
     }
+  }
+
+  return spec;
+}
+
+/**
+ * Build a shape encoding specification
+ */
+function buildShapeSpec(encoding: ShapeEncoding): any | null {
+  if (!encoding.field) {
+    return null;
+  }
+
+  const spec: any = {
+    field: encoding.field,
+  };
+
+  if (encoding.type) {
+    spec.type = encoding.type;
+  }
+
+  if (encoding.scale) {
+    spec.scale = {};
+    if (encoding.scale.domain && encoding.scale.domain.length > 0) {
+      spec.scale.domain = encoding.scale.domain;
+    }
+    if (encoding.scale.range && encoding.scale.range.length > 0) {
+      spec.scale.range = encoding.scale.range;
+    }
+  }
+
+  if (encoding.legend) {
+    spec.legend = encoding.legend;
   }
 
   return spec;

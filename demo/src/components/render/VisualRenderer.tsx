@@ -1,21 +1,22 @@
-import { onMount, createEffect, on } from 'solid-js';
+import { createEffect } from 'solid-js';
 import vegaEmbed from 'vega-embed';
-import { editorState } from '../../store';
+import { TactileVegaLiteSpec } from 'tactile-vega-lite';
 
-export function VisualRenderer() {
+interface VisualRendererProps {
+  spec: TactileVegaLiteSpec | null;
+}
+
+export function VisualRenderer(props: VisualRendererProps) {
   let containerRef: HTMLDivElement | undefined;
 
-  // Render whenever the spec changes
-  createEffect(
-    on(
-      () => editorState.generatedSpec,
-      (spec) => {
-        if (spec && containerRef) {
-          renderVegaLiteChart(spec);
-        }
-      }
-    )
-  );
+  // Render whenever the spec prop changes
+  createEffect(() => {
+    const spec = props.spec;
+    console.log('VisualRenderer: spec changed', spec, 'containerRef:', containerRef);
+    if (spec && containerRef) {
+      renderVegaLiteChart(spec);
+    }
+  });
 
   function renderVegaLiteChart(spec: any) {
     if (!containerRef) return;

@@ -4,9 +4,7 @@
   "data": {
     "url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/gapminder.json"
   },
-  "title": {
-    "text": "Average Fertility Rate Over Time for China and Australia"
-  },
+  "title": "Average Fertility Rate Over Time for China and Australia",
   "transform": [
     {
       "filter": "datum.country === 'Australia' || datum.country === 'China'"

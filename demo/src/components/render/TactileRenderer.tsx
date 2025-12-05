@@ -1,48 +1,63 @@
-import { createEffect, on, Show, createSignal } from 'solid-js';
-import { tactileVegaLite } from 'tactile-vega-lite';
-import { editorState } from '../../store';
+import { createEffect, Show, createSignal } from 'solid-js';
+import { tactileVegaLite, TactileVegaLiteSpec } from 'tactile-vega-lite';
 import { Button } from '../atoms/Button';
 
-export function TactileRenderer() {
+interface TactileRendererProps {
+  spec: TactileVegaLiteSpec | null;
+}
+
+export function TactileRenderer(props: TactileRendererProps) {
   let containerRef: HTMLDivElement | undefined;
   const [isRendering, setIsRendering] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+  let renderCounter = 0;
 
-  // Render whenever the spec changes
-  createEffect(
-    on(
-      () => editorState.generatedSpec,
-      (spec) => {
-        if (spec && containerRef) {
-          renderTactileChart(spec);
-        }
-      }
-    )
-  );
+  // Render whenever the spec prop changes
+  createEffect(() => {
+    const spec = props.spec;
+    if (spec && containerRef) {
+      // Increment counter and capture current render number
+      renderCounter++;
+      const thisRender = renderCounter;
 
-  async function renderTactileChart(spec: any) {
+      // Clear container immediately
+      containerRef.innerHTML = '';
+
+      renderTactileChart(spec, thisRender);
+    }
+  });
+
+  async function renderTactileChart(spec: any, renderNumber: number) {
     if (!containerRef) return;
 
     setIsRendering(true);
     setError(null);
 
     try {
-      // Clear existing content
-      containerRef.innerHTML = '';
-
-      // Use the tactile-vega-lite library
       const result = await tactileVegaLite(spec);
 
-      // Append the SVG to the container
-      containerRef.appendChild(result.svg);
-
-      console.log('Tactile chart rendered successfully');
+      // Only append if we're still the latest render
+      if (renderNumber === renderCounter && containerRef) {
+        containerRef.appendChild(result.svg);
+      }
     } catch (err) {
       console.error('Error rendering tactile chart:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      setError(errorMessage);
-      containerRef.innerHTML = `<p class="error-message">Error: ${errorMessage}</p>`;
+      if (renderNumber === renderCounter) {
+        // Get full error message including cause
+        let errorMessage = 'Unknown error';
+        if (err instanceof Error) {
+          errorMessage = err.message;
+          // Include cause if available
+          if ((err as any).cause) {
+            errorMessage += `\nCaused by: ${(err as any).cause.message || (err as any).cause}`;
+          }
+        } else if (typeof err === 'string') {
+          errorMessage = err;
+        }
+        setError(errorMessage);
+      }
     } finally {
+      // ALWAYS clear isRendering, regardless of whether this render is stale
       setIsRendering(false);
     }
   }
@@ -71,6 +86,12 @@ export function TactileRenderer() {
 
       <Show when={isRendering()}>
         <div class="loading-message">Rendering tactile chart...</div>
+      </Show>
+
+      <Show when={error()}>
+        <div class="error-message" style="color: red; padding: 10px; background: #ffe6e6; border: 1px solid red; margin: 10px 0;">
+          <strong>Error:</strong> {error()}
+        </div>
       </Show>
 
       <div ref={containerRef} class="tactile-container"></div>

@@ -10,9 +10,7 @@
       "filter": "datum.symbol === 'AAPL' || datum.symbol === 'GOOG' || datum.symbol === 'IBM' || datum.symbol == 'AMZN'"
     }
   ],
-  "mark": {
-    "type": "line"
-  },
+  "mark": "line",
   "encoding": {
     "x": {
       "timeUnit": "year",

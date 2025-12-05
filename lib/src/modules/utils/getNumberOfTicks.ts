@@ -13,6 +13,12 @@ function getNumberOfTicks(result: any, svgSelectionCriteria: string[], axis: str
         // get the yAxis, which is the second element in the axisLabels selection
         axisSelected = axisLabels.nodes()[1];
     }
+
+    // Check if axisSelected exists before trying to query it
+    if (!axisSelected) {
+        return Promise.resolve(0);
+    }
+
     // now count how many text elements are in the xAxis.node()
     const numberOfDates = axisSelected.querySelectorAll(svgSelectionCriteria).length;
     return Promise.resolve(numberOfDates);

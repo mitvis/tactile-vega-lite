@@ -28,13 +28,17 @@ const initialState: EditorState = {
   // Encodings
   encodings: {},
 
+  // Top-level spec properties
+  description: undefined,
+  width: undefined,
+  height: undefined,
+  config: undefined,
+  transforms: undefined,
+
   // UI state
   showJsonViewer: false,
   isLoadingData: false,
   dataError: null,
-
-  // Generated spec
-  generatedSpec: null,
 };
 
 /**
@@ -46,7 +50,29 @@ export const [editorState, setEditorState] = createStore<EditorState>(initialSta
  * Reset the editor state to initial values
  */
 export function resetEditorState() {
-  setEditorState(initialState);
+  // Manually set each property to ensure nested objects are fully replaced
+  setEditorState('chartType', initialState.chartType);
+  setEditorState('title', initialState.title);
+  setEditorState('dataSource', initialState.dataSource);
+  setEditorState('dataUrl', initialState.dataUrl);
+  setEditorState('inlineDataFormat', initialState.inlineDataFormat);
+  setEditorState('inlineDataText', initialState.inlineDataText);
+  setEditorState('parsedData', initialState.parsedData);
+  setEditorState('dataFields', initialState.dataFields);
+  setEditorState('filterExpression', initialState.filterExpression);
+  setEditorState('mark', { ...initialState.mark });
+  setEditorState('encodings', {}); // Clear all encodings
+
+  // Reset top-level spec properties
+  setEditorState('description', initialState.description);
+  setEditorState('width', initialState.width);
+  setEditorState('height', initialState.height);
+  setEditorState('config', initialState.config);
+  setEditorState('transforms', initialState.transforms);
+
+  setEditorState('showJsonViewer', initialState.showJsonViewer);
+  setEditorState('isLoadingData', initialState.isLoadingData);
+  setEditorState('dataError', initialState.dataError);
 }
 
 /**

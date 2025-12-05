@@ -12,9 +12,7 @@
       "filter": "datum.year === 1990 || datum.year === 1995 || datum.year === 2000"
     }
   ],
-  "mark": {
-    "type": "bar"
-  },
+  "mark": "bar",
   "encoding": {
     "x": {
       "field": "year",

@@ -42,7 +42,6 @@ function generateTexturesForColors(uniqueColors: string[]): Record<string, strin
             const patternId = patternIDs[index % patternIDs.length];
             colorToTextureUrl[color] = `url(#${patternId})`;
         });
-        console.log(colorToTextureUrl);
         return colorToTextureUrl;
     }
 }

@@ -17,7 +17,6 @@ async function convertToBraille(result: any, spec: any) {
     ];
 
     await Promise.all(tasks); // Wait for all tasks to complete
-    console.log("All translation tasks completed successfully.");
   } catch (error) {
     console.error('Failed to translate axis title:', error);
   }
