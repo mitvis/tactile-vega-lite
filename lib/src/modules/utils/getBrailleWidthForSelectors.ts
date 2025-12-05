@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { translateBraille } from "../braille/translateBraille";
+import { checkQuantEncoding } from "./checkQuantEncoding";
 
 let maxTextWidth;
 
@@ -45,15 +46,32 @@ let maxTextWidth;
 async function getBrailleWidthForSelectors(result: any, svgSelectionCriteria: string[], spec: any): Promise<number> {
     const brailleFont = spec.config.title.font;
     const brailleFontSize = spec.config.title.fontSize;
+
+    // Detect orientation to select the correct axis
+    const orientation = checkQuantEncoding(spec);
     const axisSelection = ".mark-text.role-axis-label";
     const axisLabels = d3.select(result.view.container()).selectAll(axisSelection);
-    const xAxis = axisLabels.node() as Element;
+    const nodes = axisLabels.nodes() as Element[];
 
-    if (!xAxis) {
-        throw new Error("xAxis not found");
+    // Select the quantitative axis based on orientation
+    let quantAxis: Element;
+    if (orientation === 'x') {
+        // Vertical bars: X-axis is quantitative, comes first
+        quantAxis = nodes[0];
+    } else if (orientation === 'y') {
+        // Horizontal bars: X-axis is quantitative (even though Y has the data)
+        // The first axis in SVG is typically the X-axis (horizontal/bottom)
+        quantAxis = nodes[0];
+    } else {
+        // Fallback to first axis
+        quantAxis = nodes[0];
     }
 
-    const textElements = xAxis?.querySelectorAll(svgSelectionCriteria.join(', '));
+    if (!quantAxis) {
+        throw new Error("Quantitative axis not found");
+    }
+
+    const textElements = quantAxis?.querySelectorAll(svgSelectionCriteria.join(', '));
 
     const widthPromises = Array.from(textElements).map(async (textElement: any) => {
         const originalText = textElement.textContent;

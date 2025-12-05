@@ -18,15 +18,17 @@ function selectDefaultSpec(userSpec: any) {
         return defaultTVLSpecLine;
     }
 
-    // repeat for bar 
+    // repeat for bar
     if (typeof userSpec.mark === 'string' && userSpec.mark === "bar") {
-        if (userSpec.encoding.xOffset && userSpec.encoding.xOffset !== null) {
+        if ((userSpec.encoding.xOffset && userSpec.encoding.xOffset !== null) ||
+            (userSpec.encoding.yOffset && userSpec.encoding.yOffset !== null)) {
             return defaultTVLSpecBarGrouped;
         }
         return defaultTVLSpecBar;
     }
     else if (typeof userSpec.mark === 'object' && userSpec.mark.type === "bar") {
-        if (userSpec.encoding.xOffset && userSpec.encoding.xOffset !== null) {
+        if ((userSpec.encoding.xOffset && userSpec.encoding.xOffset !== null) ||
+            (userSpec.encoding.yOffset && userSpec.encoding.yOffset !== null)) {
             return defaultTVLSpecBarGrouped;
         }
         return defaultTVLSpecBar;
