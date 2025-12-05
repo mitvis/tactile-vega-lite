@@ -97,7 +97,9 @@ export const ENCODING_VISIBILITY: Record<ChartType, EncodingVisibilityMap> = {
     theta: false,
     texture: true,
     xOffset: true,
+    yOffset: true,
     strokeDash: false,
+    shape: false,
   },
   line: {
     x: true,
@@ -105,7 +107,9 @@ export const ENCODING_VISIBILITY: Record<ChartType, EncodingVisibilityMap> = {
     theta: false,
     texture: false,
     xOffset: false,
+    yOffset: false,
     strokeDash: true,
+    shape: true,
   },
   scatter: {
     x: true,
@@ -113,7 +117,9 @@ export const ENCODING_VISIBILITY: Record<ChartType, EncodingVisibilityMap> = {
     theta: false,
     texture: true,
     xOffset: false,
+    yOffset: false,
     strokeDash: false,
+    shape: true,
   },
   pie: {
     x: false,
@@ -121,6 +127,8 @@ export const ENCODING_VISIBILITY: Record<ChartType, EncodingVisibilityMap> = {
     theta: true,
     texture: true,
     xOffset: false,
+    yOffset: false,
     strokeDash: false,
+    shape: false,
   },
 };

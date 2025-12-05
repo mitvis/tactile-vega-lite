@@ -5,24 +5,24 @@ import { TactileVegaLiteSpec } from 'tactile-vega-lite';
 import { EditorState } from '../types';
 
 // Import all example specs
-import simple_bar from '../specs/simple_bar.tvl.json';
-import grouped_bar_horizontal from '../specs/grouped_bar_horizontal.tvl.json';
-import grouped_bar_vertical from '../specs/grouped_bar_vertical.tvl.json';
-import stacked_bar from '../specs/stacked_bar.tvl.json';
-import dual_line from '../specs/dual_line.tvl.json';
-import multi_series from '../specs/multi_series.tvl.json';
-import pie from '../specs/pie.tvl.json';
-import scatter from '../specs/scatter.tvl.json';
+import simple_bar_raw from '../specs/simple_bar.tvl.json';
+import grouped_bar_horizontal_raw from '../specs/grouped_bar_horizontal.tvl.json';
+import grouped_bar_vertical_raw from '../specs/grouped_bar_vertical.tvl.json';
+import stacked_bar_raw from '../specs/stacked_bar.tvl.json';
+import dual_line_raw from '../specs/dual_line.tvl.json';
+import multi_series_raw from '../specs/multi_series.tvl.json';
+import pie_raw from '../specs/pie.tvl.json';
+import scatter_raw from '../specs/scatter.tvl.json';
 
 const specs: Record<string, TactileVegaLiteSpec> = {
-  simple_bar,
-  grouped_bar_horizontal,
-  grouped_bar_vertical,
-  stacked_bar,
-  dual_line,
-  multi_series,
-  pie,
-  scatter,
+  simple_bar: simple_bar_raw as TactileVegaLiteSpec,
+  grouped_bar_horizontal: grouped_bar_horizontal_raw as TactileVegaLiteSpec,
+  grouped_bar_vertical: grouped_bar_vertical_raw as TactileVegaLiteSpec,
+  stacked_bar: stacked_bar_raw as TactileVegaLiteSpec,
+  dual_line: dual_line_raw as TactileVegaLiteSpec,
+  multi_series: multi_series_raw as TactileVegaLiteSpec,
+  pie: pie_raw as TactileVegaLiteSpec,
+  scatter: scatter_raw as TactileVegaLiteSpec,
 };
 
 /**
